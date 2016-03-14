@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
@@ -19,36 +20,49 @@ public class DynamicObject  {
     private final int GRAVITY = 10;
     private final double FRICTION_COEFF = 0.5;
     private final int GROUND_FRICTION = (int) (GRAVITY * FRICTION_COEFF);
-    private float acceleration;
+    private Vector3 acceleration;
 
     private ModelInstance object;
     private Rectangle rectangle;
-    private float velocity;
-
+    private Vector3 velocity;
 
     //angle?!?!?
 
-    public DynamicObject(ModelInstance object, float modelWidth, float modelHeight, float modelX, float modelY) {
+    public DynamicObject(ModelInstance object, float modelWidth, float modelHeight, float modelX, float modelY)
+    {
         this.object = object;
         rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
     }
 
-    public void giveVelocity(float acceleration, float time)
+    public void setFirstAcceleration(Vector3 acceleration, float time)
     {
         //1 unit time is arbitrarily 5 fps
-        velocity = acceleration * time;
-        this.acceleration = acceleration;
+        //set actual acceleration to take friction into account
+        Vector3 frictionAcceleration = new Vector3(-GROUND_FRICTION, -GROUND_FRICTION, -acceleration.z);
+        this.acceleration = acceleration.add(frictionAcceleration);
+        setVelocity(time);
+    }
 
+    public void setVelocity(Vector3 acceleration, float time)
+    {
+        this.acceleration = acceleration;
+        setVelocity(time);
+    }
+
+    private void setVelocity(float time)
+    {
+        //v = at
+        velocity.x = acceleration.x * time;
+        velocity.y = acceleration.y * time;
+        velocity.z = time;
     }
 
     //update object position according to velocity
     public void update()
     {
-        //todo find a vector that shows acceleration or velocity with angle
-        //object.transform.translate(x, y, z);
-        //todo translate rectangle together with object
+        object.transform.translate(velocity);
+        rectangle.setPosition(velocity.x, velocity.y);
     }
-
     public ModelInstance getModel()
     {
         return object;
@@ -57,6 +71,11 @@ public class DynamicObject  {
     public Rectangle getRectangle()
     {
         return rectangle;
+    }
+
+    public Vector3 getAcceleration()
+    {
+        return acceleration;
     }
 
 

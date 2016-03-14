@@ -1,6 +1,7 @@
 package nl.dke13;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,6 @@ public class Physics
         for(DynamicObject dynamicObject: dynamicObjects)
         {
             dynamicObject.update();
-
             renderer.render(dynamicObject.getModel());
         }
         for(StaticObject staticObject : staticObjects)
@@ -38,17 +38,27 @@ public class Physics
         for(StaticObject staticObject: staticObjects)
         {
             if (staticObject.getRectangle().overlaps(dynamicObject.getRectangle()))
+            {
                 return true;
-
+            }
             else
+            {
                 return false;
+            }
         }
         return false;
     }
 
-
-    public void hasCollided()
+    /*
+    * not final because only for side wall collision
+    */
+    public void hasCollided(DynamicObject dynamicObject, float time)
     {
-        //todo implement bouncing
+        if(isColliding(dynamicObject))
+        {
+            Vector3 acc = dynamicObject.getAcceleration(); //y & z acceleration doesnt change
+            acc.x= -acc.x; //x is negative because it goes into opposite direction
+            dynamicObject.setVelocity(acc, time);
+        }
     }
 }
