@@ -14,9 +14,18 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class DynamicObject  {
 
-    ModelInstance object;
-    Rectangle rectangle;
-    float velocity;
+    //mass of dynamic object is always 1 unit
+
+    private final int GRAVITY = 10;
+    private final double FRICTION_COEFF = 0.5;
+    private final int GROUND_FRICTION = (int) (GRAVITY * FRICTION_COEFF);
+    private float acceleration;
+
+    private ModelInstance object;
+    private Rectangle rectangle;
+    private float velocity;
+
+
     //angle?!?!?
 
     public DynamicObject(ModelInstance object, float modelWidth, float modelHeight, float modelX, float modelY) {
@@ -24,18 +33,20 @@ public class DynamicObject  {
         rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
     }
 
-    public void giveVelocity(float acceleration)
+    public void giveVelocity(float acceleration, float time)
     {
-        velocity = 0;
-        acceleration = acceleration;
+        //1 unit time is arbitrarily 5 fps
+        velocity = acceleration * time;
+        this.acceleration = acceleration;
 
     }
 
-    //update velocity
+    //update object position according to velocity
     public void update()
     {
-        object.transform.translate(0,0,0); //todo correct numbers
-        //change rectangle
+        //todo find a vector that shows acceleration or velocity with angle
+        //object.transform.translate(x, y, z);
+        //todo translate rectangle together with object
     }
 
     public ModelInstance getModel()
@@ -43,16 +54,11 @@ public class DynamicObject  {
         return object;
     }
 
-    public boolean isColliding()
+    public Rectangle getRectangle()
     {
-        return true; //todo give the rectangle to check:)
-
+        return rectangle;
     }
 
-    public void hasCollided()
-    {
-
-    }
 
 
 }
