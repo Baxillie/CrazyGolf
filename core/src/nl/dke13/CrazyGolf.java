@@ -41,7 +41,7 @@ public class CrazyGolf implements ApplicationListener
         modelBatch = new ModelBatch(); //responsible for rendering instances
         models = new ArrayList<Model>();
         instances = new ArrayList<ModelInstance>(); //for holding all the model instances
-
+System.out.print("test");
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
         camera.position.set(0f, 0f, 20f); // set the camera 10 unit to the right, up and back;
