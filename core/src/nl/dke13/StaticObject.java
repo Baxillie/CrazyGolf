@@ -16,5 +16,10 @@ public class StaticObject {
         rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
     }
 
+    public ModelInstance getModel()
+    {
+        return object;
+    }
+
 
 }
