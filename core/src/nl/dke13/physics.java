@@ -1,17 +1,13 @@
 package nl.dke13;
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-
-import java.util.ArrayList;
-
 /**
  * Created by nik on 3/14/16.
  */
 public class physics
 {
-    ArrayList<DynamicObject> dynamicObjects;
-    ArrayList<StaticObject> staticObjects;
-    ModelBatch renderer;
+    private ArrayList<DynamicObject> dynamicObjects;
+    private ArrayList<StaticObject> staticObjects;
+    private ModelBatch renderer;
 
     public physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects) {
         this.dynamicObjects = dynamicObjects;
@@ -33,8 +29,22 @@ public class physics
         }
     }
 
-    private boolean isColliding(DynamicObject dynamicObject)
+    public boolean isColliding(DynamicObject dynamicObject)
     {
+        for(StaticObject staticObject: staticObjects)
+        {
+            if (staticObject.getRectangle().overlaps(dynamicObject.getRectangle()))
+                return true;
+
+            else
+                return false;
+        }
         return false;
+    }
+
+
+    public void hasCollided()
+    {
+        //todo implement bouncing
     }
 }

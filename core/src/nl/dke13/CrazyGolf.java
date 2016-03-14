@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.w3c.dom.css.Rect;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -60,7 +58,7 @@ public class CrazyGolf implements ApplicationListener
 
         //make a simple golf course
         createGolfCourseInstances();
-        testRectangles();
+
         //old code for a simple sphere
 //        sphere = mb.createSphere(
 //                5f, 5f, 5f, //dimensions
@@ -71,49 +69,42 @@ public class CrazyGolf implements ApplicationListener
 //        instances.add(new ModelInstance(sphere)); //required to hold the world location of the model for the renderer.
     }
 
-
-    public void testRectangles()
-    {
-        Rectangle r1 = new Rectangle(0,0,2,2);
-        Rectangle r2 = new Rectangle(1,1,2,2);
-        System.out.println(r1.overlaps(r2));
-    }
-
     /**
      * makes a basis golf course out of rectangles.
      */
     private void createGolfCourseInstances()
     {
         //floor
-        float floorWidth = 10f;
-        float floorHeight = 10f;
-        float floorDepth =  1f;
+        float floorX = 10f;
+        float floorY = 10f;
+        float floorZ =  1f;
         //2 sidewalls against the Y of the floor
-        float sideWallLength =  1f;
-        float sideWallHeight = floorHeight;
-        float sideWallDepth =  2 * floorDepth;
+        float sideWallX =  1f;
+        float sideWallY = floorY;
+        float sideWallZ =  2 * floorZ;
         //2 top walls against the X of the floor
-        float topWallLength = floorHeight;
-        float topWallHeight =  1f;
-        float topWallDepth =  2 * floorDepth;
+        float topWallX = floorX;
+        float topWallY =  1f;
+        float topWallZ =  2 * floorZ;
 
         ModelBuilder mb = new ModelBuilder();
         Material floorMaterial = new Material(ColorAttribute.createDiffuse(Color.FOREST));
         Material wallMaterial = new Material(ColorAttribute.createDiffuse(Color.BROWN));
-        Model floor = mb.createBox(floorHeight, floorHeight, floorDepth, floorMaterial , VertexAttributes.Usage.Position);
-        Model sideWall = mb.createBox(sideWallLength, sideWallHeight, sideWallDepth, wallMaterial, VertexAttributes.Usage.Position);
-        Model topWall = mb.createBox(topWallLength, topWallHeight, topWallDepth, wallMaterial, VertexAttributes.Usage.Position);
+        Model floor = mb.createBox(floorX, floorY, floorZ, floorMaterial , VertexAttributes.Usage.Position);
+        Model sideWall = mb.createBox(sideWallX, sideWallY, sideWallZ, wallMaterial, VertexAttributes.Usage.Position);
+        Model topWall = mb.createBox(topWallX, topWallY, topWallZ, wallMaterial, VertexAttributes.Usage.Position);
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
 
         //add the floor
         instances.add(new ModelInstance(floor, 0,0,0));
         //add sidewalls to the left and the right of the floor
-        instances.add(new ModelInstance(sideWall, 0 - (floorHeight / 2) - (sideWallLength / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ));
-        instances.add(new ModelInstance(sideWall, 0 + (floorHeight / 2) + (sideWallLength / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ));
+        instances.add(new ModelInstance(sideWall, 0 - (floorX / 2) - (sideWallX / 2), 0, (sideWallZ / 2) - (floorZ / 2) ));
+        instances.add(new ModelInstance(sideWall, 0 + (floorX / 2) + (sideWallX / 2), 0, (sideWallZ / 2) - (floorZ / 2) ));
         //add top walls
-        instances.add(new ModelInstance(topWall, 0, 0 - (topWallLength / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ));
-        instances.add(new ModelInstance(topWall, 0, 0 + (topWallLength / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ));
-        instances.add(new ModelInstance(sphere, 0,0,1));}
+        instances.add(new ModelInstance(topWall, 0, 0 - (topWallX / 2) - (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
+        instances.add(new ModelInstance(topWall, 0, 0 + (topWallX / 2) + (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
+        instances.add(new ModelInstance(sphere, 0,0,1));
+    }
 
     /**
      * Called when the {@link Application} is resized. This can happen at any point during a non-paused state but will never happen
@@ -134,13 +125,17 @@ public class CrazyGolf implements ApplicationListener
     @Override
     public void render()
     {
+        int count=0;
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        //dynamicObject.render
+
+        Matrix4 transformMatrix = instances.get(5).transform;
+        transformMatrix.translate(0,0.1f, 0);
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
+
         modelBatch.render(instances);
         modelBatch.end();
 
