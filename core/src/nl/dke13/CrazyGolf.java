@@ -93,7 +93,7 @@ public class CrazyGolf implements ApplicationListener
         Model floor = mb.createBox(floorX, floorY, floorZ, floorMaterial , VertexAttributes.Usage.Position);
         Model sideWall = mb.createBox(sideWallX, sideWallY, sideWallZ, wallMaterial, VertexAttributes.Usage.Position);
         Model topWall = mb.createBox(topWallX, topWallY, topWallZ, wallMaterial, VertexAttributes.Usage.Position);
-        Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
+        Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
         //add the floor
         instances.add(new ModelInstance(floor, 0,0,0));

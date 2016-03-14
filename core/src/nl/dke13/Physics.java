@@ -7,13 +7,13 @@ import java.util.ArrayList;
 /**
  * Created by nik on 3/14/16.
  */
-public class physics
+public class Physics
 {
     private ArrayList<DynamicObject> dynamicObjects;
     private ArrayList<StaticObject> staticObjects;
     private ModelBatch renderer;
 
-    public physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects) {
+    public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects) {
         this.dynamicObjects = dynamicObjects;
         this.staticObjects = staticObjects;
         this.renderer = renderer;
