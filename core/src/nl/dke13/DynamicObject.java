@@ -20,8 +20,8 @@ public class DynamicObject  {
     private final int GRAVITY = 10;
     private final double FRICTION_COEFF = 0.5;
     private final int GROUND_FRICTION = (int) (GRAVITY * FRICTION_COEFF);
-    private Vector3 acceleration;
 
+    private Vector3 acceleration;
     private ModelInstance object;
     private Rectangle rectangle;
     private Vector3 velocity;
@@ -77,7 +77,5 @@ public class DynamicObject  {
     {
         return acceleration;
     }
-
-
 
 }
