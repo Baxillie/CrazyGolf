@@ -21,5 +21,9 @@ public class StaticObject {
         return object;
     }
 
+    public Rectangle getRectangle()
+    {
+        return rectangle;
+    }
 
 }
