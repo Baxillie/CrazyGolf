@@ -31,6 +31,7 @@ public class CrazyGolf implements ApplicationListener
     ArrayList<Model> models; //holds all the information about what to render(all the models)
     ArrayList<ModelInstance> instances; //holds the location, rotation and scale of the models
     ModelBatch modelBatch; // renders a model based on the modelInstance
+    Physics physics;
 
 
     /**
@@ -58,6 +59,8 @@ public class CrazyGolf implements ApplicationListener
 
         //make a simple golf course
         createGolfCourseInstances();
+
+        //initialise physics engine
 
         //old code for a simple sphere
 //        sphere = mb.createSphere(
