@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -41,10 +42,10 @@ public class CrazyGolf implements ApplicationListener
         modelBatch = new ModelBatch(); //responsible for rendering instances
         models = new ArrayList<Model>();
         instances = new ArrayList<ModelInstance>(); //for holding all the model instances
-System.out.print("test");
+
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
-        camera.position.set(0f, 0f, 20f); // set the camera 10 unit to the right, up and back;
+        camera.position.set(0f, 10f, 20f); // set the camera 10 unit to the right, up and back;
         camera.lookAt(0,0,0); //make the camera look to point 0,0,0 in the world
         camera.near = 1f; //makes it so the camera sees everything at least 1 unit away from it
         camera.far = 300f;//makes it so the camera sees everything up until 300 units away from it
@@ -92,6 +93,7 @@ System.out.print("test");
         Model floor = mb.createBox(floorX, floorY, floorZ, floorMaterial , VertexAttributes.Usage.Position);
         Model sideWall = mb.createBox(sideWallX, sideWallY, sideWallZ, wallMaterial, VertexAttributes.Usage.Position);
         Model topWall = mb.createBox(topWallX, topWallY, topWallZ, wallMaterial, VertexAttributes.Usage.Position);
+        Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
 
         //add the floor
         instances.add(new ModelInstance(floor, 0,0,0));
@@ -101,6 +103,7 @@ System.out.print("test");
         //add top walls
         instances.add(new ModelInstance(topWall, 0, 0 - (topWallX / 2) - (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
         instances.add(new ModelInstance(topWall, 0, 0 + (topWallX / 2) + (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
+        instances.add(new ModelInstance(sphere, 0,0,1));
     }
 
     /**
@@ -126,6 +129,9 @@ System.out.print("test");
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+
+        Matrix4 transformMatrix = instances.get(5).transform;
+        transformMatrix.translate(0,0.01f, 0);
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
         modelBatch.render(instances);
