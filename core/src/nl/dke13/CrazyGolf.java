@@ -114,7 +114,7 @@ public class CrazyGolf implements ApplicationListener
         staticObjects.add(topWallUp);
         //add golf ball
         dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),1,1,0,0));
-        dynamicObjects.get(0).setFirstAcceleration(new Vector3(0.1f,0,0),10);
+        dynamicObjects.get(0).setFirstAcceleration(new Vector3(1f,0,0),10);
     }
 
     /**

@@ -32,6 +32,7 @@ public class DynamicObject  {
     {
         this.object = object;
         rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
+        velocity = new Vector3(0,0,0);
     }
 
     public void setFirstAcceleration(Vector3 acceleration, float time)
@@ -60,6 +61,7 @@ public class DynamicObject  {
     //update object position according to velocity
     public void update()
     {
+        System.out.println(velocity);
         object.transform.translate(velocity);
         rectangle.setPosition(velocity.x, velocity.y);
     }
