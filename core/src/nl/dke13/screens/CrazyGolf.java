@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import nl.dke13.physics.DynamicObject;
+import nl.dke13.physics.DynamicObjectWithAcceleration;
 import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
 
@@ -30,7 +30,7 @@ public class CrazyGolf implements ApplicationListener
     Viewport viewport;
 
     //variables for the course
-    ArrayList<DynamicObject> dynamicObjects;
+    ArrayList<DynamicObjectWithAcceleration> dynamicObjectWithAccelerations;
     ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
@@ -43,7 +43,7 @@ public class CrazyGolf implements ApplicationListener
     public void create()
     {
         modelBatch = new ModelBatch(); //responsible for rendering instances
-        dynamicObjects = new ArrayList<DynamicObject>();
+        dynamicObjectWithAccelerations = new ArrayList<DynamicObjectWithAcceleration>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
 
         //make the camera
@@ -63,7 +63,7 @@ public class CrazyGolf implements ApplicationListener
         createGolfCourseInstances();
 
         //initialise physics engine
-        physics = new Physics(modelBatch,dynamicObjects, staticObjects);
+        physics = new Physics(modelBatch, dynamicObjectWithAccelerations, staticObjects);
     }
 
     /**
@@ -114,8 +114,8 @@ public class CrazyGolf implements ApplicationListener
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
         //add golf ball
-        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),1,1,0,0));
-        dynamicObjects.get(0).setFirstAcceleration(new Vector3(1f,0,0),10);
+        dynamicObjectWithAccelerations.add(new DynamicObjectWithAcceleration(new ModelInstance(sphere, 0,0,1),1,1,0,0));
+        dynamicObjectWithAccelerations.get(0).setFirstAcceleration(new Vector3(1f,1f,0),10);
     }
 
     /**

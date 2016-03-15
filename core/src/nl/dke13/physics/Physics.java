@@ -10,22 +10,22 @@ import java.util.ArrayList;
  */
 public class Physics
 {
-    private ArrayList<DynamicObject> dynamicObjects;
+    private ArrayList<DynamicObjectWithAcceleration> dynamicObjectWithAccelerations;
     private ArrayList<StaticObject> staticObjects;
     private ModelBatch renderer;
 
-    public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects) {
-        this.dynamicObjects = dynamicObjects;
+    public Physics(ModelBatch renderer, ArrayList<DynamicObjectWithAcceleration> dynamicObjectWithAccelerations, ArrayList<StaticObject> staticObjects) {
+        this.dynamicObjectWithAccelerations = dynamicObjectWithAccelerations;
         this.staticObjects = staticObjects;
         this.renderer = renderer;
     }
 
     public void render()
     {
-        for(DynamicObject dynamicObject: dynamicObjects)
+        for(DynamicObjectWithAcceleration dynamicObjectWithAcceleration : dynamicObjectWithAccelerations)
         {
-            dynamicObject.update();
-            renderer.render(dynamicObject.getModel());
+            dynamicObjectWithAcceleration.update();
+            renderer.render(dynamicObjectWithAcceleration.getModel());
         }
         for(StaticObject staticObject : staticObjects)
         {
@@ -33,11 +33,11 @@ public class Physics
         }
     }
 
-    public boolean isColliding(DynamicObject dynamicObject)
+    public boolean isColliding(DynamicObjectWithAcceleration dynamicObjectWithAcceleration)
     {
         for(StaticObject staticObject: staticObjects)
         {
-            if (staticObject.getRectangle().overlaps(dynamicObject.getRectangle()))
+            if (staticObject.getRectangle().overlaps(dynamicObjectWithAcceleration.getRectangle()))
             {
                 return true;
             }
@@ -52,13 +52,13 @@ public class Physics
     /*
     * not final because only for side wall collision
     */
-    public void hasCollided(DynamicObject dynamicObject, float time)
+    public void hasCollided(DynamicObjectWithAcceleration dynamicObjectWithAcceleration, float time)
     {
-        if(isColliding(dynamicObject))
+        if(isColliding(dynamicObjectWithAcceleration))
         {
-            Vector3 acc = dynamicObject.getAcceleration(); //y & z acceleration doesnt change
+            Vector3 acc = dynamicObjectWithAcceleration.getAcceleration(); //y & z acceleration doesnt change
             acc.x= -acc.x; //x is negative because it goes into opposite direction
-            dynamicObject.setVelocity(acc, time);
+            dynamicObjectWithAcceleration.setVelocity(acc, time);
         }
     }
 }
