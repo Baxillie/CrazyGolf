@@ -3,17 +3,15 @@ package nl.dke13.physics;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- * Created by nik on 3/14/16.
- */
 public class StaticObject {
 
     ModelInstance object;
-    Rectangle rectangle;
+    ObjectBox box;
 
-    public StaticObject(ModelInstance object, float modelX, float modelY, float modelWidth, float modelHeight) {
+    public StaticObject(ModelInstance object, float modelX, float modelY, float modelZ, float modelWidth, float modelHeight, float modelDepth)
+    {
         this.object = object;
-        rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
+        this.box = new ObjectBox(modelX, modelY, modelZ, modelWidth, modelHeight, modelDepth);
     }
 
     public ModelInstance getModel()
@@ -21,9 +19,9 @@ public class StaticObject {
         return object;
     }
 
-    public Rectangle getRectangle()
+    public ObjectBox getBox()
     {
-        return rectangle;
+        return box;
     }
 
 }

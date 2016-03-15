@@ -97,32 +97,36 @@ public class CrazyGolf implements ApplicationListener
 
 
         //add the floor
-        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), floorWidth/2, floorHeight/2, floorWidth, floorHeight));
+        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 0, 0, 0, floorWidth, floorHeight, floorDepth));
         //add sideWalls to the left and the right of the floor
 
         StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
                 0 - (floorWidth / 2) - (sideWallWidth / 2), 0,  (sideWallDepth / 2) - (floorDepth / 2) ),
-                0 - (floorWidth / 2) - sideWallWidth, (sideWallHeight / 2), sideWallWidth, sideWallHeight);
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallHeight / 2) - (floorDepth / 2),
+                sideWallWidth, sideWallHeight, sideWallDepth);
 
         StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall,
                 0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
-                0 + (floorWidth / 2) + sideWallWidth, (sideWallHeight / 2), sideWallWidth, sideWallHeight);
+                0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
+                sideWallWidth, sideWallHeight, sideWallDepth);
 
         staticObjects.add(sideWallLeft);
         staticObjects.add(sideWallRight);
         //add top Walls
         StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
                 0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
-                0 + (topWallWidth / 2), 0 + (floorHeight / 2), topWallWidth, topWallHeight);
+                0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                topWallWidth, topWallHeight, topWallDepth);
 
         StaticObject topWallDown = new StaticObject(new ModelInstance(topWall,
                 0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
-                0 - (topWallWidth / 2), 0 + (floorHeight / 2) + topWallHeight, topWallWidth, topWallHeight);
+                0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                topWallWidth, topWallHeight, topWallDepth);
 
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
         //add golf ball
-        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, -1,0,1),-1.5f,0.5f,1,1, 20));
+        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),-1.5f,0.5f, 1, 1,1,1, 20));
         dynamicObjects.get(0).setVelocity(new Vector3(1f,1f,0));
     }
 
@@ -151,7 +155,7 @@ public class CrazyGolf implements ApplicationListener
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
-        physics.render(camera);
+        physics.render();
         modelBatch.end();
 
         //updates the location of the camera based on user input.
