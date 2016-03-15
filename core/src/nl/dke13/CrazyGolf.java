@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -27,9 +28,9 @@ public class CrazyGolf implements ApplicationListener
     CameraInputController cameraController; //makes the user be able to move the camera
     Viewport viewport;
 
-    //variables for the sphere
-    ArrayList<Model> models; //holds all the information about what to render(all the models)
-    ArrayList<ModelInstance> instances; //holds the location, rotation and scale of the models
+    //variables for the course
+    ArrayList<DynamicObject> dynamicObjects;
+    ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
 
@@ -41,8 +42,8 @@ public class CrazyGolf implements ApplicationListener
     public void create()
     {
         modelBatch = new ModelBatch(); //responsible for rendering instances
-        models = new ArrayList<Model>();
-        instances = new ArrayList<ModelInstance>(); //for holding all the model instances
+        dynamicObjects = new ArrayList<DynamicObject>();
+        staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
@@ -61,15 +62,7 @@ public class CrazyGolf implements ApplicationListener
         createGolfCourseInstances();
 
         //initialise physics engine
-
-        //old code for a simple sphere
-//        sphere = mb.createSphere(
-//                5f, 5f, 5f, //dimensions
-//                100, 100,  //when these numbers are bigger the sphere becomes more round(?)
-//                new Material(ColorAttribute.createDiffuse(Color.WHITE)), //give it a white color
-//                VertexAttributes.Usage.Normal | VertexAttributes.Usage.Position); //add Position so the model can have a location in the world(is required).
-//        //add Normal so things like lightning work on the object(not required).
-//        instances.add(new ModelInstance(sphere)); //required to hold the world location of the model for the renderer.
+        physics = new Physics(modelBatch,dynamicObjects, staticObjects);
     }
 
     /**
@@ -78,35 +71,50 @@ public class CrazyGolf implements ApplicationListener
     private void createGolfCourseInstances()
     {
         //floor
-        float floorX = 10f;
-        float floorY = 10f;
-        float floorZ =  1f;
-        //2 sidewalls against the Y of the floor
-        float sideWallX =  1f;
-        float sideWallY = floorY;
-        float sideWallZ =  2 * floorZ;
-        //2 top walls against the X of the floor
-        float topWallX = floorX;
-        float topWallY =  1f;
-        float topWallZ =  2 * floorZ;
+        float floorWidth = 10f;
+        float floorHeight = 10f;
+        float floorDepth =  1f;
+        //2 sideWalls against the Y of the floor
+        float sideWallWidth =  1f;
+        float sideWallHeight = floorHeight;
+        float sideWallDepth =  2 * floorDepth;
+        //2 top Walls against the X of the floor
+        float topWallWidth = floorWidth;
+        float topWallHeight =  1f;
+        float topWallDepth =  2 * floorDepth;
 
         ModelBuilder mb = new ModelBuilder();
         Material floorMaterial = new Material(ColorAttribute.createDiffuse(Color.FOREST));
-        Material wallMaterial = new Material(ColorAttribute.createDiffuse(Color.BROWN));
-        Model floor = mb.createBox(floorX, floorY, floorZ, floorMaterial , VertexAttributes.Usage.Position);
-        Model sideWall = mb.createBox(sideWallX, sideWallY, sideWallZ, wallMaterial, VertexAttributes.Usage.Position);
-        Model topWall = mb.createBox(topWallX, topWallY, topWallZ, wallMaterial, VertexAttributes.Usage.Position);
+        Material WallMaterial = new Material(ColorAttribute.createDiffuse(Color.BROWN));
+        Model floor = mb.createBox(floorWidth, floorHeight, floorDepth, floorMaterial , VertexAttributes.Usage.Position);
+        Model sideWall = mb.createBox(sideWallWidth, sideWallHeight, sideWallDepth, WallMaterial, VertexAttributes.Usage.Position);
+        Model topWall = mb.createBox(topWallWidth, topWallHeight, topWallDepth, WallMaterial, VertexAttributes.Usage.Position);
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
         //add the floor
-        instances.add(new ModelInstance(floor, 0,0,0));
-        //add sidewalls to the left and the right of the floor
-        instances.add(new ModelInstance(sideWall, 0 - (floorX / 2) - (sideWallX / 2), 0, (sideWallZ / 2) - (floorZ / 2) ));
-        instances.add(new ModelInstance(sideWall, 0 + (floorX / 2) + (sideWallX / 2), 0, (sideWallZ / 2) - (floorZ / 2) ));
-        //add top walls
-        instances.add(new ModelInstance(topWall, 0, 0 - (topWallX / 2) - (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
-        instances.add(new ModelInstance(topWall, 0, 0 + (topWallX / 2) + (topWallY / 2), (topWallZ / 2) - (floorZ / 2) ));
-        instances.add(new ModelInstance(sphere, 0,0,1));
+        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), floorWidth, floorHeight, 0,0));
+        //add sideWalls to the left and the right of the floor
+
+        StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall, 0 - (floorWidth / 2) - (sideWallWidth / 2),
+                0, (sideWallDepth / 2) - (floorDepth / 2) ), sideWallWidth, sideWallHeight, 0 - (floorWidth / 2) - (sideWallWidth / 2), 0);
+
+        StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall, 0 + (floorWidth / 2) + (sideWallWidth / 2),
+                0, (sideWallDepth / 2) - (floorDepth / 2) ), sideWallWidth, sideWallHeight, 0 + (floorWidth / 2) + (sideWallWidth / 2), 0);
+
+        staticObjects.add(sideWallLeft);
+        staticObjects.add(sideWallRight);
+        //add top Walls
+        StaticObject topWallUp = new StaticObject(new ModelInstance(topWall, 0, 0 - (topWallWidth / 2) - (topWallHeight / 2),
+                (topWallDepth / 2) - (floorDepth / 2) ), topWallWidth, topWallHeight, 0, 0 - (topWallWidth / 2) - (topWallHeight / 2));
+
+        StaticObject topWallDown = new StaticObject(new ModelInstance(topWall, 0, 0 + (topWallWidth / 2) + (topWallHeight / 2),
+                (topWallDepth / 2) - (floorDepth / 2) ), topWallWidth, topWallHeight, 0, 0 + (topWallWidth / 2) + (topWallHeight / 2));
+
+        staticObjects.add(topWallDown);
+        staticObjects.add(topWallUp);
+        //add golf ball
+        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),1,1,0,0));
+        dynamicObjects.get(0).setFirstAcceleration(new Vector3(0.1f,0,0),10);
     }
 
     /**
@@ -134,12 +142,9 @@ public class CrazyGolf implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 
-        Matrix4 transformMatrix = instances.get(5).transform;
-        transformMatrix.translate(0,0.1f, 0);
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
-
-        modelBatch.render(instances);
+        physics.render();
         modelBatch.end();
 
         //updates the location of the camera based on user input.
@@ -171,11 +176,11 @@ public class CrazyGolf implements ApplicationListener
     @Override
     public void dispose()
     {
-        modelBatch.dispose(); // delete the modelbatch
-        //delele all models
-        for(Model model : models)
-        {
-            model.dispose();
-        }
+//        modelBatch.dispose(); // delete the modelbatch
+//        //delele all models
+//        for(Model model : models)
+//        {
+//            model.dispose();
+//        }
     }
 }
