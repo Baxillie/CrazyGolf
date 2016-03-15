@@ -11,7 +11,7 @@ public class StaticObject {
     ModelInstance object;
     Rectangle rectangle;
 
-    public StaticObject(ModelInstance object, float modelWidth, float modelHeight, float modelX, float modelY) {
+    public StaticObject(ModelInstance object, float modelX, float modelY, float modelWidth, float modelHeight) {
         this.object = object;
         rectangle = new Rectangle(modelX, modelY, modelWidth, modelHeight);
     }

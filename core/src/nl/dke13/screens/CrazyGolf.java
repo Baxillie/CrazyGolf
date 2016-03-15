@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import nl.dke13.physics.DynamicObjectWithAcceleration;
+import nl.dke13.physics.DynamicObject;
 import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
 
@@ -30,7 +30,7 @@ public class CrazyGolf implements ApplicationListener
     Viewport viewport;
 
     //variables for the course
-    ArrayList<DynamicObjectWithAcceleration> dynamicObjectWithAccelerations;
+    ArrayList<DynamicObject> dynamicObjects;
     ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
@@ -43,13 +43,13 @@ public class CrazyGolf implements ApplicationListener
     public void create()
     {
         modelBatch = new ModelBatch(); //responsible for rendering instances
-        dynamicObjectWithAccelerations = new ArrayList<DynamicObjectWithAcceleration>();
+        dynamicObjects = new ArrayList<DynamicObject>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
         camera.position.set(0f, 10f, 20f); // set the camera 10 unit to the right, up and back;
-        camera.lookAt(0,0,0); //make the camera look to point 0,0,0 in the world
+        camera.lookAt(0,00,0); //make the camera look to point 0,0,0 in the world
         camera.near = 1f; //makes it so the camera sees everything at least 1 unit away from it
         camera.far = 300f;//makes it so the camera sees everything up until 300 units away from it
         camera.update(); //updates all the changes
@@ -63,7 +63,7 @@ public class CrazyGolf implements ApplicationListener
         createGolfCourseInstances();
 
         //initialise physics engine
-        physics = new Physics(modelBatch, dynamicObjectWithAccelerations, staticObjects);
+        physics = new Physics(modelBatch, dynamicObjects, staticObjects);
     }
 
     /**
@@ -92,30 +92,36 @@ public class CrazyGolf implements ApplicationListener
         Model topWall = mb.createBox(topWallWidth, topWallHeight, topWallDepth, WallMaterial, VertexAttributes.Usage.Position);
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
+
+
         //add the floor
-        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), floorWidth, floorHeight, 0,0));
+        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), floorWidth/2, floorHeight/2, floorWidth, floorHeight));
         //add sideWalls to the left and the right of the floor
 
-        StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall, 0 - (floorWidth / 2) - (sideWallWidth / 2),
-                0, (sideWallDepth / 2) - (floorDepth / 2) ), sideWallWidth, sideWallHeight, 0 - (floorWidth / 2) - (sideWallWidth / 2), 0);
+        StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0,  (sideWallDepth / 2) - (floorDepth / 2) ),
+                0 - (floorWidth / 2) - sideWallWidth, (sideWallHeight / 2), sideWallWidth, sideWallHeight);
 
-        StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall, 0 + (floorWidth / 2) + (sideWallWidth / 2),
-                0, (sideWallDepth / 2) - (floorDepth / 2) ), sideWallWidth, sideWallHeight, 0 + (floorWidth / 2) + (sideWallWidth / 2), 0);
+        StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall,
+                0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+                0 + (floorWidth / 2) + sideWallWidth, (sideWallHeight / 2), sideWallWidth, sideWallHeight);
 
         staticObjects.add(sideWallLeft);
         staticObjects.add(sideWallRight);
         //add top Walls
-        StaticObject topWallUp = new StaticObject(new ModelInstance(topWall, 0, 0 - (topWallWidth / 2) - (topWallHeight / 2),
-                (topWallDepth / 2) - (floorDepth / 2) ), topWallWidth, topWallHeight, 0, 0 - (topWallWidth / 2) - (topWallHeight / 2));
+        StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
+                0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0 - (topWallWidth / 2), 0 - (floorHeight / 2), topWallWidth, topWallHeight);
 
-        StaticObject topWallDown = new StaticObject(new ModelInstance(topWall, 0, 0 + (topWallWidth / 2) + (topWallHeight / 2),
-                (topWallDepth / 2) - (floorDepth / 2) ), topWallWidth, topWallHeight, 0, 0 + (topWallWidth / 2) + (topWallHeight / 2));
+        StaticObject topWallDown = new StaticObject(new ModelInstance(topWall,
+                0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0 - (topWallWidth / 2), 0 + (floorHeight / 2) + topWallHeight, topWallWidth, topWallHeight);
 
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
         //add golf ball
-        dynamicObjectWithAccelerations.add(new DynamicObjectWithAcceleration(new ModelInstance(sphere, 0,0,1),1,1,0,0));
-        dynamicObjectWithAccelerations.get(0).setFirstAcceleration(new Vector3(1f,1f,0),10);
+        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, -1,0,1),-1.5f,0.5f,1,1, 20));
+        dynamicObjects.get(0).setVelocity(new Vector3(1f,1f,0));
     }
 
     /**
@@ -175,12 +181,12 @@ public class CrazyGolf implements ApplicationListener
      */
     @Override
     public void dispose()
-    {
-//        modelBatch.dispose(); // delete the modelbatch
-//        //delele all models
-//        for(Model model : models)
-//        {
-//            model.dispose();
-//        }
+    {/*
+        modelBatch.dispose(); // delete the modelbatch
+        //delele all models
+        for(Model model : models)
+        {
+            model.dispose();
+        }*/
     }
 }
