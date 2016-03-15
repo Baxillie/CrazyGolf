@@ -1,6 +1,5 @@
 package nl.dke13.physics;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 
@@ -12,7 +11,8 @@ public class Physics
     private ArrayList<StaticObject> staticObjects;
     private ModelBatch renderer;
 
-    public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects) {
+    public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects)
+    {
         this.dynamicObjects = dynamicObjects;
         this.staticObjects = staticObjects;
         this.renderer = renderer;

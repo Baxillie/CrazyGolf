@@ -39,7 +39,7 @@ public class DynamicObject {
         System.out.println(velocity);
         object.transform.translate(velocity);
 
-        box.setXYZ(velocity.x, velocity.y, velocity.z);
+        box.setXYZ(box.getX() + velocity.x, box.getY() + velocity.y, box.getZ() + velocity.z);
     }
 
     public ModelInstance getModel()
