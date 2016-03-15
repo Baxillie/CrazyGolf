@@ -1,4 +1,4 @@
-package nl.dke13;
+package nl.dke13.screens;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import nl.dke13.physics.DynamicObject;
+import nl.dke13.physics.Physics;
+import nl.dke13.physics.StaticObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -140,7 +141,6 @@ public class CrazyGolf implements ApplicationListener
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);

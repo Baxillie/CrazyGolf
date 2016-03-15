@@ -1,4 +1,4 @@
-package nl.dke13;
+package nl.dke13.physics;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Rectangle;
