@@ -4,11 +4,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Created by Ajki on 15/03/2016.
- */
-public class DynamicObject {
 
+public class DynamicObject {
 
     //mass of dynamic object is always 1 unit
     private final float DECCELERATION = 0.1f; //arbitrary number depending on input for velocity
@@ -42,6 +39,7 @@ public class DynamicObject {
         energy--;
         System.out.println(velocity);
         object.transform.translate(velocity);
+
         rectangle.setPosition(velocity.x, velocity.y);
     }
 

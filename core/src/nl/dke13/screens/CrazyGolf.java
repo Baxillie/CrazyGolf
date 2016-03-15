@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -64,6 +65,7 @@ public class CrazyGolf implements ApplicationListener
 
         //initialise physics engine
         physics = new Physics(modelBatch, dynamicObjects, staticObjects);
+
     }
 
     /**
@@ -111,7 +113,7 @@ public class CrazyGolf implements ApplicationListener
         //add top Walls
         StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
                 0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
-                0 - (topWallWidth / 2), 0 - (floorHeight / 2), topWallWidth, topWallHeight);
+                0 + (topWallWidth / 2), 0 + (floorHeight / 2), topWallWidth, topWallHeight);
 
         StaticObject topWallDown = new StaticObject(new ModelInstance(topWall,
                 0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
@@ -143,14 +145,13 @@ public class CrazyGolf implements ApplicationListener
     @Override
     public void render()
     {
-        int count=0;
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
-        physics.render();
+        physics.render(camera);
         modelBatch.end();
 
         //updates the location of the camera based on user input.
