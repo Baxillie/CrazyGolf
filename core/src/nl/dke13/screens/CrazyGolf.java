@@ -49,7 +49,7 @@ public class CrazyGolf implements ApplicationListener
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
         camera.position.set(0f, 10f, 20f); // set the camera 10 unit to the right, up and back;
-        camera.lookAt(0,00,0); //make the camera look to point 0,0,0 in the world
+        camera.lookAt(0,0,0); //make the camera look to point 0,0,0 in the world
         camera.near = 1f; //makes it so the camera sees everything at least 1 unit away from it
         camera.far = 300f;//makes it so the camera sees everything up until 300 units away from it
         camera.update(); //updates all the changes
@@ -125,7 +125,7 @@ public class CrazyGolf implements ApplicationListener
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
         //add golf ball
-        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),-1.5f,0.5f, 1, 1,1,1, 20));
+        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),0,0, 1, 1,1,1, 20));
         dynamicObjects.get(0).setVelocity(new Vector3(1f,1f,0));
     }
 
