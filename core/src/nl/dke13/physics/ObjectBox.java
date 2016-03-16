@@ -5,6 +5,7 @@ public class ObjectBox
 {
     private float x, y, z, width, height, depth;
     private float xMin, xMax, yMin, yMax, zMin, zMax;
+    private float oldxMax, oldyMax, oldzMax, oldxMin, oldyMin, oldzMin;
     private boolean bumpX, bumpY, bumpZ;
 
     public ObjectBox (float x, float y, float z, float width, float height, float depth)
@@ -12,6 +13,7 @@ public class ObjectBox
         this.x = x;
         this.y = y;
         this.z = z;
+
         this.width = width;
         this.height = height;
         this.depth = depth;
@@ -28,12 +30,23 @@ public class ObjectBox
 
     public boolean overlaps(ObjectBox box)
     {
+        //todo: fix Z next period
         if ((xMin > box.getxMin() && xMin < box.getxMax()) || (xMax > box.getxMin() && xMax < box.getxMax()))
         {
             if ((yMin > box.getyMin() && yMin < box.getyMax()) || (yMax > box.getyMin() && yMax < box.getyMax()))
             {
                 if ((zMin > box.getzMin() && zMin < box.getzMax()) || (zMax > box.getzMin() && zMax < box.getzMax()))
                 {
+                    if((oldxMin > box.getxMin() && oldxMin < box.getxMax()) || (oldxMax > box.getxMin() && oldxMax < box.getxMax()))
+                    {
+                        bumpY = true;
+                        bumpX = false;
+                    }
+                    if((oldyMin > box.getyMin() && oldyMin < box.getyMax()) || (oldyMax > box.getyMin() && oldyMax < box.getyMax()))
+                    {
+                        bumpX = true;
+                        bumpY = false;
+                    }
                     return true;
                 }
             }
@@ -43,6 +56,15 @@ public class ObjectBox
 
     public void setXYZ(float x, float y, float z)
     {
+        oldxMin = this.x - width/2;
+        oldxMax = this.x + width/2;
+
+        oldyMin = this.y - height/2;
+        oldyMax = this.y + height/2;
+
+        oldzMin = this.z - depth/2;
+        oldzMax = this.z + depth/2;
+
         this.x = x + this.x;
         this.y = y + this.y;
         this.z = z + this.z;
@@ -89,45 +111,11 @@ public class ObjectBox
         return zMax;
     }
 
-    public float getX()
-    {
-        return x;
-    }
-
-    public float getY()
-    {
-        return y;
-    }
-
-    public float getZ()
-    {
-        return z;
-    }
-
-    public float getWidth()
-    {
-        return width;
-    }
-
-    public float getHeight()
-    {
-        return height;
-    }
-
-    public float getDepth()
-    {
-        return depth;
-    }
-
     public boolean isBumpX() {
         return bumpX;
     }
 
     public boolean isBumpY() {
         return bumpY;
-    }
-
-    public boolean isBumpZ() {
-        return bumpZ;
     }
 }

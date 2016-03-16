@@ -41,13 +41,21 @@ public class Physics
     */
     public void hasCollided(DynamicObject dynamicObject)
     {
-        //todo: doesnt work if ball is inside other object
+
         if(isColliding(dynamicObject))
         {
             Vector3 velocityChange = dynamicObject.getVelocity(); //y & z acceleration doesnt change
 
-            velocityChange.x = 0 - velocityChange.x;
-            velocityChange.y = 0 - velocityChange.y;
+            if(dynamicObject.getBox().isBumpX())
+            {
+                velocityChange.x = 0 - velocityChange.x;
+            }
+            if(dynamicObject.getBox().isBumpY())
+            {
+                velocityChange.y = 0 - velocityChange.y;
+            }
+
+            //todo: fix Z next period
             velocityChange.z = 0 - velocityChange.z;
 
             dynamicObject.updateVelocity(velocityChange);
