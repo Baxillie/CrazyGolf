@@ -14,12 +14,15 @@ public class Physics
     private ArrayList<DynamicObject> dynamicObjects;
     private ArrayList<StaticObject> staticObjects;
     private ModelBatch renderer;
+    private Vector3 minVelocity = new Vector3(0.5f,0.5f,0f);
+    private int i;
 
     public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects)
     {
         this.dynamicObjects = dynamicObjects;
         this.staticObjects = staticObjects;
         this.renderer = renderer;
+        i = 0;
     }
 
     public void render()
@@ -44,7 +47,19 @@ public class Physics
 
         if(isColliding(dynamicObject))
         {
-            Vector3 velocityChange = dynamicObject.getVelocity(); //y & z acceleration doesnt change
+            System.out.println("we're colliding i=" + i);
+            //Hole is the 1st entry in staticObject array-list
+            if(i == 1)
+            {
+                if(Math.abs(dynamicObject.getVelocity().x) <= minVelocity.x && Math.abs(dynamicObject.getVelocity().y) <= minVelocity.y)
+                {
+                    dynamicObject.setVelocity(new Vector3(0f, 0f, -0.1f));
+                    return;
+                }
+                return;
+            }
+
+            Vector3 velocityChange = dynamicObject.getVelocity();
 
             if(dynamicObject.getBox().isBumpX())
             {
@@ -56,8 +71,8 @@ public class Physics
             }
 
             //todo: fix Z next period
-            velocityChange.z = 0 - velocityChange.z;
-
+            //todo: corners are a bit fucked :3
+            //velocityChange.z = 0 - velocityChange.z;
             dynamicObject.updateVelocity(velocityChange);
         }
     }
@@ -66,8 +81,10 @@ public class Physics
     {
         ObjectBox box;
         box = dynamicObject.getBox();
+        i = 0;
         for(StaticObject staticObject: staticObjects)
         {
+            i++;
             if (box.overlaps(staticObject.getBox()))
             {
                 return true;

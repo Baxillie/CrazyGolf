@@ -94,6 +94,13 @@ public class CrazyGolf implements ApplicationListener
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
 
+        Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
+        ModelInstance theHole = new ModelInstance(hole, 0, 3.5f, 0);
+        theHole.transform.rotateRad(1,0,0,3.14f/2);
+        //Hole needs to be the 1st object
+        staticObjects.add(0, new StaticObject(theHole, 0, 3.5f, 0, 1.2f, 0.5f, 1.2f));
+
+
 
         //add the floor
         staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 0, 0, -5, floorWidth, floorHeight, floorDepth));
@@ -124,10 +131,12 @@ public class CrazyGolf implements ApplicationListener
 
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
+
+
         //add golf ball
-        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),0,0,1, 1,1,1));
+        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,-3.5f,1),0,-3.5f,1, 1,1,1));
         //todo: It goes inside wall with 2.5 speed
-        dynamicObjects.get(0).setVelocity(new Vector3(1f,0.5f,0));
+        dynamicObjects.get(0).setVelocity(new Vector3(0f,2.4f,0));
     }
 
     /**
