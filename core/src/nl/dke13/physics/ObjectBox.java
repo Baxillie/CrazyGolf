@@ -1,11 +1,11 @@
 package nl.dke13.physics;
 
-import java.io.PrintWriter;
 
 public class ObjectBox
 {
     private float x, y, z, width, height, depth;
     private float xMin, xMax, yMin, yMax, zMin, zMax;
+    private boolean bumpX, bumpY, bumpZ;
 
     public ObjectBox (float x, float y, float z, float width, float height, float depth)
     {
@@ -26,62 +26,19 @@ public class ObjectBox
         zMax = z + depth/2;
     }
 
-    public boolean overlaps(ObjectBox box, PrintWriter pw)
+    public boolean overlaps(ObjectBox box)
     {
         if ((xMin > box.getxMin() && xMin < box.getxMax()) || (xMax > box.getxMin() && xMax < box.getxMax()))
         {
-            pw.printf("Xmin= %f > boxxmin = %f %b %n",xMin , box.getxMin () , (xMin > box.getxMin()));
-            pw.printf("Xmin= %f < boxxmax = %f %b %n",xMin , box.getxMax () , (xMin < box.getxMax()));
-            pw.printf("Xmax= %f > boxxmin = %f %b %n",xMax , box.getxMin () , (xMax > box.getxMin()));
-            pw.printf("Xmax= %f < boxxmax = %f %b %n",xMax , box.getxMax () , (xMax < box.getxMax()));
             if ((yMin > box.getyMin() && yMin < box.getyMax()) || (yMax > box.getyMin() && yMax < box.getyMax()))
             {
-                pw.printf("ymin= %f > boxymin = %f %b %n",yMin , box.getyMin () , (yMin > box.getyMin()));
-                pw.printf("ymin= %f < boxymax = %f %b %n",yMin , box.getyMax () , (yMin < box.getyMax()));
-                pw.printf("ymax= %f > boxymin = %f %b %n",yMax , box.getyMin () , (yMax > box.getyMin()));
-                pw.printf("ymax= %f < boxymax = %f %b %n",yMax , box.getyMax () , (yMax < box.getyMax()));
                 if ((zMin > box.getzMin() && zMin < box.getzMax()) || (zMax > box.getzMin() && zMax < box.getzMax()))
                 {
-                    pw.printf("zmin= %f > boxzmin = %f %b %n",zMin , box.getzMin () , (zMin > box.getzMin()));
-                    pw.printf("zmin= %f < boxzmax = %f %b %n",zMin , box.getzMax () , (zMin < box.getzMax()));
-                    pw.printf("zmax= %f > boxzmin = %f %b %n",zMax , box.getzMin () , (zMax > box.getzMin()));
-                    pw.printf("zmax= %f < boxzmax = %f %b %n",zMax , box.getzMax () , (zMax < box.getzMax()));
                     return true;
                 }
             }
         }
-        pw.println("returning false");
        return false;
-    }
-
-    public float getX()
-    {
-        return x;
-    }
-
-    public float getY()
-    {
-        return y;
-    }
-
-    public float getZ()
-    {
-        return z;
-    }
-
-    public float getWidth()
-    {
-        return width;
-    }
-
-    public float getHeight()
-    {
-        return height;
-    }
-
-    public float getDepth()
-    {
-        return depth;
     }
 
     public void setXYZ(float x, float y, float z)
@@ -98,8 +55,6 @@ public class ObjectBox
 
         zMin = this.z - depth/2;
         zMax = this.z + depth/2;
-
-        System.out.printf("The location of the box : %f %f %f %n", this.x, this.y, this.z);
     }
     public String toString()
     {
@@ -132,5 +87,47 @@ public class ObjectBox
 
     public float getzMax() {
         return zMax;
+    }
+
+    public float getX()
+    {
+        return x;
+    }
+
+    public float getY()
+    {
+        return y;
+    }
+
+    public float getZ()
+    {
+        return z;
+    }
+
+    public float getWidth()
+    {
+        return width;
+    }
+
+    public float getHeight()
+    {
+        return height;
+    }
+
+    public float getDepth()
+    {
+        return depth;
+    }
+
+    public boolean isBumpX() {
+        return bumpX;
+    }
+
+    public boolean isBumpY() {
+        return bumpY;
+    }
+
+    public boolean isBumpZ() {
+        return bumpZ;
     }
 }

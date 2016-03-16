@@ -100,8 +100,8 @@ public class CrazyGolf implements ApplicationListener
         //add sideWalls to the left and the right of the floor
 
         StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
-                0 - (floorWidth / 2) - (sideWallWidth / 2), 0,  (sideWallDepth / 2) - (floorDepth / 2) ),
-                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallHeight / 2) - (floorDepth / 2),
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
                 sideWallWidth, sideWallHeight, sideWallDepth);
 
         StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall,
@@ -127,7 +127,7 @@ public class CrazyGolf implements ApplicationListener
         //add golf ball
         dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,0,1),0,0,1, 1,1,1));
         //todo: It goes inside wall with 2.5 speed
-        dynamicObjects.get(0).setVelocity(new Vector3(0.9f,1f,0));
+        dynamicObjects.get(0).setVelocity(new Vector3(1f,0.5f,0));
     }
 
     /**

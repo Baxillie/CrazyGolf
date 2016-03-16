@@ -7,11 +7,10 @@ import com.badlogic.gdx.math.Vector3;
 public class DynamicObject {
 
     //mass of dynamic object is always 1 unit
-    private final float DECCELERATION = 0.9f; //arbitrary number depending on input for velocity
+    private final float DECCELERATION = 0.95f; //arbitrary number depending on input for velocity
     private ModelInstance object;
     private ObjectBox box;
     private Vector3 velocity;
-    private float energy;
     private Vector3 position;
 
     public DynamicObject(ModelInstance object, float modelX, float modelY, float modelZ, float modelWidth, float modelHeight, float modelDepth)
@@ -20,11 +19,6 @@ public class DynamicObject {
         this.box = new ObjectBox(modelX, modelY, modelZ, modelWidth, modelHeight, modelDepth);
         velocity = new Vector3(0,0,0);
         position = new Vector3(modelX,modelY,modelZ);
-    }
-
-    public void setVelocity(Vector3 velocity) // x*a ; y*b ; z*c
-    {
-        this.velocity = velocity;
     }
 
     public void updateVelocity(Vector3 velocity)
@@ -41,12 +35,14 @@ public class DynamicObject {
     public void update()
     {
         updateVelocity(velocity);
-        energy--;
-       // System.out.println(velocity);
         object.transform.translate(velocity);
         position.add(velocity);
         box.setXYZ(velocity.x, velocity.y, velocity.z);
-        System.out.printf("The position of the ball: %f %f %f %n", position.x, position.y, position.z);
+    }
+
+    public void setVelocity(Vector3 velocity)
+    {
+        this.velocity = velocity;
     }
 
     public ModelInstance getModel()
