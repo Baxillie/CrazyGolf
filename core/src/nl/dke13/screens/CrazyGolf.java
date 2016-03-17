@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -77,6 +78,7 @@ public class CrazyGolf implements Screen
 
         //create a button :)
         createButton();
+        createSlider();
 
         //input
         InputMultiplexer switcher = new InputMultiplexer();
@@ -256,6 +258,13 @@ public class CrazyGolf implements Screen
 
         //check for user input
         input.update();
+    }
+
+    public void createSlider()
+    {
+        Texture texture = new Texture("assets/slider.png");
+        Sprite sprite = new Sprite(texture);
+        stage.addActor(new SliderActor());
     }
 
     /**
