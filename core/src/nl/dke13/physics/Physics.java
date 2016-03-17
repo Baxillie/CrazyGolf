@@ -27,12 +27,7 @@ public class Physics
         {
             ball.update();
             hasCollided(ball);
-            if(ball.displayArrow())
-            {
-                renderer.render(ball.getArrow());
-            }
             renderer.render(ball.getModel());
-
         }
         for(StaticObject staticObject : staticObjects)
         {
@@ -48,8 +43,6 @@ public class Physics
 
         if(isColliding(ball))
         {
-            System.out.println("we're colliding i=" + i);
-            System.out.println(ball.getVelocity().toString());
             //Hole is the 1st entry in staticObject array-list
             if(i == 1)
             {

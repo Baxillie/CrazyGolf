@@ -1,11 +1,6 @@
 package nl.dke13.physics;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 
 
@@ -18,13 +13,6 @@ public class Ball {
     private Vector3 velocity;
     private Vector3 position;
 
-    //stuff for the arrow
-    ModelInstance arrow;
-    Material arrowMaterial;
-    boolean displayArrow;
-    ModelBuilder mb;
-    Vector3 arrowPointer;
-
     public Ball(ModelInstance object, float modelX, float modelY, float modelZ, float modelWidth, float modelHeight, float modelDepth)
     {
         this.object = object;
@@ -32,12 +20,6 @@ public class Ball {
         velocity = new Vector3(0,0,0);
         position = new Vector3(modelX,modelY,modelZ);
 
-        mb = new ModelBuilder();
-        displayArrow = true;
-        arrowPointer = new Vector3(position.x, position.y + 3, position.z);
-        arrowMaterial = new Material(ColorAttribute.createDiffuse(Color.FIREBRICK));
-        arrow = new ModelInstance(mb.createArrow(position.x, position.y, position.z,
-                arrowPointer.x, arrowPointer.y, arrowPointer.z, 0.2f, 0.05f, 100, 1, arrowMaterial, VertexAttributes.Usage.Position));
     }
 
     public void updateVelocity(Vector3 velocity)
@@ -63,11 +45,6 @@ public class Ball {
         box.setXYZ(velocity.x, velocity.y, velocity.z);
     }
 
-    private void updateArrowPointer()
-    {
-
-    }
-
     public void setVelocity(Vector3 velocity)
     {
         this.velocity = velocity;
@@ -91,23 +68,6 @@ public class Ball {
         {
             return velocity;
         }
-
-    public void moveArrow(float x, float y, float z)
-    {
-        arrow = new ModelInstance(mb.createArrow(position.x, position.y, position.z,
-            arrowPointer.x + x, arrowPointer.y + y, arrowPointer.z + z, 0.2f, 0.05f, 100, 1, arrowMaterial, VertexAttributes.Usage.Position));
-
-    }
-
-    public boolean displayArrow()
-    {
-        return velocity.isZero();
-    }
-
-    public ModelInstance getArrow()
-    {
-        return arrow;
-    }
 
 }
 
