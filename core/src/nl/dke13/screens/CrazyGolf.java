@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -12,8 +14,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -44,6 +45,8 @@ public class CrazyGolf implements Screen
 
     //Stage for ui
     Stage stage;
+    SpriteBatch batch;
+    Sprite slider;
     /**
      * Called when the {@link Application} is first created.
      */
@@ -54,6 +57,7 @@ public class CrazyGolf implements Screen
         dynamicObjects = new ArrayList<Ball>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
         stage = new Stage();
+        batch = new SpriteBatch();
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
@@ -253,6 +257,9 @@ public class CrazyGolf implements Screen
         stage.draw();
         modelBatch.end();
 
+        //2d ui
+        renderUI();
+
         //updates the location of the camera based on user input.
         cameraController.update();
 
@@ -260,11 +267,23 @@ public class CrazyGolf implements Screen
         input.update();
     }
 
+    private void renderUI()
+    {
+        batch.begin();
+        batch.draw(slider, 10, 10);
+        batch.end();
+    }
+
     public void createSlider()
     {
-        Texture texture = new Texture("assets/slider.png");
-        Sprite sprite = new Sprite(texture);
-        stage.addActor(new SliderActor());
+//        Texture slider = new Texture(Gdx.files.internal("core/assets/slider.png"));
+//        Skin skin = new Skin();
+//        TextureAtlas atlas = new TextureAtlas();
+//        atlas.
+//        Window window = new Window("default");
+//        Image image = new Image(slider);
+//        window.add(image);
+//        stage.addActor(window);
     }
 
     /**
