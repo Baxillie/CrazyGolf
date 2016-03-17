@@ -35,7 +35,7 @@ public class CrazyGolf implements Screen
     ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
-
+    DynamicObject ball;
 
     /**
      * Called when the {@link Application} is first created.
@@ -65,7 +65,12 @@ public class CrazyGolf implements Screen
         //initialise physics engine
         physics = new Physics(modelBatch, dynamicObjects, staticObjects);
 
+        //create a button :)
+
+
     }
+
+
 
     /**
      * makes a basis golf course out of rectangles.
@@ -93,14 +98,11 @@ public class CrazyGolf implements Screen
         Model topWall = mb.createBox(topWallWidth, topWallHeight, topWallDepth, WallMaterial, VertexAttributes.Usage.Position);
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
-
         Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
         ModelInstance theHole = new ModelInstance(hole, 0, 3.5f, 0);
         theHole.transform.rotateRad(1,0,0,3.14f/2);
         //Hole needs to be the 1st object
         staticObjects.add(0, new StaticObject(theHole, 0, 3.5f, 0, 1.2f, 0.5f, 1.2f));
-
-
 
         //add the floor
         staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 0, 0, -5, floorWidth, floorHeight, floorDepth));
@@ -132,11 +134,11 @@ public class CrazyGolf implements Screen
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
 
-
         //add golf ball
-        dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,-3.5f,1),0,-3.5f,1, 1,1,1));
+        ball = new DynamicObject(new ModelInstance(sphere, 0,-3.5f,1),0,-3.5f,1, 1,1,1);
+        dynamicObjects.add(ball);
         //todo: It goes inside wall with 2.5 speed
-        dynamicObjects.get(0).setVelocity(new Vector3(0f,1.05f,0));
+        // dynamicObjects.get(0).setVelocity(new Vector3(0f,1.05f,0));
     }
 
     @Override
