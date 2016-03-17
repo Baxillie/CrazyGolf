@@ -1,19 +1,22 @@
 package nl.dke13.screens;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import nl.dke13.physics.DynamicObject;
+import nl.dke13.physics.Ball;
 import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
 
@@ -29,26 +32,31 @@ public class CrazyGolf implements Screen
     Camera camera; //camera which will be what the user sees in the application window
     CameraInputController cameraController; //makes the user be able to move the camera
     Viewport viewport;
+    InputController input;
 
     //variables for the course
-    ArrayList<DynamicObject> dynamicObjects;
+    ArrayList<Ball> dynamicObjects;
     ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
-    DynamicObject ball;
+    Ball ball;
 
+    //Stage for ui
+    Stage stage;
     /**
      * Called when the {@link Application} is first created.
      */
     public CrazyGolf()
     {
+        //instantiate variables
         modelBatch = new ModelBatch(); //responsible for rendering instances
-        dynamicObjects = new ArrayList<DynamicObject>();
+        dynamicObjects = new ArrayList<Ball>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
+        stage = new Stage();
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
-        camera.position.set(0f, 10f, 20f); // set the camera 10 unit to the right, up and back;
+        camera.position.set(0f, 0f, 35f); // set the camera 10 unit to the right, up and back;
         camera.lookAt(0,0,0); //make the camera look to point 0,0,0 in the world
         camera.near = 1f; //makes it so the camera sees everything at least 1 unit away from it
         camera.far = 300f;//makes it so the camera sees everything up until 300 units away from it
@@ -56,8 +64,9 @@ public class CrazyGolf implements Screen
         viewport = new FitViewport(800, 480, camera);
 
         //make the user able to move the camera
+
         cameraController = new CameraInputController(camera); //controller for the camera
-        Gdx.input.setInputProcessor(cameraController); //gives the controller acces to user input.
+
 
         //make a simple golf course
         createGolfCourseInstances();
@@ -66,11 +75,68 @@ public class CrazyGolf implements Screen
         physics = new Physics(modelBatch, dynamicObjects, staticObjects);
 
         //create a button :)
+        createButton();
 
+        //input
+        InputMultiplexer switcher = new InputMultiplexer();
+        //set the controls for the camera
+//        cameraController.rotateLeftKey = 21; // left arrow key :)
+//        cameraController.rotateRightKey = 22;   //right
+//        cameraController.backwardKey = 20;      //down - zoom
+//        cameraController.forwardKey = 19;       //up  - zoom
+//
+//        cameraController.forwardButton = 51; //w
+//cameraController.rotateAngle = 5.5f;
+        //cameraController.activateKey = 31; //c for camera :)
+
+        switcher.addProcessor(stage);
+        switcher.addProcessor(cameraController);
+        Gdx.input.setInputProcessor(switcher);
+
+        //input = new InputController(cameraController);
+ //       switcher.addProcessor(cameraController);
+   //     Gdx.input.setInputProcessor(switcher);
 
     }
 
+    //
+    private void createButton()
+    {
+        Skin skin = new Skin();
+        Pixmap pixmap = new Pixmap(100,100,Pixmap.Format.RGBA8888);
+        pixmap.setColor(0,1,0,0.75f);
+        Texture pixmaptex = new Texture( pixmap );
+        pixmap.fill();
 
+        skin.add("white", new Texture(pixmap));
+
+        BitmapFont bfont = new BitmapFont();
+        skin.add("default", bfont);
+
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        //textButtonStyle.up = skin.newDrawable("white", "core/assets/tiger_woods.png");
+        //textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+        //textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
+        //textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+
+        textButtonStyle.font = skin.getFont("default");
+
+        skin.add("default",  textButtonStyle);
+
+        final TextButton textButton = new TextButton("Push Ball", textButtonStyle);
+        textButton.setPosition(100, 200);
+        stage.addActor(textButton);
+
+        textButton.addListener(new ChangeListener(){
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("ball got pushed");
+                ball.setVelocity(new Vector3(0f,1.1f,0));
+            }
+        });
+
+    }
 
     /**
      * makes a basis golf course out of rectangles.
@@ -78,8 +144,8 @@ public class CrazyGolf implements Screen
     private void createGolfCourseInstances()
     {
         //floor
-        float floorWidth = 10f;
-        float floorHeight = 10f;
+        float floorWidth = 30f;
+        float floorHeight = 30f;
         float floorDepth =  1f;
         //2 sideWalls against the Y of the floor
         float sideWallWidth =  1f;
@@ -99,13 +165,13 @@ public class CrazyGolf implements Screen
         Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
         Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
-        ModelInstance theHole = new ModelInstance(hole, 0, 3.5f, 0);
+        ModelInstance theHole = new ModelInstance(hole, 0, 14f, 0);
         theHole.transform.rotateRad(1,0,0,3.14f/2);
         //Hole needs to be the 1st object
-        staticObjects.add(0, new StaticObject(theHole, 0, 3.5f, 0, 1.2f, 0.5f, 1.2f));
+        staticObjects.add(0, new StaticObject(theHole, 0, 14f, 0, 1.2f, 0.5f, 1.2f));
 
         //add the floor
-        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 0, 0, -5, floorWidth, floorHeight, floorDepth));
+        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
         //add sideWalls to the left and the right of the floor
 
         StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
@@ -134,8 +200,13 @@ public class CrazyGolf implements Screen
         staticObjects.add(topWallDown);
         staticObjects.add(topWallUp);
 
+        Model obstacle = mb.createBox(14f, 2f, 1, WallMaterial, VertexAttributes.Usage.Position);
+        ModelInstance theObstacle = new ModelInstance(obstacle, 0, 0f, 1);
+        staticObjects.add(new StaticObject(theObstacle, 0,0,1,14,2,1));
+
+
         //add golf ball
-        ball = new DynamicObject(new ModelInstance(sphere, 0,-3.5f,1),0,-3.5f,1, 1,1,1);
+        ball = new Ball(new ModelInstance(sphere, 0,-14f,1),0,-14f,1, 1,1,1);
         dynamicObjects.add(ball);
         //todo: It goes inside wall with 2.5 speed
         // dynamicObjects.get(0).setVelocity(new Vector3(0f,1.05f,0));
@@ -171,6 +242,8 @@ public class CrazyGolf implements Screen
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
         physics.render();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
+        stage.draw();
         modelBatch.end();
 
         //updates the location of the camera based on user input.

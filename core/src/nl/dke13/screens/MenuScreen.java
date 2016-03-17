@@ -63,9 +63,7 @@ public class MenuScreen implements Screen{
 		final TextButton textButton = new TextButton("PLAY", textButtonStyle);
 		textButton.setPosition(200, 200);
 		stage.addActor(textButton);
-		stage.addActor(textButton);
-		stage.addActor(textButton);
-		
+
 		textButton.addListener(new ChangeListener(){
 
 			@Override

@@ -35,7 +35,7 @@ public class ObjectBox
         {
             if ((yMin > box.getyMin() && yMin < box.getyMax()) || (yMax > box.getyMin() && yMax < box.getyMax()))
             {
-                if ((zMin > box.getzMin() && zMin < box.getzMax()) || (zMax > box.getzMin() && zMax < box.getzMax()))
+               // if ((zMin > box.getzMin() && zMin < box.getzMax()) || (zMax > box.getzMin() && zMax < box.getzMax()))
                 {
                     if((oldxMin > box.getxMin() && oldxMin < box.getxMax()) || (oldxMax > box.getxMin() && oldxMax < box.getxMax()))
                     {

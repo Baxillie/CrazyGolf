@@ -3,21 +3,17 @@ package nl.dke13.physics;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Physics
 {
-    private ArrayList<DynamicObject> dynamicObjects;
+    private ArrayList<Ball> dynamicObjects;
     private ArrayList<StaticObject> staticObjects;
+    private Vector3 minVelocity = new Vector3(1f,1f,0f);
     private ModelBatch renderer;
-    private Vector3 minVelocity = new Vector3(0.7f,0.7f,0f);
     private int i;
 
-    public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects)
+    public Physics(ModelBatch renderer, ArrayList<Ball> dynamicObjects, ArrayList<StaticObject> staticObjects)
     {
         this.dynamicObjects = dynamicObjects;
         this.staticObjects = staticObjects;
@@ -27,7 +23,7 @@ public class Physics
 
     public void render()
     {
-        for(DynamicObject dynamicObject : dynamicObjects)
+        for(Ball dynamicObject : dynamicObjects)
         {
             dynamicObject.update();
             hasCollided(dynamicObject);
@@ -42,12 +38,13 @@ public class Physics
     /*
     * not final because only for side wall collision
     */
-    public void hasCollided(DynamicObject dynamicObject)
+    public void hasCollided(Ball dynamicObject)
     {
 
         if(isColliding(dynamicObject))
         {
             System.out.println("we're colliding i=" + i);
+            System.out.println(dynamicObject.getVelocity().toString());
             //Hole is the 1st entry in staticObject array-list
             if(i == 1)
             {
@@ -77,7 +74,7 @@ public class Physics
         }
     }
 
-    public boolean isColliding(DynamicObject dynamicObject)
+    public boolean isColliding(Ball dynamicObject)
     {
         ObjectBox box;
         box = dynamicObject.getBox();

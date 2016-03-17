@@ -8,7 +8,7 @@ import nl.dke13.screens.MainMenu;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.foregroundFPS = 10;
+		config.foregroundFPS = 15;
 		new LwjglApplication(new MainMenu(), config);
 	}
 }
