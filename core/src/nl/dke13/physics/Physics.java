@@ -14,7 +14,7 @@ public class Physics
     private ArrayList<DynamicObject> dynamicObjects;
     private ArrayList<StaticObject> staticObjects;
     private ModelBatch renderer;
-    private Vector3 minVelocity = new Vector3(0.5f,0.5f,0f);
+    private Vector3 minVelocity = new Vector3(0.7f,0.7f,0f);
     private int i;
 
     public Physics(ModelBatch renderer, ArrayList<DynamicObject> dynamicObjects, ArrayList<StaticObject> staticObjects)

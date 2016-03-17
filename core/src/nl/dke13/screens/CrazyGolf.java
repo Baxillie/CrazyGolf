@@ -3,6 +3,7 @@ package nl.dke13.screens;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by baxie on 12-3-16.
  */
-public class CrazyGolf implements ApplicationListener
+public class CrazyGolf implements Screen
 {
     //variables for a camera in the Application
     Camera camera; //camera which will be what the user sees in the application window
@@ -39,8 +40,7 @@ public class CrazyGolf implements ApplicationListener
     /**
      * Called when the {@link Application} is first created.
      */
-    @Override
-    public void create()
+    public CrazyGolf()
     {
         modelBatch = new ModelBatch(); //responsible for rendering instances
         dynamicObjects = new ArrayList<DynamicObject>();
@@ -136,12 +136,16 @@ public class CrazyGolf implements ApplicationListener
         //add golf ball
         dynamicObjects.add(new DynamicObject(new ModelInstance(sphere, 0,-3.5f,1),0,-3.5f,1, 1,1,1));
         //todo: It goes inside wall with 2.5 speed
-        dynamicObjects.get(0).setVelocity(new Vector3(0f,2.4f,0));
+        dynamicObjects.get(0).setVelocity(new Vector3(0f,1.05f,0));
+    }
+
+    @Override
+    public void show() {
+
     }
 
     /**
-     * Called when the {@link Application} is resized. This can happen at any point during a non-paused state but will never happen
-     * before a call to {@link #create()}.
+     * Called when the {@link Application} is resized.
      *
      * @param width  the new width in pixels
      * @param height the new height in pixels
@@ -156,7 +160,7 @@ public class CrazyGolf implements ApplicationListener
      * Called when the {@link Application} should render itself.
      */
     @Override
-    public void render()
+    public void render(float delta)
     {
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -187,6 +191,11 @@ public class CrazyGolf implements ApplicationListener
     @Override
     public void resume()
     {
+
+    }
+
+    @Override
+    public void hide() {
 
     }
 
