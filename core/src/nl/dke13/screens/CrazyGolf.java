@@ -91,8 +91,11 @@ public class CrazyGolf implements Screen
 
         switcher.addProcessor(stage);
         switcher.addProcessor(cameraController);
-        Gdx.input.setInputProcessor(switcher);
 
+
+        InputController inputController = new InputController(ball);
+        switcher.addProcessor(inputController);
+        Gdx.input.setInputProcessor(switcher);
         //input = new InputController(cameraController);
  //       switcher.addProcessor(cameraController);
    //     Gdx.input.setInputProcessor(switcher);

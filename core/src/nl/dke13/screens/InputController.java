@@ -4,17 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import nl.dke13.physics.Ball;
 
 /**
  * Created by Ajki on 17/03/2016.
  */
 public class InputController implements InputProcessor {
 
-    CameraInputController camera;
+    Ball ball;
 
-    public InputController(CameraInputController camera)
+    public InputController(Ball ball)
     {
-        this.camera = camera;
+        this.ball = ball;
 
         //create multipleyer
 //        InputMultiplexer multiplexer = new InputMultiplexer();
@@ -31,7 +32,7 @@ public class InputController implements InputProcessor {
             case 21:
             {
                 System.out.println("pressed left arrow key");
-
+                ball.moveArrow(1,1,0 );
                 break;
             }
             default:

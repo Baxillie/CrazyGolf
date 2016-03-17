@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public class Physics
 {
-    private ArrayList<Ball> dynamicObjects;
+    private ArrayList<Ball> Balls;
     private ArrayList<StaticObject> staticObjects;
     private Vector3 minVelocity = new Vector3(1f,1f,0f);
     private ModelBatch renderer;
     private int i;
 
-    public Physics(ModelBatch renderer, ArrayList<Ball> dynamicObjects, ArrayList<StaticObject> staticObjects)
+    public Physics(ModelBatch renderer, ArrayList<Ball> Balls, ArrayList<StaticObject> staticObjects)
     {
-        this.dynamicObjects = dynamicObjects;
+        this.Balls = Balls;
         this.staticObjects = staticObjects;
         this.renderer = renderer;
         i = 0;
@@ -23,11 +23,16 @@ public class Physics
 
     public void render()
     {
-        for(Ball dynamicObject : dynamicObjects)
+        for(Ball ball : Balls)
         {
-            dynamicObject.update();
-            hasCollided(dynamicObject);
-            renderer.render(dynamicObject.getModel());
+            ball.update();
+            hasCollided(ball);
+            if(ball.displayArrow())
+            {
+                renderer.render(ball.getArrow());
+            }
+            renderer.render(ball.getModel());
+
         }
         for(StaticObject staticObject : staticObjects)
         {
@@ -38,31 +43,31 @@ public class Physics
     /*
     * not final because only for side wall collision
     */
-    public void hasCollided(Ball dynamicObject)
+    public void hasCollided(Ball ball)
     {
 
-        if(isColliding(dynamicObject))
+        if(isColliding(ball))
         {
             System.out.println("we're colliding i=" + i);
-            System.out.println(dynamicObject.getVelocity().toString());
+            System.out.println(ball.getVelocity().toString());
             //Hole is the 1st entry in staticObject array-list
             if(i == 1)
             {
-                if(Math.abs(dynamicObject.getVelocity().x) <= minVelocity.x && Math.abs(dynamicObject.getVelocity().y) <= minVelocity.y)
+                if(Math.abs(ball.getVelocity().x) <= minVelocity.x && Math.abs(ball.getVelocity().y) <= minVelocity.y)
                 {
-                    dynamicObject.setVelocity(new Vector3(0f, 0f, -0.1f));
+                    ball.setVelocity(new Vector3(0f, 0f, -0.1f));
                     return;
                 }
                 return;
             }
 
-            Vector3 velocityChange = dynamicObject.getVelocity();
+            Vector3 velocityChange = ball.getVelocity();
 
-            if(dynamicObject.getBox().isBumpX())
+            if(ball.getBox().isBumpX())
             {
                 velocityChange.x = 0 - velocityChange.x;
             }
-            if(dynamicObject.getBox().isBumpY())
+            if(ball.getBox().isBumpY())
             {
                 velocityChange.y = 0 - velocityChange.y;
             }
@@ -70,14 +75,14 @@ public class Physics
             //todo: fix Z next period
             //todo: corners are a bit fucked :3
             //velocityChange.z = 0 - velocityChange.z;
-            dynamicObject.updateVelocity(velocityChange);
+            ball.updateVelocity(velocityChange);
         }
     }
 
-    public boolean isColliding(Ball dynamicObject)
+    public boolean isColliding(Ball ball)
     {
         ObjectBox box;
-        box = dynamicObject.getBox();
+        box = ball.getBox();
         i = 0;
         for(StaticObject staticObject: staticObjects)
         {
