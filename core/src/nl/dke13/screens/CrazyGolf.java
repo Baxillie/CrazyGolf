@@ -45,8 +45,7 @@ public class CrazyGolf implements Screen
 
     //Stage for ui
     Stage stage;
-    SpriteBatch batch;
-    Sprite slider;
+    UserInterface ui;
     /**
      * Called when the {@link Application} is first created.
      */
@@ -57,7 +56,7 @@ public class CrazyGolf implements Screen
         dynamicObjects = new ArrayList<Ball>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
         stage = new Stage();
-        batch = new SpriteBatch();
+        ui = new UserInterface();
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
@@ -98,7 +97,7 @@ public class CrazyGolf implements Screen
 
         switcher.addProcessor(stage);
 
-        input = new InputController(ball);
+        input = new InputController(ball, ui);
         switcher.addProcessor(input);
         switcher.addProcessor(cameraController);
 
@@ -258,20 +257,13 @@ public class CrazyGolf implements Screen
         modelBatch.end();
 
         //2d ui
-        renderUI();
+        ui.render();
 
         //updates the location of the camera based on user input.
         cameraController.update();
 
         //check for user input
         input.update();
-    }
-
-    private void renderUI()
-    {
-        batch.begin();
-        batch.draw(slider, 10, 10);
-        batch.end();
     }
 
     public void createSlider()
@@ -284,6 +276,7 @@ public class CrazyGolf implements Screen
 //        Image image = new Image(slider);
 //        window.add(image);
 //        stage.addActor(window);
+
     }
 
     /**

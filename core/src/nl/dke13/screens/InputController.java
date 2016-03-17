@@ -10,15 +10,18 @@ import nl.dke13.physics.Ball;
  */
 public class InputController implements InputProcessor {
 
+    UserInterface ui;
     Ball ball;
-    boolean clickDown, clickUp;
+    boolean firstClickDone, secondClickDown, secondClickUp;
     int xDown, yDown;
     int xUp, yUp;
+    int sliderStrength;
 
-    public InputController(Ball ball)
+
+    public InputController(Ball ball, UserInterface ui)
     {
         this.ball = ball;
-        clickDown = false;
+        this.ui = ui;;
         //create multipleyer
 //        InputMultiplexer multiplexer = new InputMultiplexer();
 //        multiplexer.addProcessor(camera);
@@ -44,28 +47,33 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.printf("screenX: %d screenY:%d pointer:%d button:%d clickdown: %b\n", screenX, screenY, pointer, button, clickDown);
-
+        System.out.printf("screenX: %d screenY:%d pointer:%d button:%d clickdown: %b\n", screenX, screenY, pointer, button, firstClickDone);
+        if(firstClickDone && !secondClickDown)
+        {
+            secondClickDown = true;
+            ui.startArrowMovement();
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        System.out.printf("screenX: %d screenY:%d pointer:%d button:%d clickup: %b\n", screenX, screenY, pointer, button, clickUp);
-        if(!clickDown && ball.getVelocity().isZero() && button == 0)
+        System.out.printf("screenX: %d screenY:%d pointer:%d button:%d clickup: %b\n", screenX, screenY, pointer, button, secondClickUp);
+        if(!firstClickDone && ball.getVelocity().isZero() && button == 0)
         {
             System.out.println("user clicked down");
-            clickDown = true;
+            firstClickDone = true;
             xDown = screenX;
             yDown = screenY;
             return false;
         }
-        else if(clickDown && !clickUp && button == 0)
+        else if(secondClickDown && button == 0)
         {
             System.out.println("user clicked up");
-            clickUp = true;
+            secondClickUp = true;
             xUp = screenX;
             yUp = screenY;
+            sliderStrength = ui.getArrowStrength();
             return true;
         }
         return false;
@@ -73,20 +81,20 @@ public class InputController implements InputProcessor {
 
     private boolean hasClicked()
     {
-        return clickDown && clickUp;
+        return firstClickDone && secondClickDown && secondClickUp;
     }
 
     private void resetClick()
     {
-        clickDown = false;
-        clickUp = false;
+        firstClickDone = false;
+        secondClickUp = false;
+        secondClickDown = false;
     }
 
     public Vector2 distanceClicked() throws IllegalStateException{
-        if (clickDown && clickUp) {
+        if (hasClicked()) {
             System.out.printf("creating v2: xdown:%d xup:%d ydown:%d yup:%d \n", xDown, xUp, yDown, yUp);
             return new Vector2((xUp - xDown), (yDown - yUp));
-
         }
         throw new IllegalStateException("user hasnt dragged the mouse");
     }
@@ -99,9 +107,9 @@ public class InputController implements InputProcessor {
             System.out.println("user clicked twice: Vector2: " + v2.toString());
             v2 = v2.nor();
             System.out.println("after normaliziton: " + v2.toString());
-            ball.setVelocity(new Vector3(v2.x *1.5f, v2.y*1.5f, 0));
-            clickDown = false;
-            clickUp = false;
+            float scalar = (sliderStrength / 100.0f) * 5;
+            ball.setVelocity(new Vector3(v2.x * scalar, v2.y*scalar, 0));
+            resetClick();
         }
     }
 
