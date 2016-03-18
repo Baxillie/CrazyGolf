@@ -17,18 +17,18 @@ public class InputController implements InputProcessor {
     int xUp, yUp;
     int sliderStrength;
 
-
     public InputController(Ball ball, UserInterface ui)
     {
         this.ball = ball;
         this.ui = ui;;
-        //create multipleyer
+        //create multiplayer
 //        InputMultiplexer multiplexer = new InputMultiplexer();
 //        multiplexer.addProcessor(camera);
 //        camera.
 //        //multiplexer.addProcessor(new InputController());
 //        Gdx.input.setInputProcessor(multiplexer);
     }
+
     @Override
     public boolean keyDown(int keycode)
     {
