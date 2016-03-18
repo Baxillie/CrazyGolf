@@ -65,7 +65,7 @@ public class MenuScreen implements Screen {
 		skin.add("default", textButtonStyle);
 
 		final TextButton playgGameButton=new TextButton("PLAY",textButtonStyle);
-		playgGameButton.setPosition(200, 200);
+		playgGameButton.setPosition(150, 250);
 		stage.addActor(playgGameButton);
 
 		playgGameButton.addListener(new ChangeListener() {
@@ -76,8 +76,8 @@ public class MenuScreen implements Screen {
 			}
 		});
 
-		final TextButton editorButton=new TextButton("Editor",textButtonStyle);
-		editorButton.setPosition(300, 200);
+		final TextButton editorButton=new TextButton("EDITOR",textButtonStyle);
+		editorButton.setPosition(150, 150);
 		stage.addActor(editorButton);
 
 		editorButton.addListener(new ChangeListener() {
@@ -87,6 +87,22 @@ public class MenuScreen implements Screen {
 				g.setScreen(new ModelTest());
 			}
 		});
+
+		final TextButton controlButton = new TextButton("CONTROLS",textButtonStyle);
+		controlButton.setPosition(150, 50);
+		stage.addActor(controlButton);
+		final MenuScreen reference = this;
+		controlButton.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				//System.out.println("Clicked! Is checked: " + button.isChecked());
+				controlButton.setText("CONTROLS");
+				g.setScreen(new Instructions(g, reference));
+			}
+		});
+
+		//New Screen
+
+
 
 		final Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/tiger_woods_song.mp3"));
 		mp3Sound.play();
@@ -102,9 +118,9 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
+		/*batch.dispose();
 		texture.dispose();
-		batch1.dispose();
+		batch1.dispose();*/
 	}
 
 	@Override
