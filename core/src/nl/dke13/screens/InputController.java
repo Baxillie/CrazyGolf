@@ -10,25 +10,25 @@ import nl.dke13.physics.Ball;
  */
 public class InputController implements InputProcessor {
 
-    UserInterface ui;
-    Ball ball;
-    boolean firstClickDone, secondClickDown, secondClickUp;
-    int xDown, yDown;
-    int xUp, yUp;
-    int sliderStrength;
-
+    private UserInterface ui;
+    private Ball ball;
+    private boolean firstClickDone, secondClickDown, secondClickUp;
+    private int xDown, yDown;
+    private int xUp, yUp;
+    private int sliderStrength;
 
     public InputController(Ball ball, UserInterface ui)
     {
         this.ball = ball;
         this.ui = ui;;
-        //create multipleyer
+        //create multiplayer
 //        InputMultiplexer multiplexer = new InputMultiplexer();
 //        multiplexer.addProcessor(camera);
 //        camera.
 //        //multiplexer.addProcessor(new InputController());
 //        Gdx.input.setInputProcessor(multiplexer);
     }
+
     @Override
     public boolean keyDown(int keycode)
     {
