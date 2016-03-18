@@ -71,6 +71,7 @@ public class MenuScreen implements Screen {
 		playgGameButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
+				//if(backButton.isPressed() == true)
 				playgGameButton.setText("Starting new game");
 				g.setScreen(new CrazyGolf());
 			}
