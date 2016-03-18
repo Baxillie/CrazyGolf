@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
+import nl.dke13.desktop.ModelTest;
 
 public class MenuScreen implements Screen {
 	private SpriteBatch batch;
@@ -63,15 +64,27 @@ public class MenuScreen implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
-		final TextButton textButton=new TextButton("PLAY",textButtonStyle);
-		textButton.setPosition(200, 200);
-		stage.addActor(textButton);
+		final TextButton playgGameButton=new TextButton("PLAY",textButtonStyle);
+		playgGameButton.setPosition(200, 200);
+		stage.addActor(playgGameButton);
 
-		textButton.addListener(new ChangeListener() {
+		playgGameButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
-				textButton.setText("Starting new game");
+				playgGameButton.setText("Starting new game");
 				g.setScreen(new CrazyGolf());
+			}
+		});
+
+		final TextButton editorButton=new TextButton("Editor",textButtonStyle);
+		editorButton.setPosition(300, 200);
+		stage.addActor(editorButton);
+
+		editorButton.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				//System.out.println("Clicked! Is checked: " + button.isChecked());
+				editorButton.setText("Starting new game");
+				g.setScreen(new ModelTest());
 			}
 		});
 
