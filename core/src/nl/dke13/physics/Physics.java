@@ -37,7 +37,6 @@ public class Physics
 
     public void hasCollided(Ball ball)
     {
-
         if(isColliding(ball))
         {
             //Hole is the 1st entry in staticObject array-list
