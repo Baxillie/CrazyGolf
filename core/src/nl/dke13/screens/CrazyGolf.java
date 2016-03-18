@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class CrazyGolf implements Screen
 {
     //variables for a camera in the Application
-    Camera camera; //camera which will be what the user sees in the application window
+    PerspectiveCamera camera; //camera which will be what the user sees in the application window
     CameraInputController cameraController; //makes the user be able to move the camera
     Viewport viewport;
     InputController input;
@@ -86,10 +86,10 @@ public class CrazyGolf implements Screen
 
         if(!multiplayer)
         {
-            input = new InputController(balls.get(0), ui);
+            input = new InputController(balls.get(0), ui, camera);
         }
         else{
-            input = new InputController(balls.get(0), balls.get(1), ui);
+            input = new InputController(balls.get(0), balls.get(1), ui, camera);
         }
         switcher.addProcessor(input);
         switcher.addProcessor(cameraController);
@@ -199,11 +199,16 @@ public class CrazyGolf implements Screen
 
 
         //add golf ball
-        Ball ball = new Ball(new ModelInstance(sphere, -5,-14f,1),-5,-14f,1, 1,1,1);
-        balls.add(ball);
+        Ball ball;
+
         if(multiplayer)
         {
-            balls.add(new Ball(new ModelInstance(sphere, 5,-14f,1),5,-14f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere, -5, -14f,1),-5,-14f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere,  5, -14f,1), 5,-14f,1, 1,1,1));
+        }
+        else
+        {
+            balls.add(new Ball(new ModelInstance(sphere, 0, -14f,1), 0,-14f,1, 1,1,1));
         }
         models.add(floor);
         models.add(sideWall);
@@ -231,6 +236,7 @@ public class CrazyGolf implements Screen
 
         //updates the location of the camera based on user input.
         cameraController.update();
+        camera.update();
 
         //check for user input
         input.update();

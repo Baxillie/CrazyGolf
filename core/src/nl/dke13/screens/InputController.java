@@ -1,6 +1,7 @@
 package nl.dke13.screens;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke13.physics.Ball;
@@ -20,17 +21,19 @@ public class InputController implements InputProcessor {
     private int player1Turns;
     private int player2Turns;
 
+    private PerspectiveCamera camera;
 
-    public InputController(Ball ball, UserInterface ui)
+    public InputController(Ball ball, UserInterface ui, PerspectiveCamera camera)
     {
         this.ball = ball;
-        this.ui = ui;;
+        this.ui = ui;
         multiplayer = false;
         player1Turn = false;
         player2Turns = 0;
+        this.camera = camera;
     }
 
-    public InputController(Ball ball1, Ball ball2, UserInterface ui)
+    public InputController(Ball ball1, Ball ball2, UserInterface ui, PerspectiveCamera camera)
     {
         multiplayer = true;
         ball = ball1;
@@ -39,6 +42,7 @@ public class InputController implements InputProcessor {
         player1Turn = true;
         player2Turns = 0;
         player1Turns = 0;
+        this.camera = camera;
     }
 
     @Override
@@ -179,6 +183,23 @@ public class InputController implements InputProcessor {
     @Override
     public boolean keyDown(int keycode)
     {
+        switch (keycode)
+        {
+            case 19:
+                camera.position.add(0,-1,0);
+                break;
+            case 20:
+                camera.position.add(0,1,0);
+                break;
+            case 21:
+                camera.position.add(1,0,0);
+                break;
+            case 22:
+                camera.position.add(-1,0,0);
+                break;
+            default:
+                break;
+        }
         return false;
     }
 
