@@ -212,4 +212,14 @@ public class InputController implements InputProcessor {
     public boolean keyTyped(char character) {
         return false;
     }
+
+    public void setBall1(Ball ball1)
+    {
+        ball = ball1;
+    }
+
+    public void setBall2(Ball ball2)
+    {
+        multiplayerBall = ball2;
+    }
 }

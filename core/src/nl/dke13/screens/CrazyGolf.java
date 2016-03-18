@@ -42,6 +42,10 @@ public class CrazyGolf implements Screen
     Stage stage;
     UserInterface ui;
 
+    boolean multiplayer;
+    boolean hole1Done = false;
+    boolean hole2Done = false;
+    boolean hole3Done;
 
     /**
      * Called when the {@link Application} is first created.
@@ -49,6 +53,7 @@ public class CrazyGolf implements Screen
     public CrazyGolf(boolean multiplayer, MainMenu mainMenu)
     {
         //instantiate variables
+        this.multiplayer = multiplayer;
         modelBatch = new ModelBatch(); //responsible for rendering instances
         balls = new ArrayList<Ball>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
@@ -72,7 +77,6 @@ public class CrazyGolf implements Screen
 
         //make a simple golf course
         createHole1(multiplayer);
-
         //initialise physics engine
         physics = new Physics(modelBatch, balls, staticObjects);
 
@@ -136,6 +140,9 @@ public class CrazyGolf implements Screen
      */
     private void createHole1(boolean multiplayer)
     {
+        balls.clear();
+        staticObjects.clear();
+
         //floor
         float floorWidth = 30f;
         float floorHeight = 30f;
@@ -181,13 +188,13 @@ public class CrazyGolf implements Screen
         staticObjects.add(sideWallRight);
         //add top Walls
         StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
-                0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
-                0, 0 - (topWallWidth / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                0, 0 - (floorHeight / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0, 0 - (floorHeight / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
                 topWallWidth, topWallHeight, topWallDepth);
 
         StaticObject topWallDown = new StaticObject(new ModelInstance(topWall,
-                0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
-                0, 0 + (topWallWidth / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                0, 0 + (floorHeight / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0, 0 + (floorHeight / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
                 topWallWidth, topWallHeight, topWallDepth);
 
         staticObjects.add(topWallDown);
@@ -201,10 +208,11 @@ public class CrazyGolf implements Screen
         //add golf ball
         Ball ball;
 
+        Model sphere1 = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
         if(multiplayer)
         {
             balls.add(new Ball(new ModelInstance(sphere, -5, -14f,1),-5,-14f,1, 1,1,1));
-            balls.add(new Ball(new ModelInstance(sphere,  5, -14f,1), 5,-14f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere1,  5, -14f,1), 5,-14f,1, 1,1,1));
         }
         else
         {
@@ -219,6 +227,179 @@ public class CrazyGolf implements Screen
 
     private void createHole2(boolean multiplayer)
     {
+        balls.clear();
+        staticObjects.clear();
+        //floor
+        float floorWidth = 50f;
+        float floorHeight = 25f;
+        float floorDepth =  1f;
+        //2 sideWalls against the Y of the floor
+        float sideWallWidth =  1f;
+        float sideWallHeight = floorHeight;
+        float sideWallDepth =  2 * floorDepth;
+        //2 top Walls against the X of the floor
+        float topWallWidth = floorWidth;
+        float topWallHeight =  1f;
+        float topWallDepth =  2 * floorDepth;
+
+        ModelBuilder mb = new ModelBuilder();
+        Material floorMaterial = new Material(ColorAttribute.createDiffuse(Color.FOREST));
+        Material WallMaterial = new Material(ColorAttribute.createDiffuse(Color.BROWN));
+        Model floor = mb.createBox(floorWidth, floorHeight, floorDepth, floorMaterial , VertexAttributes.Usage.Position);
+        Model sideWall = mb.createBox(sideWallWidth, sideWallHeight, sideWallDepth, WallMaterial, VertexAttributes.Usage.Position);
+        Model topWall = mb.createBox(topWallWidth, topWallHeight, topWallDepth, WallMaterial, VertexAttributes.Usage.Position);
+        Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
+
+        Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
+        ModelInstance theHole = new ModelInstance(hole, -22, 10f, 0);
+        theHole.transform.rotateRad(1,0,0,3.14f/2);
+        //Hole needs to be the 1st object
+        staticObjects.add(0, new StaticObject(theHole, -22, 10f, 0, 1.2f, 0.5f, 1.2f));
+
+        //add the floor
+        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
+        //add sideWalls to the left and the right of the floor
+
+        StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
+                sideWallWidth, sideWallHeight, sideWallDepth);
+
+        StaticObject sideWallRight = new StaticObject(new ModelInstance(sideWall,
+                0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+                0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
+                sideWallWidth, sideWallHeight, sideWallDepth);
+
+        staticObjects.add(sideWallLeft);
+        staticObjects.add(sideWallRight);
+        //add top Walls
+        StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
+                0, 0 - (floorHeight / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0, 0 - (floorHeight / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                topWallWidth, topWallHeight, topWallDepth);
+
+        StaticObject topWallDown = new StaticObject(new ModelInstance(topWall,
+                0, 0 + (floorHeight / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
+                0, 0 + (floorHeight / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
+                topWallWidth, topWallHeight, topWallDepth);
+
+        staticObjects.add(topWallDown);
+        staticObjects.add(topWallUp);
+
+        Model obstacle = mb.createBox(30f, 3f, 1, WallMaterial, VertexAttributes.Usage.Position);
+        ModelInstance theObstacle = new ModelInstance(obstacle, -10, 0f, 1);
+        staticObjects.add(new StaticObject(theObstacle, -10,0,1,30,3,1));
+
+
+        //add golf ball
+        Ball ball;
+        Model sphere1 = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
+
+        if(multiplayer)
+        {
+            balls.add(new Ball(new ModelInstance(sphere, -22, -10f,1),-22,-10f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere1, -22, -7f,1), -22,-7f,1, 1,1,1));
+        }
+        else
+        {
+            balls.add(new Ball(new ModelInstance(sphere, -22, -10f,1), -22,-10f,1, 1,1,1));
+        }
+        models.add(floor);
+        models.add(sideWall);
+        models.add(topWall);
+        models.add(sphere);
+        models.add(hole);
+    }
+
+    private void createHole3(boolean multiplayer)
+    {
+        balls.clear();
+        staticObjects.clear();
+        //floor
+        float floor1Width = 12f;
+        float floor1Height = 20f;
+        float floor1Depth =  1f;
+
+        float floor2Width = 10;
+        float floor2Height = 10;
+        float floor2Depth = 1;
+
+        ModelBuilder mb = new ModelBuilder();
+        Material floorMaterial = new Material(ColorAttribute.createDiffuse(Color.FOREST));
+        Material WallMaterial = new Material(ColorAttribute.createDiffuse(Color.BROWN));
+
+        Model floor1 = mb.createBox(floor1Width, floor1Height, floor1Depth, floorMaterial , VertexAttributes.Usage.Position);
+        Model floor2 = mb.createBox(floor2Width, floor2Height, floor2Depth, floorMaterial , VertexAttributes.Usage.Position);
+
+        StaticObject floors1 = new StaticObject(new ModelInstance(floor1, -10, -5, 0), -100, -100, -100, floor1Width, floor1Height, floor1Depth);
+        StaticObject floors2 = new StaticObject(new ModelInstance(floor1, 10, 5, 0), -100, -100, -100, floor1Width, floor1Height, floor1Depth);
+        StaticObject floors3 = new StaticObject(new ModelInstance(floor2, 0, 0, 0), -100, -100, -100, floor2Width, floor2Height, floor2Depth);
+        staticObjects.add(floors1);
+        staticObjects.add(floors2);
+        staticObjects.add(floors3);
+
+
+        //2 sideWalls against the Y of the floor
+        float sideWallWidth =  1f;
+        float sideWallHeight = 10;
+        float sideWallDepth =  2f;
+
+        float topWallWidth = 12;
+        float topWallHeight =  1f;
+        float topWallDepth =  1;
+
+        Model sideWall = mb.createBox(sideWallWidth, sideWallHeight, sideWallDepth, WallMaterial, VertexAttributes.Usage.Position);
+        Model topWall = mb.createBox(topWallWidth, topWallHeight, topWallDepth, WallMaterial, VertexAttributes.Usage.Position);
+
+        StaticObject sideWall1 = new StaticObject(new ModelInstance(sideWall, -16f,  0, 0),  -16f,  0, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+        StaticObject sideWall2 = new StaticObject(new ModelInstance(sideWall, -16f,-10, 0),  -16f,-10, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+        StaticObject sideWall3 = new StaticObject(new ModelInstance(sideWall,  16f,  0, 0),   16f,  0, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+        StaticObject sideWall4 = new StaticObject(new ModelInstance(sideWall,  16f, 10, 0),   16f, 10, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+        StaticObject sideWall5 = new StaticObject(new ModelInstance(sideWall,-3.5f,-10, 0), -3.5f,-10, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+        StaticObject sideWall6 = new StaticObject(new ModelInstance(sideWall, 3.5f, 10, 0),  3.5f, 10, 1, sideWallWidth, sideWallHeight, sideWallDepth);
+
+        staticObjects.add(sideWall1);
+        staticObjects.add(sideWall2);
+        staticObjects.add(sideWall3);
+        staticObjects.add(sideWall4);
+        staticObjects.add(sideWall5);
+        staticObjects.add(sideWall6);
+
+        //top walls
+        StaticObject topWall1 = new StaticObject(new ModelInstance(topWall,  -2,  5.5f, 0),  -2,  5.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+        StaticObject topWall2 = new StaticObject(new ModelInstance(topWall,   2, -5.5f, 0),   2, -5.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+        StaticObject topWall3 = new StaticObject(new ModelInstance(topWall, -11,  5.5f, 0), -11,  5.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+        StaticObject topWall4 = new StaticObject(new ModelInstance(topWall, -10,-15.5f, 0), -10,-15.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+        StaticObject topWall5 = new StaticObject(new ModelInstance(topWall,  11, -5.5f, 0),  11, -5.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+        StaticObject topWall6 = new StaticObject(new ModelInstance(topWall,  10, 15.5f, 0),  10, 15.5f, 0, topWallWidth, topWallHeight, topWallDepth);
+
+        staticObjects.add(topWall1);
+        staticObjects.add(topWall2);
+        staticObjects.add(topWall3);
+        staticObjects.add(topWall4);
+        staticObjects.add(topWall5);
+        staticObjects.add(topWall6);
+
+        //Hole needs to be the 1st object
+        Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
+        ModelInstance theHole = new ModelInstance(hole, 10, 12, 0);
+        theHole.transform.rotateRad(1,0,0,3.14f/2);
+        staticObjects.add(0, new StaticObject(theHole, 10, 12, 0, 1.2f, 0.5f, 1.2f));
+
+        //add golf ball
+        Ball ball;
+        Model sphere = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
+        Model sphere1 = mb.createSphere(1,1,1, 10, 10, new Material(ColorAttribute.createDiffuse(Color.PINK)), VertexAttributes.Usage.Position);
+
+        if(multiplayer)
+        {
+            balls.add(new Ball(new ModelInstance(sphere, -9, -13f,1), -9,-13f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere1, -11, -13f,1), -11,-13f,1, 1,1,1));
+        }
+        else
+        {
+            balls.add(new Ball(new ModelInstance(sphere, -10, -12,1), -10,-12f,1, 1,1,1));
+        }
 
     }
 
@@ -249,13 +430,43 @@ public class CrazyGolf implements Screen
 
         if (input.isGameOver()&& input.isMultiplayer())
         {
-            mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), input.getPlayer2Turns(), mainMenu));
-            this.dispose();
+            if(hole1Done && hole2Done)
+            {
+                mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), input.getPlayer2Turns(), mainMenu));
+                this.dispose();
+            }
+            else if(hole1Done)
+            {
+                hole2Done = true;
+                createHole3(multiplayer);
+                input.setBall1(balls.get(0));
+                input.setBall2(balls.get(1));
+            }
+            else{
+                hole1Done = true;
+                createHole2(multiplayer);
+                input.setBall1(balls.get(0));
+                input.setBall2(balls.get(1));
+            }
         }
         else if (input.isGameOver())
         {
-            mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), mainMenu));
-            this.dispose();
+            if(hole1Done && hole2Done)
+            {
+                mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), mainMenu));
+                this.dispose();
+            }
+            else if(hole1Done)
+            {
+                hole2Done = true;
+                createHole3(multiplayer);
+                input.setBall1(balls.get(0));
+            }
+            else{
+                hole1Done = true;
+                createHole2(multiplayer);
+                input.setBall1(balls.get(0));
+            }
         }
     }
 
