@@ -71,7 +71,7 @@ public class CrazyGolf implements Screen
         cameraController = new CameraInputController(camera); //controller for the camera
 
         //make a simple golf course
-        createGolfCourseInstances(multiplayer);
+        createHole1(multiplayer);
 
         //initialise physics engine
         physics = new Physics(modelBatch, balls, staticObjects);
@@ -92,7 +92,7 @@ public class CrazyGolf implements Screen
             input = new InputController(balls.get(0), balls.get(1), ui, camera);
         }
         switcher.addProcessor(input);
-        switcher.addProcessor(cameraController);
+       // switcher.addProcessor(cameraController);
 
         Gdx.input.setInputProcessor(switcher);
     }
@@ -134,7 +134,7 @@ public class CrazyGolf implements Screen
     /**
      * makes a basis golf course out of rectangles.
      */
-    private void createGolfCourseInstances(boolean multiplayer)
+    private void createHole1(boolean multiplayer)
     {
         //floor
         float floorWidth = 30f;
@@ -215,6 +215,11 @@ public class CrazyGolf implements Screen
         models.add(topWall);
         models.add(sphere);
         models.add(hole);
+    }
+
+    private void createHole2(boolean multiplayer)
+    {
+
     }
 
     @Override
