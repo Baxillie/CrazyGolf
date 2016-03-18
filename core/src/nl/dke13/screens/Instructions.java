@@ -27,17 +27,14 @@ public class Instructions implements Screen
     private Stage stage;
     private Skin skin;
     private MenuScreen menuScreen;
-    private Game mainMenu;
+    private MainMenu mainMenu;
 
-    public Instructions(Game mainMenu ,MenuScreen menuScreen){
+    public Instructions(MainMenu mainMenu ,MenuScreen menuScreen){
         this.menuScreen = menuScreen;
         this.mainMenu = mainMenu;
-
-
-
-
         create();
     }
+
     private void create(){
         batch = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("core/assets/data/CSS.png"));
@@ -72,11 +69,12 @@ public class Instructions implements Screen
         backButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 //System.out.println("Clicked! Is checked: " + button.isChecked());
-                backButton.setText("Starting new game");
-                mainMenu.setScreen(menuScreen);
+               // backButton.setText("Back to main menu");
+                mainMenu.setScreen(new MenuScreen(mainMenu));
             }
         });
     }
+
     @Override
     public void show() {
 

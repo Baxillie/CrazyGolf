@@ -31,5 +31,4 @@ public class StaticObject {
         return position;
     }
 
-
 }

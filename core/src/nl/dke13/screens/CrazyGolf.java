@@ -4,9 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -37,10 +34,13 @@ public class CrazyGolf implements Screen
     InputController input;
 
     //variables for the course
-    ArrayList<Ball> dynamicObjects;
+    ArrayList<Ball> balls;
     ArrayList<StaticObject>  staticObjects;
+    ArrayList<Model> models;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
+
+    MainMenu mainMenu;
 
     //Stage for ui
     Stage stage;
@@ -48,14 +48,16 @@ public class CrazyGolf implements Screen
     /**
      * Called when the {@link Application} is first created.
      */
-    public CrazyGolf(boolean multiplayer)
+    public CrazyGolf(boolean multiplayer, MainMenu mainMenu)
     {
         //instantiate variables
         modelBatch = new ModelBatch(); //responsible for rendering instances
-        dynamicObjects = new ArrayList<Ball>();
+        balls = new ArrayList<Ball>();
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
         stage = new Stage();
         ui = new UserInterface();
+        this.mainMenu = mainMenu;
+        models = new ArrayList<>();
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
@@ -74,11 +76,10 @@ public class CrazyGolf implements Screen
         createGolfCourseInstances(multiplayer);
 
         //initialise physics engine
-        physics = new Physics(modelBatch, dynamicObjects, staticObjects);
+        physics = new Physics(modelBatch, balls, staticObjects);
 
         //create a button :)
         //createButton();
-        createSlider();
 
         //input
         InputMultiplexer switcher = new InputMultiplexer();
@@ -87,10 +88,10 @@ public class CrazyGolf implements Screen
 
         if(!multiplayer)
         {
-            input = new InputController(dynamicObjects.get(0), ui);
+            input = new InputController(balls.get(0), ui);
         }
         else{
-            input = new InputController(dynamicObjects.get(0), dynamicObjects.get(1), ui);
+            input = new InputController(balls.get(0), balls.get(1), ui);
         }
         switcher.addProcessor(input);
         switcher.addProcessor(cameraController);
@@ -113,11 +114,6 @@ public class CrazyGolf implements Screen
         skin.add("default", bfont);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        //textButtonStyle.up = skin.newDrawable("white", "core/assets/tiger_woods.png");
-        //textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        //textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        //textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-
         textButtonStyle.font = skin.getFont("default");
 
         skin.add("default",  textButtonStyle);
@@ -131,7 +127,7 @@ public class CrazyGolf implements Screen
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("ball got pushed");
-                dynamicObjects.get(0).setVelocity(new Vector3(0f,1.1f,0));
+                balls.get(0).setVelocity(new Vector3(0f,1.1f,0));
             }
         });
 
@@ -206,11 +202,16 @@ public class CrazyGolf implements Screen
 
         //add golf ball
         Ball ball = new Ball(new ModelInstance(sphere, -5,-14f,1),-5,-14f,1, 1,1,1);
-        dynamicObjects.add(ball);
+        balls.add(ball);
         if(multiplayer)
         {
-            dynamicObjects.add(new Ball(new ModelInstance(sphere, 5,-14f,1),5,-14f,1, 1,1,1));
+            balls.add(new Ball(new ModelInstance(sphere, 5,-14f,1),5,-14f,1, 1,1,1));
         }
+        models.add(floor);
+        models.add(sideWall);
+        models.add(topWall);
+        models.add(sphere);
+        models.add(hole);
     }
 
     @Override
@@ -240,6 +241,8 @@ public class CrazyGolf implements Screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+
+
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
         physics.render();
@@ -255,19 +258,18 @@ public class CrazyGolf implements Screen
 
         //check for user input
         input.update();
-    }
 
-    public void createSlider()
-    {
-//        Texture slider = new Texture(Gdx.files.internal("core/assets/slider.png"));
-//        Skin skin = new Skin();
-//        TextureAtlas atlas = new TextureAtlas();
-//        atlas.
-//        Window window = new Window("default");
-//        Image image = new Image(slider);
-//        window.add(image);
-//        stage.addActor(window);
 
+        if (input.isGameOver()&& input.isMultiplayer())
+        {
+            mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), input.getPlayer2Turns(), mainMenu));
+            this.dispose();
+        }
+        else if (input.isGameOver())
+        {
+            mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), mainMenu));
+            this.dispose();
+        }
     }
 
     /**
@@ -299,12 +301,11 @@ public class CrazyGolf implements Screen
      */
     @Override
     public void dispose()
-    {/*
-        modelBatch.dispose(); // delete the modelbatch
-        //delele all models
-        for(Model model : models)
+    {
+        for(Model model: models)
         {
             model.dispose();
-        }*/
+        }
+        modelBatch.dispose();
     }
 }

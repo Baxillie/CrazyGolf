@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public class Physics
 {
-    private ArrayList<Ball> Balls;
+    private ArrayList<Ball> balls;
     private ArrayList<StaticObject> staticObjects;
     private Vector3 minVelocity = new Vector3(1f,1f,0f);
     private ModelBatch renderer;
     private int i;
 
-    public Physics(ModelBatch renderer, ArrayList<Ball> Balls, ArrayList<StaticObject> staticObjects)
+    public Physics(ModelBatch renderer, ArrayList<Ball> balls, ArrayList<StaticObject> staticObjects)
     {
-        this.Balls = Balls;
+        this.balls = balls;
         this.staticObjects = staticObjects;
         this.renderer = renderer;
         i = 0;
@@ -23,7 +23,7 @@ public class Physics
 
     public void render()
     {
-        for(Ball ball : Balls)
+        for(Ball ball : balls)
         {
             ball.update();
             hasCollided(ball);

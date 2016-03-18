@@ -1,11 +1,7 @@
 package nl.dke13.screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -20,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Timer;
 import nl.dke13.desktop.ModelTest;
 
 public class MenuScreen implements Screen {
@@ -30,10 +25,11 @@ public class MenuScreen implements Screen {
 	private Sprite sprite;
 	private Stage stage;
 	private Skin skin;
-	private Game g;
+	private MainMenu mainMenu;
 
-	public MenuScreen(Game g){
-		this.g = g;
+
+	public MenuScreen(MainMenu mainMenu){
+		this.mainMenu = mainMenu;
 		create();
 	}
 
@@ -64,70 +60,66 @@ public class MenuScreen implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
-		final TextButton playgGameButton=new TextButton("PLAY",textButtonStyle);
-		playgGameButton.setPosition(150, 250);
+		final TextButton playgGameButton=new TextButton("SINGLE PLAYER",textButtonStyle);
+		playgGameButton.setPosition(150, 350);
 		stage.addActor(playgGameButton);
 
 		playgGameButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//if(backButton.isPressed() == true)
-				playgGameButton.setText("Starting new game");
-				g.setScreen(new CrazyGolf(false));
+				//playgGameButton.setText("Starting new game");
+				mainMenu.setScreen(new CrazyGolf(false, mainMenu));
 			}
 		});
 
-		final TextButton playMultiPlayer=new TextButton("PLAY with 2",textButtonStyle);
-		playMultiPlayer.setPosition(200, 300);
+		final TextButton playMultiPlayer=new TextButton("MULTIPLAYER",textButtonStyle);
+		playMultiPlayer.setPosition(150, 300);
 		stage.addActor(playMultiPlayer);
 
 		playMultiPlayer.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
-				playMultiPlayer.setText("Starting new game");
-				g.setScreen(new CrazyGolf(true));
+				//playMultiPlayer.setText("Starting new game");
+				mainMenu.setScreen(new CrazyGolf(true, mainMenu));
 			}
 		});
 
 		final TextButton editorButton=new TextButton("EDITOR",textButtonStyle);
-		editorButton.setPosition(150, 150);
-		final TextButton editorButton=new TextButton("Editor",textButtonStyle);
-		editorButton.setPosition(300, 400);
+		editorButton.setPosition(150, 250);
 		stage.addActor(editorButton);
 
 		editorButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
-				editorButton.setText("Starting new game");
-				g.setScreen(new ModelTest());
+				//editorButton.setText("Starting new game");
+				mainMenu.setScreen(new ModelTest());
 			}
 		});
 
 		final TextButton controlButton = new TextButton("CONTROLS",textButtonStyle);
-		controlButton.setPosition(150, 50);
+		controlButton.setPosition(150, 200);
 		stage.addActor(controlButton);
 		final MenuScreen reference = this;
 		controlButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
-				controlButton.setText("CONTROLS");
-				g.setScreen(new Instructions(g, reference));
+				//controlButton.setText("CONTROLS");
+				mainMenu.setScreen(new Instructions(mainMenu, reference));
 			}
 		});
 
 		//New Screen
-
-
-
-		final Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/tiger_woods_song.mp3"));
-		mp3Sound.play();
-		final long id = mp3Sound.loop();
-		Timer.schedule(new Timer.Task(){
-			@Override
-			public void run(){
-				mp3Sound.stop(id);
-			}
-		}, 3.0f);
+		//todo: uncomment this
+//		final Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/tiger_woods_song.mp3"));
+//		mp3Sound.play();
+//		final long id = mp3Sound.loop();
+//		Timer.schedule(new Timer.Task(){
+//			@Override
+//			public void run(){
+//				mp3Sound.stop(id);
+//			}
+//		}, 3.0f);
 
 	}
 

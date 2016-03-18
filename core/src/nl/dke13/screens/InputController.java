@@ -20,6 +20,9 @@ public class InputController implements InputProcessor {
     private boolean multiplayer;
 
     private boolean player1Turn;
+    private int player1Turns;
+    private int player2Turns;
+
 
     public InputController(Ball ball, UserInterface ui)
     {
@@ -27,12 +30,7 @@ public class InputController implements InputProcessor {
         this.ui = ui;;
         multiplayer = false;
         player1Turn = false;
-        //create multiplayer
-//        InputMultiplexer multiplexer = new InputMultiplexer();
-//        multiplexer.addProcessor(camera);
-//        camera.
-//        //multiplexer.addProcessor(new InputController());
-//        Gdx.input.setInputProcessor(multiplexer);
+        player2Turns = 0;
     }
 
     public InputController(Ball ball1, Ball ball2, UserInterface ui)
@@ -42,6 +40,8 @@ public class InputController implements InputProcessor {
         multiplayerBall = ball2;
         this.ui = ui;
         player1Turn = true;
+        player2Turns = 0;
+        player1Turns = 0;
     }
 
     @Override
@@ -126,30 +126,58 @@ public class InputController implements InputProcessor {
             Vector3 vel = new Vector3(v2.x * scalar, v2.y * scalar, 0);
             if(!multiplayer) {
                 ball.setVelocity(vel);
+                player1Turns++;
             }
             else if(ball.getBallDone() || multiplayerBall.getBallDone())
             {
                 if(!ball.getBallDone())
                 {
                     ball.setVelocity(vel);
+                    player1Turns++;
                 }
                 else
                 {
                     multiplayerBall.setVelocity(vel);
+                    player1Turns++;
                 }
             }
             else if(player1Turn)
             {
                 ball.setVelocity(vel);
+                player1Turns++;
                 player1Turn = false;
             }
             else
             {
                 multiplayerBall.setVelocity(vel);
+                player2Turns++;
                 player1Turn = true;
             }
             resetClick();
         }
+    }
+
+    public boolean isGameOver()
+    {
+        if (multiplayer)
+            return ball.getBallDone() && multiplayerBall.getBallDone();
+        else
+            return ball.getBallDone();
+    }
+
+    public int getPlayer1Turn()
+    {
+        return player1Turns;
+    }
+
+    public int getPlayer2Turns()
+    {
+        return player2Turns;
+    }
+
+    public boolean isMultiplayer()
+    {
+        return multiplayer;
     }
 
     @Override
@@ -166,4 +194,5 @@ public class InputController implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
