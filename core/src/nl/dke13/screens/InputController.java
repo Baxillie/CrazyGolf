@@ -12,21 +12,36 @@ public class InputController implements InputProcessor {
 
     private UserInterface ui;
     private Ball ball;
+    private Ball multiplayerBall;
     private boolean firstClickDone, secondClickDown, secondClickUp;
     private int xDown, yDown;
     private int xUp, yUp;
     private int sliderStrength;
+    private boolean multiplayer;
+
+    private boolean player1Turn;
 
     public InputController(Ball ball, UserInterface ui)
     {
         this.ball = ball;
         this.ui = ui;;
+        multiplayer = false;
+        player1Turn = false;
         //create multiplayer
 //        InputMultiplexer multiplexer = new InputMultiplexer();
 //        multiplexer.addProcessor(camera);
 //        camera.
 //        //multiplexer.addProcessor(new InputController());
 //        Gdx.input.setInputProcessor(multiplexer);
+    }
+
+    public InputController(Ball ball1, Ball ball2, UserInterface ui)
+    {
+        multiplayer = true;
+        ball = ball1;
+        multiplayerBall = ball2;
+        this.ui = ui;
+        player1Turn = true;
     }
 
     @Override
@@ -108,7 +123,31 @@ public class InputController implements InputProcessor {
             v2 = v2.nor();
             System.out.println("after normaliziton: " + v2.toString());
             float scalar = (sliderStrength / 100.0f) * 5;
-            ball.setVelocity(new Vector3(v2.x * scalar, v2.y*scalar, 0));
+            Vector3 vel = new Vector3(v2.x * scalar, v2.y * scalar, 0);
+            if(!multiplayer) {
+                ball.setVelocity(vel);
+            }
+            if(ball.getBallDone() || multiplayerBall.getBallDone())
+            {
+                if(!ball.getBallDone())
+                {
+                    ball.setVelocity(vel);
+                }
+                else
+                {
+                    multiplayerBall.setVelocity(vel);
+                }
+            }
+            else if(player1Turn)
+            {
+                ball.setVelocity(vel);
+                player1Turn = false;
+            }
+            else
+            {
+                multiplayerBall.setVelocity(vel);
+                player1Turn = true;
+            }
             resetClick();
         }
     }

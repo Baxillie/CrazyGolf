@@ -13,17 +13,20 @@ public class Ball {
     private Vector3 velocity;
     private Vector3 position;
 
+    private boolean ballDone;
+
     public Ball(ModelInstance object, float modelX, float modelY, float modelZ, float modelWidth, float modelHeight, float modelDepth)
     {
         this.object = object;
         this.box = new ObjectBox(modelX, modelY, modelZ, modelWidth, modelHeight, modelDepth);
         velocity = new Vector3(0,0,0);
         position = new Vector3(modelX,modelY,modelZ);
-
+        ballDone = false;
     }
 
     public void updateVelocity(Vector3 velocity)
     {
+        stopBall();
         if(!velocity.isZero(0.001f))
         {
             this.velocity.x = velocity.x * DECCELERATION;
@@ -43,6 +46,19 @@ public class Ball {
         object.transform.translate(velocity);
         position.add(velocity);
         box.setXYZ(velocity.x, velocity.y, velocity.z);
+    }
+
+    public void stopBall()
+    {
+        //todo: fix hack
+        if(position.z < -0.5f)
+        {
+            setVelocity(new Vector3(0,0,0));
+            ballDone = true;
+        }
+        else
+            ballDone = false;
+
     }
 
     public void setVelocity(Vector3 velocity)
@@ -68,6 +84,8 @@ public class Ball {
         {
             return velocity;
         }
+
+    public boolean getBallDone () {return ballDone;}
 
 }
 
