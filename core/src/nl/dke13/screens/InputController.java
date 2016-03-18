@@ -127,7 +127,7 @@ public class InputController implements InputProcessor {
             if(!multiplayer) {
                 ball.setVelocity(vel);
             }
-            if(ball.getBallDone() || multiplayerBall.getBallDone())
+            else if(ball.getBallDone() || multiplayerBall.getBallDone())
             {
                 if(!ball.getBallDone())
                 {

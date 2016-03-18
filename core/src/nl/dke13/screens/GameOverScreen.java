@@ -31,26 +31,41 @@ public class GameOverScreen implements Screen{
 
     private void createLabels()
     {
-        Skin skin = new Skin();
-
         Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.GREEN);
         pixmap.fill();
 
-        skin.add("white", new Texture(pixmap));
+        //create big skin for game over
+        Skin bigSkin = new Skin();
+        bigSkin.add("white", new Texture(pixmap));
+        BitmapFont bigFont = new BitmapFont();
+        bigFont.getData().scale(4);
 
-        BitmapFont bfont = new BitmapFont();
-        bfont.getData().scale(4);
+        //create small skin
+        Skin smallSkin = new Skin();
+        smallSkin.add("white", new Texture(pixmap));
+        BitmapFont smallFont = new BitmapFont();
 
-        skin.add("default",bfont);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(bfont, Color.FIREBRICK);
 
-        skin.add("default", labelStyle);
+        Label.LabelStyle bigLabelStyle = new Label.LabelStyle(bigFont, Color.FIREBRICK);
+        bigSkin.add("default", bigLabelStyle);
 
-        Label label = new Label("Game Over", skin);
-        label.setPosition(((Gdx.graphics.getWidth() / 10) * 5) - (label.getWidth() / 2), (Gdx.graphics.getHeight() / 10) * 8);
+        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(smallFont, Color.LIME);
+        smallSkin.add("default", smallLabelStyle);
 
-        stage.addActor(label);
+
+        Label labelGameOver = new Label("Game Over", bigSkin);
+        labelGameOver.setPosition(((Gdx.graphics.getWidth() / 10) * 5) - (labelGameOver.getWidth() / 2), (Gdx.graphics.getHeight() / 10) * 7);
+
+        Label player1 = new Label(String.format("Player one took %d turns to put the ball in the hole", player1Turns),smallSkin);
+        player1.setPosition(labelGameOver.getX() + 30, labelGameOver.getY() - 70);
+
+        Label player2 = new Label(String.format("Player two took %d turns to put the ball in the hole", player2Turns),smallSkin);
+        player2.setPosition(labelGameOver.getX() + 30, labelGameOver.getY() - 100);
+
+        stage.addActor(labelGameOver);
+        stage.addActor(player1);
+        stage.addActor(player2);
     }
 
     @Override
