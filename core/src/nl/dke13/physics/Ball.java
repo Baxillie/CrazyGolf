@@ -3,7 +3,6 @@ package nl.dke13.physics;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
-
 public class Ball {
 
     //mass of dynamic object is always 1 unit
@@ -85,7 +84,7 @@ public class Ball {
             return velocity;
         }
 
-    public boolean getBallDone () {return ballDone;}
+    public boolean getBallDone() {return ballDone;}
 
 }
 

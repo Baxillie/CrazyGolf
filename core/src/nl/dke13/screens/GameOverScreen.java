@@ -16,9 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.sun.javaws.Main;
 
-/**
- * Created by Ajki on 18/03/2016.
- */
 public class GameOverScreen implements Screen{
 
     private int player1Turns;
@@ -121,13 +118,6 @@ public class GameOverScreen implements Screen{
                 mainMenu.setScreen(new MenuScreen(mainMenu));
             }
         });
-
-
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override
@@ -138,6 +128,11 @@ public class GameOverScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.draw();
+    }
+
+    @Override
+    public void show() {
+
     }
 
     @Override

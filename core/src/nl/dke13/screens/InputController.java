@@ -5,9 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke13.physics.Ball;
 
-/**
- * Created by Ajki on 17/03/2016.
- */
 public class InputController implements InputProcessor {
 
     private UserInterface ui;
@@ -45,22 +42,6 @@ public class InputController implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.printf("screenX: %d screenY:%d pointer:%d button:%d clickdown: %b\n", screenX, screenY, pointer, button, firstClickDone);
         if(firstClickDone && !secondClickDown)
@@ -92,11 +73,6 @@ public class InputController implements InputProcessor {
             return true;
         }
         return false;
-    }
-
-    private boolean hasClicked()
-    {
-        return firstClickDone && secondClickDown && secondClickUp;
     }
 
     private void resetClick()
@@ -138,7 +114,7 @@ public class InputController implements InputProcessor {
                 else
                 {
                     multiplayerBall.setVelocity(vel);
-                    player1Turns++;
+                    player2Turns++;
                 }
             }
             else if(player1Turn)
@@ -195,4 +171,24 @@ public class InputController implements InputProcessor {
         return false;
     }
 
+    private boolean hasClicked()
+    {
+        return firstClickDone && secondClickDown && secondClickUp;
+    }
+
+    @Override
+    public boolean keyDown(int keycode)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
 }

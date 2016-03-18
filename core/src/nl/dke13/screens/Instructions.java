@@ -1,6 +1,5 @@
 package nl.dke13.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -16,9 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-/**
- * Created by Daniel on 18.03.2016.
- */
 public class Instructions implements Screen
 {
     private Texture texture;
@@ -54,7 +50,6 @@ public class Instructions implements Screen
         skin.add("white", new Texture(pixmap));
 
         BitmapFont bfont = new BitmapFont();
-        //bfont.scale(1);
         skin.add("default",bfont);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -68,7 +63,6 @@ public class Instructions implements Screen
 
         backButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                //System.out.println("Clicked! Is checked: " + button.isChecked());
                // backButton.setText("Back to main menu");
                 mainMenu.setScreen(new MenuScreen(mainMenu));
             }

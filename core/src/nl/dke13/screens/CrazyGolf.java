@@ -21,10 +21,6 @@ import nl.dke13.physics.StaticObject;
 
 import java.util.ArrayList;
 
-
-/**
- * Created by baxie on 12-3-16.
- */
 public class CrazyGolf implements Screen
 {
     //variables for a camera in the Application
@@ -45,6 +41,8 @@ public class CrazyGolf implements Screen
     //Stage for ui
     Stage stage;
     UserInterface ui;
+
+
     /**
      * Called when the {@link Application} is first created.
      */
@@ -215,33 +213,11 @@ public class CrazyGolf implements Screen
     }
 
     @Override
-    public void show() {
-
-    }
-
-    /**
-     * Called when the {@link Application} is resized.
-     *
-     * @param width  the new width in pixels
-     * @param height the new height in pixels
-     */
-    @Override
-    public void resize(int width, int height)
-    {
-        viewport.update(width, height);
-    }
-
-    /**
-     * Called when the {@link Application} should render itself.
-     */
-    @Override
     public void render(float delta)
     {
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
@@ -272,33 +248,12 @@ public class CrazyGolf implements Screen
         }
     }
 
-    /**
-     * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also
-     * paused before it is destroyed.
-     */
     @Override
-    public void pause()
+    public void resize(int width, int height)
     {
-
+        viewport.update(width, height);
     }
 
-    /**
-     * Called when the {@link Application} is resumed from a paused state, usually when it regains focus.
-     */
-    @Override
-    public void resume()
-    {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    /**
-     * Called when the {@link Application} is destroyed. Preceded by a call to {@link #pause()}.
-     */
     @Override
     public void dispose()
     {
@@ -308,4 +263,29 @@ public class CrazyGolf implements Screen
         }
         modelBatch.dispose();
     }
+
+    @Override
+    public void show()
+    {
+
+    }
+
+    @Override
+    public void pause()
+    {
+
+    }
+
+    @Override
+    public void resume()
+    {
+
+    }
+
+    @Override
+    public void hide()
+    {
+
+    }
+
 }

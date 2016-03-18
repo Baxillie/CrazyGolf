@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/**
- * Created by Ajki on 17/03/2016.
- */
 public class UserInterface {
 
     private int ARROW_MIN_Y = 2;
@@ -23,16 +20,12 @@ public class UserInterface {
     private int arrowHeight;
     private boolean moveArrow;
 
-    private Label playerLabel;
-    private boolean player1 = true;
-
     public UserInterface()
     {
         this.batch = new SpriteBatch();
 
         createSlider();
         createArrow();
-        createLabel();
     }
 
     private void createSlider()
@@ -47,32 +40,11 @@ public class UserInterface {
         arrow = new Sprite(texture);
     }
 
-    public void createLabel()
-    {
-        //playerLabel = new Label("Player 1", new Skin(Gdx.files.internal("core/assets/uiskin.json")));
-    }
-
-    public void togglePlayer()
-    {
-        if(player1)
-        {
-            playerLabel.setText("Player 2");
-            playerLabel.setColor(Color.GOLDENROD);
-            player1 = false;
-        }
-        else
-        {
-            playerLabel.setText("Player 1");
-            playerLabel.setColor(Color.PINK);
-            player1 = true;
-        }
-    }
 
     public void render()
     {
         batch.begin();
         batch.draw(slider, 10, 10);
-        //playerLabel.draw(batch, 1);
         if(moveArrow)
         {
             arrowHeight += 5;

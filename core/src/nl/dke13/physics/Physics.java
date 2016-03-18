@@ -35,9 +35,6 @@ public class Physics
         }
     }
 
-    /*
-    * not final because only for side wall collision
-    */
     public void hasCollided(Ball ball)
     {
 
