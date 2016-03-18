@@ -10,5 +10,7 @@ public class MainMenu extends Game {
     @Override
     public void create() {
         super.setScreen(new MenuScreen(this));
+        //todo delete temp
+        //super.setScreen(new GameOverScreen(1,1));
     }
 }

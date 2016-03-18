@@ -48,7 +48,7 @@ public class Physics
             {
                 if(Math.abs(ball.getVelocity().x) <= minVelocity.x && Math.abs(ball.getVelocity().y) <= minVelocity.y)
                 {
-                    ball.setVelocity(new Vector3(0f, 0f, -0.1f));
+                    ball.setVelocity(new Vector3(0f, ball.getVelocity().y, -0.5f));
                     return;
                 }
                 return;

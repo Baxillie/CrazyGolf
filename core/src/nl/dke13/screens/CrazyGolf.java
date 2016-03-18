@@ -41,7 +41,6 @@ public class CrazyGolf implements Screen
     ArrayList<StaticObject>  staticObjects;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
-    Ball ball;
 
     //Stage for ui
     Stage stage;
@@ -49,7 +48,7 @@ public class CrazyGolf implements Screen
     /**
      * Called when the {@link Application} is first created.
      */
-    public CrazyGolf()
+    public CrazyGolf(boolean multiplayer)
     {
         //instantiate variables
         modelBatch = new ModelBatch(); //responsible for rendering instances
@@ -69,44 +68,34 @@ public class CrazyGolf implements Screen
         viewport = new FitViewport(800, 480, camera);
 
         //make the user able to move the camera
-
         cameraController = new CameraInputController(camera); //controller for the camera
 
-
         //make a simple golf course
-        createGolfCourseInstances();
+        createGolfCourseInstances(multiplayer);
 
         //initialise physics engine
         physics = new Physics(modelBatch, dynamicObjects, staticObjects);
 
         //create a button :)
-        createButton();
+        //createButton();
         createSlider();
 
         //input
         InputMultiplexer switcher = new InputMultiplexer();
-        //set the controls for the camera
-//        cameraController.rotateLeftKey = 21; // left arrow key :)
-//        cameraController.rotateRightKey = 22;   //right
-//        cameraController.backwardKey = 20;      //down - zoom
-//        cameraController.forwardKey = 19;       //up  - zoom
-//
-//        cameraController.forwardButton = 51; //w
-//cameraController.rotateAngle = 5.5f;
-        //cameraController.activateKey = 31; //c for camera :)
 
         switcher.addProcessor(stage);
 
-        input = new InputController(ball, ui);
+        if(!multiplayer)
+        {
+            input = new InputController(dynamicObjects.get(0), ui);
+        }
+        else{
+            input = new InputController(dynamicObjects.get(0), dynamicObjects.get(1), ui);
+        }
         switcher.addProcessor(input);
         switcher.addProcessor(cameraController);
 
-
         Gdx.input.setInputProcessor(switcher);
-        //input = new InputController(cameraController);
- //       switcher.addProcessor(cameraController);
-   //     Gdx.input.setInputProcessor(switcher);
-
     }
 
     //
@@ -142,7 +131,7 @@ public class CrazyGolf implements Screen
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("ball got pushed");
-                ball.setVelocity(new Vector3(0f,1.1f,0));
+                dynamicObjects.get(0).setVelocity(new Vector3(0f,1.1f,0));
             }
         });
 
@@ -151,7 +140,7 @@ public class CrazyGolf implements Screen
     /**
      * makes a basis golf course out of rectangles.
      */
-    private void createGolfCourseInstances()
+    private void createGolfCourseInstances(boolean multiplayer)
     {
         //floor
         float floorWidth = 30f;
@@ -216,10 +205,12 @@ public class CrazyGolf implements Screen
 
 
         //add golf ball
-        ball = new Ball(new ModelInstance(sphere, 0,-14f,1),0,-14f,1, 1,1,1);
+        Ball ball = new Ball(new ModelInstance(sphere, -5,-14f,1),-5,-14f,1, 1,1,1);
         dynamicObjects.add(ball);
-        //todo: It goes inside wall with 2.5 speed
-        // dynamicObjects.get(0).setVelocity(new Vector3(0f,1.05f,0));
+        if(multiplayer)
+        {
+            dynamicObjects.add(new Ball(new ModelInstance(sphere, 5,-14f,1),5,-14f,1, 1,1,1));
+        }
     }
 
     @Override

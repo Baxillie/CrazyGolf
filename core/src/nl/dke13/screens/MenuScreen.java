@@ -72,12 +72,26 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				playgGameButton.setText("Starting new game");
-				g.setScreen(new CrazyGolf());
+				g.setScreen(new CrazyGolf(false));
+			}
+		});
+
+		final TextButton playMultiPlayer=new TextButton("PLAY with 2",textButtonStyle);
+		playMultiPlayer.setPosition(200, 300);
+		stage.addActor(playMultiPlayer);
+
+		playMultiPlayer.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				//System.out.println("Clicked! Is checked: " + button.isChecked());
+				playMultiPlayer.setText("Starting new game");
+				g.setScreen(new CrazyGolf(true));
 			}
 		});
 
 		final TextButton editorButton=new TextButton("EDITOR",textButtonStyle);
 		editorButton.setPosition(150, 150);
+		final TextButton editorButton=new TextButton("Editor",textButtonStyle);
+		editorButton.setPosition(300, 400);
 		stage.addActor(editorButton);
 
 		editorButton.addListener(new ChangeListener() {
@@ -136,26 +150,26 @@ public class MenuScreen implements Screen {
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize(int width, int height){
+
 	}
 
 	@Override
-	public void pause() {
+	public void pause()	{
+
 	}
 
 	@Override
 	public void resume() {
+
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
-	}
+			}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 }
