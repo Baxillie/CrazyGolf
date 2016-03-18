@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,6 +24,8 @@ public class GameOverScreen implements Screen{
     Stage stage;
     boolean multiplayer;
     MainMenu mainMenu;
+    SpriteBatch batch;
+    Sprite sprite;
 
     public GameOverScreen(int player1Turns, int player2Turns, MainMenu mainMenu) {
         this.player1Turns = player1Turns;
@@ -32,6 +35,7 @@ public class GameOverScreen implements Screen{
         this.mainMenu = mainMenu;
         createLabels();
         createButton();
+        createBackground();
     }
 
     public GameOverScreen(int player1Turns, MainMenu mainMenu) {
@@ -41,45 +45,29 @@ public class GameOverScreen implements Screen{
         this.mainMenu = mainMenu;
         createLabels();
         createButton();
+        createBackground();
     }
 
     private void createLabels()
     {
-        Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.GREEN);
+        Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGB888);
+        pixmap.setColor(Color.BLACK);
         pixmap.fill();
-
-        //create big skin for game over
-        Skin bigSkin = new Skin();
-        bigSkin.add("white", new Texture(pixmap));
-        BitmapFont bigFont = new BitmapFont();
-        bigFont.getData().scale(4);
 
         //create small skin
         Skin smallSkin = new Skin();
-        smallSkin.add("white", new Texture(pixmap));
+        smallSkin.add("BLACK", new Texture(pixmap));
         BitmapFont smallFont = new BitmapFont();
 
-
-        Label.LabelStyle bigLabelStyle = new Label.LabelStyle(bigFont, Color.FIREBRICK);
-        bigSkin.add("default", bigLabelStyle);
-
-        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(smallFont, Color.LIME);
+        Label.LabelStyle smallLabelStyle = new Label.LabelStyle(smallFont, Color.PINK);
         smallSkin.add("default", smallLabelStyle);
 
+        Label player1 = new Label(String.format("Player 1: %d turns", player1Turns),smallSkin);
+        player1.setPosition(10, 70);
 
-        Label labelGameOver = new Label("Game Over", bigSkin);
-        labelGameOver.setPosition(((Gdx.graphics.getWidth() / 10) * 5) - (labelGameOver.getWidth() / 2), (Gdx.graphics.getHeight() / 10) * 7);
+        Label player2 = new Label(String.format("Player 2: %d turns", player2Turns),smallSkin);
+        player2.setPosition(10, 30);
 
-
-        Label player1 = new Label(String.format("Player one took %d turns to put the ball in the hole", player1Turns),smallSkin);
-        player1.setPosition(labelGameOver.getX() + 30, labelGameOver.getY() - 70);
-
-
-        Label player2 = new Label(String.format("Player two took %d turns to put the ball in the hole", player2Turns),smallSkin);
-        player2.setPosition(labelGameOver.getX() + 30, labelGameOver.getY() - 100);
-
-        stage.addActor(labelGameOver);
         stage.addActor(player1);
         if (multiplayer)
             stage.addActor(player2);
@@ -92,22 +80,23 @@ public class GameOverScreen implements Screen{
         Skin skin = new Skin();
 
         Pixmap pixmap = new Pixmap(100, 100, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.GREEN);
+        pixmap.setColor(Color.BLACK);
         pixmap.fill();
 
-        skin.add("white", new Texture(pixmap));
+        skin.add("black", new Texture(pixmap));
 
         BitmapFont bfont = new BitmapFont();
-        //bfont.scale(1);
+        bfont.setColor(Color.BLACK);
         skin.add("default",bfont);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
 
         textButtonStyle.font = skin.getFont("default");
+        textButtonStyle.fontColor = Color.BLACK;
         skin.add("default", textButtonStyle);
 
         final TextButton menuButton=new TextButton("Back To Menu",textButtonStyle);
-        menuButton.setPosition(Gdx.graphics.getWidth()/2 - menuButton.getWidth()/2, 150);
+        menuButton.setPosition(Gdx.graphics.getWidth() - 125, 25);
         stage.addActor(menuButton);
 
         menuButton.addListener(new ChangeListener() {
@@ -120,13 +109,21 @@ public class GameOverScreen implements Screen{
         });
     }
 
+    public void createBackground ()
+    {
+        batch = new SpriteBatch();
+        Texture texture = new Texture(Gdx.files.internal("core/assets/gameover.png"));
+        sprite = new Sprite(texture);
+    }
     @Override
     public void render(float delta)
     {
         //some necessary OPENGL stuff which I dont understand yet
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
+        batch.begin();
+        sprite.draw(batch);
+        batch.end();
         stage.draw();
     }
 
