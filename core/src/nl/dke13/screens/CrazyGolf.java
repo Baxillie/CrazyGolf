@@ -168,7 +168,7 @@ public class CrazyGolf implements Screen
         ModelInstance theHole = new ModelInstance(hole, 0, 14f, 0);
         theHole.transform.rotateRad(1,0,0,3.14f/2);
         //Hole needs to be the 1st object
-        staticObjects.add(0, new StaticObject(theHole, 0, 14f, 0, 1.2f, 0.5f, 1.2f));
+        staticObjects.add(0, new StaticObject(theHole, 0, 14f, 0, 1.2f, 0.5f, 1.2f, "hole"));
 
         //add the floor
         staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
@@ -254,7 +254,7 @@ public class CrazyGolf implements Screen
         ModelInstance theHole = new ModelInstance(hole, -22, 10f, 0);
         theHole.transform.rotateRad(1,0,0,3.14f/2);
         //Hole needs to be the 1st object
-        staticObjects.add(0, new StaticObject(theHole, -22, 10f, 0, 1.2f, 0.5f, 1.2f));
+        staticObjects.add(0, new StaticObject(theHole, -22, 10f, 0, 1.2f, 0.5f, 1.2f, "hole"));
 
         //add the floor
         staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
@@ -384,7 +384,7 @@ public class CrazyGolf implements Screen
         Model hole = mb.createCylinder(1.2f, 0.5f, 1.2f , 10, new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
         ModelInstance theHole = new ModelInstance(hole, 10, 12, 0);
         theHole.transform.rotateRad(1,0,0,3.14f/2);
-        staticObjects.add(0, new StaticObject(theHole, 10, 12, 0, 1.2f, 0.5f, 1.2f));
+        staticObjects.add(0, new StaticObject(theHole, 10, 12, 0, 1.2f, 0.5f, 1.2f, "hole"));
 
         //add golf ball
         Ball ball;

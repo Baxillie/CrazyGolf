@@ -5,12 +5,14 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Ball {
 
-    //mass of dynamic object is always 1 unit
+    //getMass of dynamic object is always 1 unit
     private final float DECCELERATION = 0.95f; //arbitrary number depending on input for velocity
     private ModelInstance object;
     private ObjectBox box;
     private Vector3 velocity;
     private Vector3 position;
+    private double radius;
+    private float mass;
 
     private boolean ballDone;
 
@@ -18,6 +20,8 @@ public class Ball {
     {
         this.object = object;
         this.box = new ObjectBox(modelX, modelY, modelZ, modelWidth, modelHeight, modelDepth);
+        this.radius = modelWidth/2;
+        mass = 1f;
         velocity = new Vector3(0,0,0);
         position = new Vector3(modelX,modelY,modelZ);
         ballDone = false;
@@ -86,6 +90,9 @@ public class Ball {
 
     public boolean getBallDone() {return ballDone;}
 
+    public double getRadius(){return radius;}
+
+    public float getMass() {return mass;}
 }
 
 
