@@ -14,7 +14,7 @@ public class InputController implements InputProcessor {
     private boolean firstClickDone, secondClickDown, secondClickUp;
     private int xDown, yDown;
     private int xUp, yUp;
-    private int sliderStrength;
+    private float sliderStrength;
     private boolean multiplayer;
 
     private boolean player1Turn;
