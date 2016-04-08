@@ -48,7 +48,7 @@ public class UserInterface {
         batch.draw(slider, 10, 10);
         if(moveArrow)
         {
-            arrowHeight += (delta * arrowSpeedPerSecond) ;
+            arrowHeight += (delta * arrowSpeedPerSecond);
             if(arrowHeight > ARROW_MAX_Y)
             {
                 arrowHeight = ARROW_MIN_Y;
