@@ -338,7 +338,6 @@ public class CrazyGolf implements Screen
         staticObjects.add(floors2);
         staticObjects.add(floors3);
 
-
         //2 sideWalls against the Y of the floor
         float sideWallWidth =  1f;
         float sideWallHeight = 10;

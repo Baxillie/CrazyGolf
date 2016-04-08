@@ -23,8 +23,6 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
 
-import javafx.scene.transform.Transform;
-
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Matrix4;
@@ -33,8 +31,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
-
-import javafx.scene.transform.Transform;
 public class ModelTest implements Screen {
 
     PerspectiveCamera camera;
@@ -46,8 +42,6 @@ public class ModelTest implements Screen {
     private Model model2;
     private Model modelwall;
     private Model selecter;
-
-
 
     private ModelInstance modelInstance;
     private ModelInstance modelInstance1;
@@ -101,11 +95,11 @@ public class ModelTest implements Screen {
 
         // Load models
 
-        model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.g3db"));
-        model1 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/guy.g3db"));
-        model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.g3db"));
-        modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.g3db"));
-        selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.g3db"));
+        model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
+        model1 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/guy.G3DB"));
+        model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
+        modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
+        selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
 
         // Now create an instance.  Instance holds the positioning data, etc of an instance of your model
         modelInstance = new ModelInstance(model);
