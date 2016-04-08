@@ -10,14 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class UserInterface {
 
-    private int ARROW_MIN_Y = 2;
-    private int ARROW_MAX_Y = 100;
+    private final static float arrowSpeedPerSecond = 49;
 
+    private float ARROW_MIN_Y = 2;
+    private float ARROW_MAX_Y = 100;
     private SpriteBatch batch;
     private Sprite slider;
     private Sprite arrow;
 
-    private int arrowHeight;
+    private float arrowHeight;
     private boolean moveArrow;
 
     public UserInterface()
@@ -41,13 +42,13 @@ public class UserInterface {
     }
 
 
-    public void render()
+    public void render(float delta)
     {
         batch.begin();
         batch.draw(slider, 10, 10);
         if(moveArrow)
         {
-            arrowHeight += 5;
+            arrowHeight += (delta * arrowSpeedPerSecond) ;
             if(arrowHeight > ARROW_MAX_Y)
             {
                 arrowHeight = ARROW_MIN_Y;
@@ -63,9 +64,9 @@ public class UserInterface {
         moveArrow = true;
     }
 
-    public int getArrowStrength()
+    public float getArrowStrength()
     {
-        int strength = arrowHeight;
+        float strength = arrowHeight;
         arrowHeight = 0;
         moveArrow = false;
         return strength;
