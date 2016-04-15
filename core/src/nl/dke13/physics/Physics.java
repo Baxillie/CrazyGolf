@@ -25,6 +25,7 @@ public class Physics
     {
         for(Ball ball : balls)
         {
+
             ball.update();
             hasCollided(ball);
             renderer.render(ball.getModel());

@@ -64,7 +64,7 @@ public class CrazyGolf implements Screen
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
-       // camera = new OrthographicCamera();
+        //camera = new OrthographicCamera();
         camera.position.set(0f, 0f, 35f); // set the camera 10 unit to the right, up and back;
         camera.lookAt(0,0,0); //make the camera look to point 0,0,0 in the world
         camera.near = 1f; //makes it so the camera sees everything at least 1 unit away from it
@@ -417,7 +417,7 @@ public class CrazyGolf implements Screen
         modelBatch.end();
 
         //2d ui
-        ui.render();
+        ui.render(delta);
 
         //updates the location of the camera based on user input.
         cameraController.update();

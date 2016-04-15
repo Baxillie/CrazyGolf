@@ -1,43 +1,94 @@
 package nl.dke13.physics;
 
 /**
- * Created by Daniel on 15.04.2016.
+ * Created by baxie on 15-4-16.
  */
-public class Vector3 {
+public class Vector3
+{
+    public static void main(String[] args)
+    {
+        Vector3 vector = new Vector3(1,2,3);
+        System.out.println(vector);
+    }
 
     private double x,y,z;
 
-    public Vector3(double x, double y,double z){
+    public Vector3(double x, double y, double z)
+    {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
+    public Vector3()
+    {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+
     @Override
-    public String toString(){
-        String value ;
-        value = "{" + String.valueOf(x)+ ", " + String.valueOf(y)+ ", " + String.valueOf(z)+ "}";
-        return value;
+    public String toString()
+    {
+        return String.format("[%f, %f, %f]", x, y, z);
     }
 
-    public void vectorAdd(double x, double y, double z){
-        this.x += x;
-        this.y += y;
-        this.z += z;
+    public Vector3 copy()
+    {
+        return new Vector3(x,y,z);
+    }
 
+    public void add(Vector3 v)
+    {
 
     }
 
-    public static void main(String[] args) {
-        Vector3 nV = new Vector3(1,2,3);
-        nV.vectorAdd(2,3,4);
-        System.out.println();
-        System.out.println(nV);
-        int x = 5;
-        int y = 2;
-        System.out.println(x + " " + y);
-        x =+ y;
-        System.out.println(x  + " " + y);
+    public void add(double x, double y, double z)
+    {
 
     }
+
+    //just call add() with minus x, y, z
+    public void substract(Vector3 v)
+    {
+
+    }
+
+    public void substract(double x, double y, double z)
+    {
+
+    }
+
+    public void scale(int scaler)
+    {
+
+    }
+
+    public void scale(double scaler)
+    {
+
+    }
+
+    public int dotProduct(Vector3 v)
+    {
+        return 0;
+    }
+
+
+    public Vector3 crossProduct(Vector3 v)
+    {
+        return new Vector3();
+    }
+
+
+    public void rotate(int degrees)
+    {
+
+    }
+
+    public void normalize()
+    {
+
+    }
+
 }
