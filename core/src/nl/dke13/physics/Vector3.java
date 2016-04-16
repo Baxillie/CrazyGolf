@@ -9,6 +9,13 @@ public class Vector3
     {
         Vector3 vector = new Vector3(1,2,3);
         System.out.println(vector);
+        vector.add(2,3,4);
+        System.out.println(vector +" Addition");
+        vector.substract(1,2,3);
+        System.out.println(vector + " Substraction");
+        vector.scaleI(5);
+        System.out.println(vector + " Scaled Vector");
+
     }
 
     private double x,y,z;
@@ -60,7 +67,9 @@ public class Vector3
 
     public void add(double x, double y, double z)
     {
-
+        this.x += x;
+        this.y += y;
+        this.z += z;
     }
 
     //just call add() with minus x, y, z
@@ -71,17 +80,23 @@ public class Vector3
 
     public void substract(double x, double y, double z)
     {
-
+        this.x -= x;
+        this.y -= y;
+        this.z -= z;
     }
 
-    public void scale(int scaler)
+    public void scaleI(int scaler)
     {
-
+        this.x = getX()*scaler;
+        this.y = getY()*scaler;
+        this.z = getZ()*scaler;
     }
 
-    public void scale(double scaler)
+    public void scaleD(double scaler)
     {
-
+        this.x = getX()*scaler;
+        this.y = getY()*scaler;
+        this.z = getZ()*scaler;
     }
 
     public int dotProduct(Vector3 v)
@@ -101,9 +116,15 @@ public class Vector3
 
     }
 
-    public void normalize()
+    public void normalise()
     {
-
+        if(getX() == 1 && getY() == 1 && getZ() == 1){
+            System.out.println("Vector is scaled : " + getX() + getY() + getZ());
+        }
+        else
+            this.x = getX()/getX();
+        this.y = getY()/getY();
+        this.z = getZ()/getZ();
     }
 
 }
