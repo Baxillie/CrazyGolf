@@ -38,6 +38,21 @@ public class Vector3
         return new Vector3(x,y,z);
     }
 
+    public double getX()
+    {
+        return x;
+    }
+
+    public double getY()
+    {
+        return y;
+    }
+
+    public double getZ()
+    {
+        return z;
+    }
+
     public void add(Vector3 v)
     {
 
