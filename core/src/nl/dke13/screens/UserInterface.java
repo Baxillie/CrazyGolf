@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class UserInterface {
 
-    private final static float arrowSpeedPerSecond = 49;
+    private final static float arrowSpeedPerSecond = 120;
 
     private float ARROW_MIN_Y = 2;
     private float ARROW_MAX_Y = 100;

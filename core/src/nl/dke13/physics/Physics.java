@@ -25,9 +25,12 @@ public class Physics
     {
         for(Ball ball : balls)
         {
-
             ball.update();
             hasCollided(ball);
+            if(collidedBall>0)
+            {
+                balls.get(collidedBall).update();
+            }
             renderer.render(ball.getModel());
         }
         for(StaticObject staticObject : staticObjects)
@@ -44,15 +47,18 @@ public class Physics
             Ball ball2 = balls.get(collidedBall);
             Vector3 velocityChange2 = ball2.getVelocity();
 
-            velocityChange1.x = (ball.getVelocity().x * (ball.getMass() - ball2.getMass()) + (2f * ball2.getMass() * ball2.getVelocity().x)) / (ball.getMass() + ball2.getMass());
-            velocityChange1.y = (ball.getVelocity().y * (ball.getMass() - ball2.getMass()) + (2f * ball2.getMass() * ball2.getVelocity().y)) / (ball.getMass() + ball2.getMass());
+//            velocityChange1.x = (ball.getVelocity().x * (ball.getMass() - ball2.getMass()) + (2f * ball2.getMass() * ball2.getVelocity().x)) / (ball.getMass() + ball2.getMass());
+//            velocityChange1.y = (ball.getVelocity().y * (ball.getMass() - ball2.getMass()) + (2f * ball2.getMass() * ball2.getVelocity().y)) / (ball.getMass() + ball2.getMass());
+//
+//            velocityChange2.x = (ball2.getVelocity().x * (ball2.getMass() - ball.getMass()) + (2f * ball.getMass() * ball.getVelocity().x)) / (ball.getMass() + ball2.getMass());
+//            velocityChange2.y = (ball2.getVelocity().y * (ball2.getMass() - ball.getMass()) + (2f * ball.getMass() * ball.getVelocity().y)) / (ball.getMass() + ball2.getMass());
 
-            velocityChange2.x = (ball2.getVelocity().x * (ball2.getMass() - ball.getMass()) + (2f * ball.getMass() * ball.getVelocity().x)) / (ball.getMass() + ball2.getMass());
-            velocityChange2.y = (ball2.getVelocity().y * (ball2.getMass() - ball.getMass()) + (2f * ball.getMass() * ball.getVelocity().y)) / (ball.getMass() + ball2.getMass());
 
-            ball.updateVelocity(velocityChange1);
-            ball2.updateVelocity(velocityChange2);
+            ball2.setVelocity(new Vector3 (velocityChange1.x/2, velocityChange1.y/2, velocityChange1.z));
+            ball.setVelocity(velocityChange2);
+
         }
+
         if(isColliding(ball))
         {
             //Hole is the 1st entry in staticObject array-list
@@ -118,6 +124,7 @@ public class Physics
                 }
             }
         }
+        collidedBall = -1;
         return false;
     }
 }
