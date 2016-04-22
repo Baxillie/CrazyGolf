@@ -2,6 +2,7 @@ package nl.dke13.physics;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
+import nl.dke13.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,9 @@ public class Physics
     {
         for(Ball ball : balls)
         {
+            Log.log(ball.debugString());
             ball.update();
+            calculateGravity(ball);
             hasCollided(ball);
             if(collidedBall>0)
             {
@@ -39,8 +42,38 @@ public class Physics
         }
     }
 
-    public void hasCollided(Ball ball)
+    private void calculateGravity(Ball ball)
     {
+        //if it bumps
+        if(ball.getBox().isBumpZ())
+        {
+            System.out.println("zbump");
+            Vector3 vel = ball.getVelocity();
+            if(Math.abs(ball.getVelocity().z) < 0.001)
+            {
+                vel.z = 0;
+                ball.setVelocity(vel);
+                System.out.println("calling other if");
+            }
+            else
+            {
+              //  vel.z *= -5;
+                ball.setVelocity(vel);
+                System.out.println("is it going here? :3 ");
+            }
+        }/*
+        else if (ball.getPrevVelocity().z > 0  && Math.abs(ball.getVelocity().z) < 0.001)
+        {
+            ball.incrementVelocity(new Vector3(0,0,-1f));
+        }*/
+        else
+        {
+            ball.incrementVelocity(new Vector3(0,0,-1f));
+        }
+    }
+
+    public void hasCollided(Ball ball)
+    {/*
         if(isCollidingBall(ball))
         {
             Vector3 velocityChange1 = ball.getVelocity();
@@ -58,7 +91,7 @@ public class Physics
             ball.setVelocity(velocityChange2);
 
         }
-
+*/
         if(isColliding(ball))
         {
             //Hole is the 1st entry in staticObject array-list
@@ -82,13 +115,16 @@ public class Physics
             {
                 velocityChange.y = 0 - velocityChange.y;
             }
+            if(ball.getBox().isBumpZ())
+            {
+                velocityChange.z = 0 - velocityChange.z;
+            }
 
             //todo: fix Z next period
             //todo: corners are a bit fucked :3
             //velocityChange.z = 0 - velocityChange.z;
             ball.updateVelocity(velocityChange);
         }
-
     }
 
     public boolean isColliding(Ball ball)

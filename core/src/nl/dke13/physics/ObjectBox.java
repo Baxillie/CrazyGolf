@@ -27,7 +27,7 @@ public class ObjectBox
         zMax = z + depth/2;
     }
 
-    public boolean overlaps(ObjectBox box)
+    public boolean overlapsOld(ObjectBox box)
     {
         //todo: fix Z next period
         if ((xMin > box.getxMin() && xMin < box.getxMax()) || (xMax > box.getxMin() && xMax < box.getxMax()))
@@ -53,7 +53,36 @@ public class ObjectBox
        return false;
     }
 
-    public void setXYZ(float x, float y, float z)
+    public boolean overlaps(ObjectBox box)
+    {
+        if((xMin <= box.getxMax() && xMax >= box.getxMin()) &&
+                (yMin <= box.getyMax() && yMax >= box.getyMin()) &&
+                (zMin <= box.getzMax() && zMax >= box.getzMin()))
+        {
+            System.out.println("collided");
+            bumpX = false;
+            bumpY = false;
+            bumpZ = false;
+            // if movement is in the x axis, to get a 45 degree bump the y axis has to change
+            if((oldxMin > box.getxMin() && oldxMin < box.getxMax()) || (oldxMax > box.getxMin() && oldxMax < box.getxMax()))
+            {
+                bumpY = true;
+            }
+            if((oldyMin > box.getyMin() && oldyMin < box.getyMax()) || (oldyMax > box.getyMin() && oldyMax < box.getyMax()))
+            {
+                bumpX = true;
+            }
+           // if((oldzMin > box.getzMin() && oldzMin < box.getzMax()) || (oldzMax > box.getzMin() && oldzMax < box.getzMax()))
+            {
+                bumpZ = true;
+                System.out.println("SET BUMP Z TO TRUE!!!");
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void incrementXYZ(float x, float y, float z)
     {
         oldxMin = this.x - width/2;
         oldxMax = this.x + width/2;
@@ -116,5 +145,13 @@ public class ObjectBox
 
     public boolean isBumpY() {
         return bumpY;
+    }
+
+    public boolean isBumpZ() { return bumpZ;}
+
+    public String debugString()
+    {
+        return String.format(
+                "bumpx: %b%nbumpx: %b%nbumpz: %b%n", bumpX, bumpY, bumpZ);
     }
 }
