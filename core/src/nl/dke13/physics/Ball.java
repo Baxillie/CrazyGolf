@@ -21,7 +21,9 @@ public class Ball {
         velocity = new Vector3(0,0,0);
         position = new Vector3(modelX,modelY,modelZ);
         ballDone = false;
-    }
+        object.transform.translate(0,13,0);
+        object.transform.scale(0.15f,0.15f,0.15f);
+}
 
     public void updateVelocity(Vector3 velocity)
     {

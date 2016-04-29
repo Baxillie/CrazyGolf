@@ -1,11 +1,13 @@
 package nl.dke13.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
+import nl.dke13.desktop.ModelTest;
 
 import java.util.ArrayList;
 
-public class Physics
+public class Physics extends ModelTest
 {
     private ArrayList<Ball> balls;
     private ArrayList<StaticObject> staticObjects;
@@ -21,19 +23,21 @@ public class Physics
         i = 0;
     }
 
-    public void render()
+    public void draw()
     {
         for(Ball ball : balls)
         {
 
             ball.update();
             hasCollided(ball);
-            renderer.render(ball.getModel());
+            modelBatch.render(ball.getModel());
         }
         for(StaticObject staticObject : staticObjects)
         {
-            renderer.render(staticObject.getModel());
+            //renderer.render(staticObject.getModel());
         }
+        float delta = Gdx.graphics.getDeltaTime();
+        render(delta);
     }
 
     public void hasCollided(Ball ball)

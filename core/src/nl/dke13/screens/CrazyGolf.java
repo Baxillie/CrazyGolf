@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -13,8 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.UBJsonReader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import nl.dke13.desktop.ModelTest;
 import nl.dke13.physics.Ball;
 import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
@@ -31,12 +34,18 @@ public class CrazyGolf implements Screen
 
     //variables for the course
     ArrayList<Ball> balls;
-    ArrayList<StaticObject>  staticObjects;
+    public static ArrayList<StaticObject>  staticObjects;
     ArrayList<Model> models;
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
 
+    private Model modelwall;
+    private ModelInstance modelInstancewall;
+
     MainMenu mainMenu;
+
+    UBJsonReader jsonReader = new UBJsonReader();
+    G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
     //Stage for ui
     Stage stage;
@@ -96,7 +105,7 @@ public class CrazyGolf implements Screen
             input = new InputController(balls.get(0), balls.get(1), ui, camera);
         }
         switcher.addProcessor(input);
-       // switcher.addProcessor(cameraController);
+        //switcher.addProcessor(cameraController);
 
         Gdx.input.setInputProcessor(switcher);
     }
@@ -171,11 +180,14 @@ public class CrazyGolf implements Screen
         staticObjects.add(0, new StaticObject(theHole, 0, 14f, 0, 1.2f, 0.5f, 1.2f));
 
         //add the floor
-        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
+        //staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
         //add sideWalls to the left and the right of the floor
 
-        StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
-                0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+        modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
+
+        StaticObject sideWallLeft = new StaticObject(//new ModelInstance(sideWall,
+                //0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2) ),
+                modelInstancewall = new ModelInstance(modelwall),
                 0 - (floorWidth / 2) - (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
                 sideWallWidth, sideWallHeight, sideWallDepth);
 
@@ -184,8 +196,8 @@ public class CrazyGolf implements Screen
                 0 + (floorWidth / 2) + (sideWallWidth / 2), 0, (sideWallDepth / 2) - (floorDepth / 2),
                 sideWallWidth, sideWallHeight, sideWallDepth);
 
-        staticObjects.add(sideWallLeft);
-        staticObjects.add(sideWallRight);
+        //staticObjects.add(sideWallLeft);
+        //staticObjects.add(sideWallRight);
         //add top Walls
         StaticObject topWallUp = new StaticObject(new ModelInstance(topWall,
                 0, 0 - (floorHeight / 2) - (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2) ),
@@ -197,12 +209,12 @@ public class CrazyGolf implements Screen
                 0, 0 + (floorHeight / 2) + (topWallHeight / 2), (topWallDepth / 2) - (floorDepth / 2),
                 topWallWidth, topWallHeight, topWallDepth);
 
-        staticObjects.add(topWallDown);
-        staticObjects.add(topWallUp);
+        //staticObjects.add(topWallDown);
+        //staticObjects.add(topWallUp);
 
         Model obstacle = mb.createBox(14f, 2f, 1, WallMaterial, VertexAttributes.Usage.Position);
         ModelInstance theObstacle = new ModelInstance(obstacle, 0, 0f, 1);
-        staticObjects.add(new StaticObject(theObstacle, 0,0,1,14,2,1));
+        //staticObjects.add(new StaticObject(theObstacle, 0,0,1,14,2,1));
 
 
         //add golf ball
@@ -257,7 +269,7 @@ public class CrazyGolf implements Screen
         staticObjects.add(0, new StaticObject(theHole, -22, 10f, 0, 1.2f, 0.5f, 1.2f));
 
         //add the floor
-        staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
+        //staticObjects.add(new StaticObject(new ModelInstance(floor, 0,0,0), 100, 100, -5, floorWidth, floorHeight, floorDepth));
         //add sideWalls to the left and the right of the floor
 
         StaticObject sideWallLeft = new StaticObject(new ModelInstance(sideWall,
@@ -411,7 +423,7 @@ public class CrazyGolf implements Screen
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
-        physics.render();
+        physics.draw();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
         stage.draw();
         modelBatch.end();
