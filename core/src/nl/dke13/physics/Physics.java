@@ -66,9 +66,10 @@ public class Physics
         {
             ball.incrementVelocity(new Vector3(0,0,-1f));
         }*/
-        else
+        else if(ball.getVelocity().isZero())
         {
-            ball.incrementVelocity(new Vector3(0,0,-1f));
+            //ball.incrementVelocity(new Vector3(0,0,-1f));
+            return;
         }
     }
 

@@ -55,8 +55,7 @@ public class ObjectBox
 
     public boolean overlaps(ObjectBox box)
     {
-        if((xMin <= box.getxMax() && xMax >= box.getxMin()) &&
-                (yMin <= box.getyMax() && yMax >= box.getyMin()) &&
+        if((xMin <= box.getxMax() && xMax >= box.getxMin()) && (yMin <= box.getyMax() && yMax >= box.getyMin()) &&
                 (zMin <= box.getzMax() && zMax >= box.getzMin()))
         {
             System.out.println("collided");
@@ -72,7 +71,7 @@ public class ObjectBox
             {
                 bumpX = true;
             }
-           // if((oldzMin > box.getzMin() && oldzMin < box.getzMax()) || (oldzMax > box.getzMin() && oldzMax < box.getzMax()))
+            if((oldzMin > box.getzMin() && oldzMin < box.getzMax()) || (oldzMax > box.getzMin() && oldzMax < box.getzMax()))
             {
                 bumpZ = true;
                 System.out.println("SET BUMP Z TO TRUE!!!");
@@ -106,6 +105,7 @@ public class ObjectBox
         zMin = this.z - depth/2;
         zMax = this.z + depth/2;
     }
+
     public String toString()
     {
         return String.format("x= %f  y=%f  z=%f\nw=%f  h=%f  d=%f\n" +
@@ -115,39 +115,50 @@ public class ObjectBox
                 x,y,z,width,height,depth, xMin, xMax, yMin, yMax, zMin, zMax);
     }
 
-    public float getxMin() {
+    public float getxMin()
+    {
         return xMin;
     }
 
-    public float getxMax() {
+    public float getxMax()
+    {
         return xMax;
     }
 
-    public float getyMin() {
+    public float getyMin()
+    {
         return yMin;
     }
 
-    public float getyMax() {
+    public float getyMax()
+    {
         return yMax;
     }
 
-    public float getzMin() {
+    public float getzMin()
+    {
         return zMin;
     }
 
-    public float getzMax() {
+    public float getzMax()
+    {
         return zMax;
     }
 
-    public boolean isBumpX() {
+    public boolean isBumpX()
+    {
         return bumpX;
     }
 
-    public boolean isBumpY() {
+    public boolean isBumpY()
+    {
         return bumpY;
     }
 
-    public boolean isBumpZ() { return bumpZ;}
+    public boolean isBumpZ()
+    {
+        return bumpZ;
+    }
 
     public String debugString()
     {

@@ -51,6 +51,7 @@ public class Ball {
         velocity.y += vector3.y;
         velocity.z += vector3.z;
     }
+
     //update object position according to velocity
     public void update()
     {
