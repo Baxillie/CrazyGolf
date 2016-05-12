@@ -2,7 +2,6 @@ package nl.dke13.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,8 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Timer;
 import nl.dke13.desktop.ModelTest;
+
 
 public class MenuScreen implements Screen {
 	private SpriteBatch batch;
@@ -27,11 +26,13 @@ public class MenuScreen implements Screen {
 	private Sprite sprite;
 	private Stage stage;
 	private Skin skin;
-	private MainMenu mainMenu;
+	private Display display;
 
 
-	public MenuScreen(MainMenu mainMenu){
-		this.mainMenu = mainMenu;
+	//todo:everything should respond to the state controller
+
+	public MenuScreen(Display display){
+		this.display = display;
 		create();
 	}
 
@@ -71,7 +72,7 @@ public class MenuScreen implements Screen {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//if(backButton.isPressed() == true)
 				//playgGameButton.setText("Starting new game");
-				mainMenu.setScreen(new CrazyGolf(false, mainMenu));
+				display.setScreen(new CrazyGolf(false, display));
 			}
 		});
 
@@ -83,7 +84,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//playMultiPlayer.setText("Starting new game");
-				mainMenu.setScreen(new CrazyGolf(true, mainMenu));
+				display.setScreen(new CrazyGolf(true, display));
 			}
 		});
 
@@ -95,7 +96,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//editorButton.setText("Starting new game");
-				mainMenu.setScreen(new ModelTest());
+				display.setScreen(new ModelTest());
 			}
 		});
 
@@ -107,7 +108,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//controlButton.setText("CONTROLS");
-				mainMenu.setScreen(new Instructions(mainMenu, reference));
+				display.setScreen(new Instructions(display, reference));
 			}
 		});
 

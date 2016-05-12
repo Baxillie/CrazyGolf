@@ -22,26 +22,26 @@ public class GameOverScreen implements Screen{
     private int player2Turns;
     Stage stage;
     boolean multiplayer;
-    MainMenu mainMenu;
+    Display display;
     SpriteBatch batch;
     Sprite sprite;
 
-    public GameOverScreen(int player1Turns, int player2Turns, MainMenu mainMenu) {
+    public GameOverScreen(int player1Turns, int player2Turns, Display display) {
         this.player1Turns = player1Turns;
         this.player2Turns = player2Turns;
         stage = new Stage();
         multiplayer = true;
-        this.mainMenu = mainMenu;
+        this.display = display;
         createLabels();
         createButton();
         createBackground();
     }
 
-    public GameOverScreen(int player1Turns, MainMenu mainMenu) {
+    public GameOverScreen(int player1Turns, Display display) {
         this.player1Turns = player1Turns;
         stage = new Stage();
         multiplayer = false;
-        this.mainMenu = mainMenu;
+        this.display = display;
         createLabels();
         createButton();
         createBackground();
@@ -94,6 +94,8 @@ public class GameOverScreen implements Screen{
         textButtonStyle.fontColor = Color.BLACK;
         skin.add("default", textButtonStyle);
 
+        //todo: change the button to respond to a method in the state controller
+
         final TextButton menuButton=new TextButton("Back To Menu",textButtonStyle);
         menuButton.setPosition(Gdx.graphics.getWidth() - 125, 25);
         stage.addActor(menuButton);
@@ -103,7 +105,7 @@ public class GameOverScreen implements Screen{
                 //System.out.println("Clicked! Is checked: " + button.isChecked());
                 //if(backButton.isPressed() == true)
                 //playgGameButton.setText("Starting new game");
-                mainMenu.setScreen(new MenuScreen(mainMenu));
+                display.setScreen(new MenuScreen(display));
             }
         });
     }

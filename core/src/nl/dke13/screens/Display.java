@@ -2,8 +2,8 @@ package nl.dke13.screens;
 
 import com.badlogic.gdx.Game;
 
-public class MainMenu extends Game {
-
+public class Display extends Game
+{
     @Override
     public void create()
     {
