@@ -2,6 +2,7 @@ package nl.dke13.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import nl.dke13.desktop.ModelTest;
 
 public class MenuScreen implements Screen {
@@ -110,7 +112,7 @@ public class MenuScreen implements Screen {
 		});
 
 		//New Screen
-		//todo: uncomment this
+//		//todo: uncomment this
 //		final Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal("core/assets/tiger_woods_song.mp3"));
 //		mp3Sound.play();
 //		final long id = mp3Sound.loop();
