@@ -47,7 +47,7 @@ public class GBall
         Vector3 dir = new Vector3(xvect/2,yvect/2,zvect/2);
         if (dir.z>0)
         {
-         gravity = true;
+            gravity = true;
         }
         direction.set(dir);
         //System.out.print( direction.x+ direction.y+ direction.z+"\n");
@@ -124,70 +124,126 @@ public class GBall
                 }
                 if(ex&&wy&&zed)
                 {
+
+
                     if((position.x<boxMinX-radius||position.x>boxMaxX+radius)&&
                     (nextY>boxMinY-radius&&nextY<boxMaxY+radius)&&
-                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius)&&
-                    (nextX>boxMinX-radius&&nextX<boxMaxX+radius))
+                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))//&&
+                    //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
                     {
                         velocityChange.x = 0 - velocityChange.x*1.1f;
                         //velocityChange.x = 0;
                         System.out.print("trup");
 
                     }
-                    if((position.y<boxMinY-radius||position.y>boxMaxY+radius)&&
+                    else if((position.y<boxMinY-radius||position.y>boxMaxY+radius)&&
                     (nextX>boxMinX-radius&&nextX<boxMaxX+radius)&&
-                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius)&&
-                    (nextY>boxMinY-radius&&nextY<boxMaxY+radius))
+                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))//&&
+                    //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
                     {
                         velocityChange.y = 0 - velocityChange.y*1.1f;
                         //velocityChange.y = 0;
                         System.out.print("HArp");
                     }
-                    if((position.z<boxMinZ-radius||position.z>boxMaxZ+radius)&&
+                    else if((position.z<boxMinZ-radius||position.z>boxMaxZ+radius)&&
                     (nextX>boxMinX-radius&&nextX<boxMaxX+radius)&&
-                    (nextY>boxMinY-radius&&nextY<boxMaxY+radius)&&
-                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
+                    (nextY>boxMinY-radius&&nextY<boxMaxY+radius))//&&
+                    //(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
                     {
 
-                        /*if (direction.z<0.11&&direction.z>-0.11)
-                        {
 
-                            direction.z=0;
-                            zcollide = true;
-                        }
-                        if (direction.z>0.11||direction.z<-0.11)
-                        {
-                            velocityChange.z = 0 - velocityChange.z*0.99f;
-                            zcollide = true;
-                        }*/
-                        //if (position.z-boxMaxZ<1)
-                        //{
-                            if (direction.z<-0.08||direction.z>0.08)
+                            if (direction.z<-0.08||direction.z>=0.08)
                             {
                                 //System.out.print("KLIP");
-                                direction.z = 0 - direction.z*0.98f;
+                                //direction.z = 0 - direction.z*0.98f;
+                                velocityChange.z= 0 - velocityChange.z*0.80f;
                                 //velocityChange.z = 0;
                                 //zcollide = true;
                                 gravity=true;
 
                                 //push(direction.x,direction.y,0);
                             }
-                            else
+                            else if (direction.z>=-0.08&&direction.z<=0.08)
                             {
                                 gravity = false;
-                                direction.z=0;
+                                velocityChange.z= 0;
+
                                 //push(direction.x,direction.y,0);
                             }
+
+/*
+                    for(float i=0;i<direction.len();i+=0.1f)
+                    {
+                        float posX=position.x+direction.x*i;
+                        float posY=position.y+direction.y*i;
+                        float posZ=position.z+direction.z*i;
+
+                        if ((posX>boxMinX-radius&&posX<boxMaxX+radius)
+                            &&(posY>boxMinY-radius&&posY<boxMaxY+radius)
+                            &&(posZ>boxMinZ-radius&&posZ<boxMaxZ+radius))
+                        {
+                            float length= i-0.1f;
+                            float locatX = position.x+direction.x*length;
+                            float locatY = position.y+direction.y*length;
+                            float locatZ = position.z+direction.z*length;
+
+                            if((locatX<boxMinX-radius||locatX>boxMaxX+radius)&&
+                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius)&&
+                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
+                            //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
+                            {
+                                velocityChange.x = 0 - velocityChange.x*1.1f;
+                                //velocityChange.x = 0;
+                                System.out.print("trup");
+
+                            }
+                            else if((locatY<boxMinY-radius||locatY>boxMaxY+radius)&&
+                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
+                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
+                            //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
+                            {
+                                velocityChange.y = 0 - velocityChange.y*1.1f;
+                                //velocityChange.y = 0;
+                                System.out.print("HArp");
+                            }
+                            else if((locatZ<boxMinZ-radius||locatZ>boxMaxZ+radius)&&
+                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
+                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius))//&&
+                            //(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
+                            {
+                                if (direction.z<-0.08||direction.z>=0.08)
+                                {
+                                    //System.out.print("KLIP");
+                                    //direction.z = 0 - direction.z*0.98f;
+                                    velocityChange.z= 0 - velocityChange.z*0.80f;
+                                    //velocityChange.z = 0;
+                                    //zcollide = true;
+                                    gravity=true;
+
+                                    //push(direction.x,direction.y,0);
+                                }
+                                else if (direction.z>=-0.08&&direction.z<=0.08)
+                                {
+                                    gravity = false;
+                                    velocityChange.z= 0;
+
+                                    //push(direction.x,direction.y,0);
+                                }
+                            }
+                        }
+                    }
+*/
                         //}
                         //else
                         //{
                         //    gravity = true;
                         //}
-                    }
+                  }
                     else
                     {
                         zcollide = false;
                     }
+
                 }
                 else
                 {
@@ -274,8 +330,8 @@ public class GBall
         }*/
         push(velocityChange.x,velocityChange.y,velocityChange.z);
         push(velocityChange.x,velocityChange.y,velocityChange.z);
-        updatePosition();
-        //updateVelocity(velocityChange);
+       //updatePosition();
+        updateVelocity(velocityChange);
     }
 
     public boolean collides(float j)
@@ -393,6 +449,11 @@ public class GBall
                 else
                 {
                     direction.z=0;
+                    //updatePosition();
+                    if (height>1||direction.z!=0)
+                    {
+                        gravity = true;
+                    }
                 }
             }
             else
@@ -463,11 +524,11 @@ public class GBall
                 {
                     direction.y=0;
                 }
-                if (direction.z<=0.08 && direction.z>=-0.08)
+                if (direction.z<=0.081 && direction.z>=-0.081)
                 {
                     if (height<=1)
                     {
-                        //direction.z=0.01f;
+                        //direction.z=-0.01f;
                         gravity = false;
                         System.out.println("pork");
                     }
@@ -534,7 +595,9 @@ public class GBall
                     //System.out.println(this.position);
                     updateVelocity(this.direction);
                 }*/
-                for(dist=0f;dist<1.2;dist+=0.1f)
+
+
+                /*for(dist=0f;dist<1.2;dist+=0.1f)
                 {
                     if (collides(dist))
                     {
@@ -551,7 +614,8 @@ public class GBall
                     System.out.println("position"+position);
                     System.out.println("distance"+shoot);
 
-                }
+                }*/
+                bounce(dist);
 
 
 

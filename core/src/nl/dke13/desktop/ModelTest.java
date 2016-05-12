@@ -133,7 +133,8 @@ public class ModelTest implements Screen {
         modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
         selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
         mill = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
-        ballModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/ball.G3DB"));
+        //ballModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/ball.G3DB"));
+        ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10, new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
         // Now create an instance.  Instance holds the positioning data, etc of an instance of your model
         modelInstance = new ModelInstance(model);
@@ -405,8 +406,8 @@ public class ModelTest implements Screen {
 
         // If edit mode activated
         if (editor == true) {
-            camera.position.set(0f, 0f, 35f);
-            camera.lookAt(0f, 0f, 0f);
+            /*camera.position.set(0f, 0f, 35f);
+            camera.lookAt(0f, 0f, 0f);*/
             //Gdx.input.setInputProcessor(null);
 
             Gdx.gl.glViewport(Gdx.graphics.getWidth() / 4, 0, 3 * Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight());
@@ -417,24 +418,49 @@ public class ModelTest implements Screen {
             select.transform.translate(0, 0, 0);
 
             // Key bindings for moving pieces in edit mode
-            if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-                placementY += 8;
-                select.transform.translate(0, 2, 0);
-            }
+            if (camera.direction.y>camera.direction.x)
+            {
+                if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+                    placementY += 8;
+                    select.transform.translate(0, 2, 0);
+                }
 
-            if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-                placementY -= 8;
-                select.transform.translate(0, -2, 0);
-            }
+                if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+                    placementY -= 8;
+                    select.transform.translate(0, -2, 0);
+                }
 
-            if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-                placementX -= 8;
-                select.transform.translate(-2, 0, 0);
-            }
+                if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+                    placementX -= 8;
+                    select.transform.translate(-2, 0, 0);
+                }
 
-            if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-                placementX += 8;
-                select.transform.translate(2, 0, 0);
+                if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+                    placementX += 8;
+                    select.transform.translate(2, 0, 0);
+                }
+            }
+            if (camera.direction.x>camera.direction.y)
+            {
+                if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+                    placementX += 8;
+                    select.transform.translate(2, 0, 0);
+                }
+
+                if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+                    placementX -= 8;
+                    select.transform.translate(-2, 0, 0);
+                }
+
+                if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+                    placementY -= 8;
+                    select.transform.translate(0, -2, 0);
+                }
+
+                if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+                    placementY += 8;
+                    select.transform.translate(0, 2, 0);
+                }
             }
             if (Gdx.input.isKeyJustPressed(Keys.NUM_1) || Gdx.input.isKeyJustPressed(Keys.NUMPAD_1)) {
                 floor = true;
