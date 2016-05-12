@@ -20,7 +20,7 @@ import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class CrazyGolf implements Screen
 {
     //variables for a camera in the Application
@@ -36,7 +36,7 @@ public class CrazyGolf implements Screen
     ModelBatch modelBatch; // renders a model based on the modelInstance
     Physics physics;
 
-    MainMenu mainMenu;
+    Display mainMenu;
 
     //Stage for ui
     Stage stage;
@@ -50,7 +50,7 @@ public class CrazyGolf implements Screen
     /**
      * Called when the {@link Application} is first created.
      */
-    public CrazyGolf(boolean multiplayer, MainMenu mainMenu)
+    public CrazyGolf(boolean multiplayer, Display mainMenu)
     {
         //instantiate variables
         this.multiplayer = multiplayer;

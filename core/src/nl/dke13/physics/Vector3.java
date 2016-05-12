@@ -3,6 +3,8 @@ package nl.dke13.physics;
 /**
  * Created by baxie on 15-4-16.
  */
+
+@Deprecated
 public class Vector3
 {
     public static void main(String[] args)
