@@ -3,7 +3,7 @@ package nl.dke13.physics;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-
+@Deprecated
 public class Ball {
 
     //getMass of dynamic object is always 1 unit

@@ -3,22 +3,14 @@ package nl.dke13.screens;
 import com.badlogic.gdx.Screen;
 
 /**
- * allows you to select a hole and sends it to the state controller
+ * displays the current state of the GameWorld
  */
-public class HoleSelectionScreen implements Screen
+public class GameDisplay implements Screen
 {
-    //arraylist of all the files available
-    //button to apply your selection/confirm
-    //displays a list of the names of the levels
-    //can select more than one hole
 
-
-    public HoleSelectionScreen()
-    {
-
-    }
-
-
+    //GameWorld
+    //User interface
+    //GameController
 
     @Override
     public void show() {
@@ -27,7 +19,8 @@ public class HoleSelectionScreen implements Screen
 
     @Override
     public void render(float delta) {
-
+    //main loop of game
+        //call render of GameWorld which does the physics stuff
     }
 
     @Override
@@ -54,4 +47,5 @@ public class HoleSelectionScreen implements Screen
     public void dispose() {
 
     }
+
 }

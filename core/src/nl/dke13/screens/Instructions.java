@@ -23,11 +23,11 @@ public class Instructions implements Screen
     private Stage stage;
     private Skin skin;
     private MenuScreen menuScreen;
-    private MainMenu mainMenu;
+    private Display display;
 
-    public Instructions(MainMenu mainMenu ,MenuScreen menuScreen){
+    public Instructions(Display display, MenuScreen menuScreen){
         this.menuScreen = menuScreen;
-        this.mainMenu = mainMenu;
+        this.display = display;
         create();
     }
 
@@ -57,6 +57,7 @@ public class Instructions implements Screen
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
 
+        //todo: change the button to respond to a method in the state controller
         final TextButton backButton=new TextButton("BACK",textButtonStyle);
         backButton.setPosition(50, 125);
         stage.addActor(backButton);
@@ -64,7 +65,7 @@ public class Instructions implements Screen
         backButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                // backButton.setText("Back to main menu");
-                mainMenu.setScreen(new MenuScreen(mainMenu));
+                display.setScreen(new MenuScreen(display));
             }
         });
     }

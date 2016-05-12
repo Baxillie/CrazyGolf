@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import nl.dke13.util.Log;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class Physics
 {
     private ArrayList<Ball> balls;

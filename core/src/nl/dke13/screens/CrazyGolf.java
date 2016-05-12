@@ -17,13 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import nl.dke13.desktop.ModelTest;
 import nl.dke13.physics.Ball;
 import nl.dke13.physics.Physics;
 import nl.dke13.physics.StaticObject;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class CrazyGolf implements Screen
 {
     //variables for a camera in the Application
@@ -42,7 +41,7 @@ public class CrazyGolf implements Screen
     private Model modelwall;
     private ModelInstance modelInstancewall;
 
-    MainMenu mainMenu;
+    Display display;
 
     UBJsonReader jsonReader = new UBJsonReader();
     G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
@@ -59,7 +58,7 @@ public class CrazyGolf implements Screen
     /**
      * Called when the {@link Application} is first created.
      */
-    public CrazyGolf(boolean multiplayer, MainMenu mainMenu)
+    public CrazyGolf(boolean multiplayer, Display display)
     {
         //instantiate variables
         this.multiplayer = multiplayer;
@@ -68,7 +67,7 @@ public class CrazyGolf implements Screen
         staticObjects = new ArrayList<StaticObject>(); //for holding all the model instances
         stage = new Stage();
         ui = new UserInterface();
-        this.mainMenu = mainMenu;
+        this.display = display;
         models = new ArrayList<Model>();
 
         //make the camera
@@ -423,13 +422,13 @@ public class CrazyGolf implements Screen
 
         //calls to the modelbatch to render the instance
         modelBatch.begin(camera);
-        physics.draw();
+        physics.render();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
         stage.draw();
         modelBatch.end();
 
         //2d ui
-        ui.render();
+        ui.render(delta);
 
         //updates the location of the camera based on user input.
         cameraController.update();
@@ -443,7 +442,7 @@ public class CrazyGolf implements Screen
         {
             if(hole1Done && hole2Done)
             {
-                mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), input.getPlayer2Turns(), mainMenu));
+                display.setScreen(new GameOverScreen(input.getPlayer1Turn(), input.getPlayer2Turns(), display));
                 this.dispose();
             }
             else if(hole1Done)
@@ -464,7 +463,7 @@ public class CrazyGolf implements Screen
         {
             if(hole1Done && hole2Done)
             {
-                mainMenu.setScreen(new GameOverScreen(input.getPlayer1Turn(), mainMenu));
+                display.setScreen(new GameOverScreen(input.getPlayer1Turn(), display));
                 this.dispose();
             }
             else if(hole1Done)

@@ -3,22 +3,11 @@ package nl.dke13.screens;
 import com.badlogic.gdx.Screen;
 
 /**
- * allows you to select a hole and sends it to the state controller
+ * The current editor, without the physics implemented
+ * just allows you to create and save a world
  */
-public class HoleSelectionScreen implements Screen
+public class EditorScreen implements Screen
 {
-    //arraylist of all the files available
-    //button to apply your selection/confirm
-    //displays a list of the names of the levels
-    //can select more than one hole
-
-
-    public HoleSelectionScreen()
-    {
-
-    }
-
-
 
     @Override
     public void show() {

@@ -43,7 +43,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener
 import javafx.scene.transform.Transform;
 import nl.dke13.physics.StaticObject;
 import nl.dke13.screens.CrazyGolf;
-
+@Deprecated
 public class ModelTest implements Screen {
 
     PerspectiveCamera camera;
@@ -128,7 +128,7 @@ public class ModelTest implements Screen {
         // Load models
 
         model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
-        TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/dudy.G3DB"));
+        TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/dude.G3DB"));
         model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
         modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
         selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
@@ -366,7 +366,7 @@ public class ModelTest implements Screen {
             //controller.update(Gdx.graphics.getDeltaTime());
         }
 
-        HeightmapConverter heightmap = new HeightmapConverter(200,200,50,"Heightmap.png");
+       // HeightmapConverter heightmap = new HeightmapConverter(200,200,50,"Heightmap.png");
 
         for (int i = 0; i < instances.size(); i++) {
             modelBatch.render(instances.get(i), environment);

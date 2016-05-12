@@ -1,5 +1,5 @@
 package nl.dke13.physics;
-
+@Deprecated
 public class ObjectBox
 {
     private float x, y, z, width, height, depth;
