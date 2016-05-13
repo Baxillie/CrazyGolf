@@ -1,6 +1,7 @@
 package nl.dke13.screens;
 
 import com.badlogic.gdx.Screen;
+import nl.dke13.controller.StateController;
 
 /**
  * allows you to select a hole and sends it to the state controller
@@ -12,10 +13,11 @@ public class HoleSelectionScreen implements Screen
     //displays a list of the names of the levels
     //can select more than one hole
 
+    StateController stateController;
 
-    public HoleSelectionScreen()
+    public HoleSelectionScreen(StateController stateController)
     {
-
+        this.stateController = stateController;
     }
 
 

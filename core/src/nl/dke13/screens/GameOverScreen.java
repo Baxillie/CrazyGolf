@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import nl.dke13.controller.StateController;
 
 public class GameOverScreen implements Screen{
 
@@ -22,26 +23,26 @@ public class GameOverScreen implements Screen{
     private int player2Turns;
     Stage stage;
     boolean multiplayer;
-    Display display;
+    StateController stateController;
     SpriteBatch batch;
     Sprite sprite;
 
-    public GameOverScreen(int player1Turns, int player2Turns, Display display) {
+    public GameOverScreen(int player1Turns, int player2Turns, StateController stateController) {
         this.player1Turns = player1Turns;
         this.player2Turns = player2Turns;
         stage = new Stage();
         multiplayer = true;
-        this.display = display;
+        this.stateController = stateController;
         createLabels();
         createButton();
         createBackground();
     }
 
-    public GameOverScreen(int player1Turns, Display display) {
+    public GameOverScreen(int player1Turns, StateController stateController) {
         this.player1Turns = player1Turns;
         stage = new Stage();
         multiplayer = false;
-        this.display = display;
+        this.stateController = stateController;
         createLabels();
         createButton();
         createBackground();
@@ -94,8 +95,6 @@ public class GameOverScreen implements Screen{
         textButtonStyle.fontColor = Color.BLACK;
         skin.add("default", textButtonStyle);
 
-        //todo: change the button to respond to a method in the state controller
-
         final TextButton menuButton=new TextButton("Back To Menu",textButtonStyle);
         menuButton.setPosition(Gdx.graphics.getWidth() - 125, 25);
         stage.addActor(menuButton);
@@ -105,7 +104,7 @@ public class GameOverScreen implements Screen{
                 //System.out.println("Clicked! Is checked: " + button.isChecked());
                 //if(backButton.isPressed() == true)
                 //playgGameButton.setText("Starting new game");
-                display.setScreen(new MenuScreen(display));
+                stateController.displayMenuScreen();
             }
         });
     }

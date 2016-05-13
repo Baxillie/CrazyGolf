@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import nl.dke13.controller.StateController;
 import nl.dke13.desktop.ModelTest;
 
 
@@ -26,13 +27,10 @@ public class MenuScreen implements Screen {
 	private Sprite sprite;
 	private Stage stage;
 	private Skin skin;
-	private Display display;
+	private StateController stateController;
 
-
-	//todo:everything should respond to the state controller
-
-	public MenuScreen(Display display){
-		this.display = display;
+	public MenuScreen(StateController stateController){
+		this.stateController = stateController;
 		create();
 	}
 
@@ -72,7 +70,7 @@ public class MenuScreen implements Screen {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//if(backButton.isPressed() == true)
 				//playgGameButton.setText("Starting new game");
-				display.setScreen(new CrazyGolf(false, display));
+				stateController.displayGameDisplay(false);
 			}
 		});
 
@@ -84,7 +82,8 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//playMultiPlayer.setText("Starting new game");
-				display.setScreen(new CrazyGolf(true, display));
+				stateController.displayGameDisplay(true);
+
 			}
 		});
 
@@ -96,19 +95,18 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//editorButton.setText("Starting new game");
-				display.setScreen(new ModelTest());
+				stateController.displayEditorScreen();
 			}
 		});
 
 		final TextButton controlButton = new TextButton("CONTROLS",textButtonStyle);
 		controlButton.setPosition(150, 200);
 		stage.addActor(controlButton);
-		final MenuScreen reference = this;
 		controlButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//controlButton.setText("CONTROLS");
-				display.setScreen(new Instructions(display, reference));
+				stateController.displayInstructions();
 			}
 		});
 

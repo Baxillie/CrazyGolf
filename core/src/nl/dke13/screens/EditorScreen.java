@@ -1,6 +1,7 @@
 package nl.dke13.screens;
 
 import com.badlogic.gdx.Screen;
+import nl.dke13.controller.StateController;
 
 /**
  * The current editor, without the physics implemented
@@ -8,6 +9,12 @@ import com.badlogic.gdx.Screen;
  */
 public class EditorScreen implements Screen
 {
+    StateController stateController;
+
+    public EditorScreen(StateController stateController)
+    {
+        this.stateController = stateController;
+    }
 
     @Override
     public void show() {
