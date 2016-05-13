@@ -13,7 +13,7 @@ public class HoleSelectionScreen implements Screen
     //displays a list of the names of the levels
     //can select more than one hole
 
-    StateController stateController;
+    private StateController stateController;
 
     public HoleSelectionScreen(StateController stateController)
     {

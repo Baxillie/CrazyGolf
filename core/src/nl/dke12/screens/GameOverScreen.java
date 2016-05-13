@@ -21,11 +21,11 @@ public class GameOverScreen implements Screen{
 
     private int player1Turns;
     private int player2Turns;
-    Stage stage;
-    boolean multiplayer;
-    StateController stateController;
-    SpriteBatch batch;
-    Sprite sprite;
+    private Stage stage;
+    private boolean multiplayer;
+    private StateController stateController;
+    private SpriteBatch batch;
+    private Sprite sprite;
 
     public GameOverScreen(int player1Turns, int player2Turns, StateController stateController) {
         this.player1Turns = player1Turns;

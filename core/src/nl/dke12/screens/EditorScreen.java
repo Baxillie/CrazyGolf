@@ -9,7 +9,7 @@ import nl.dke12.controller.StateController;
  */
 public class EditorScreen implements Screen
 {
-    StateController stateController;
+    private StateController stateController;
 
     public EditorScreen(StateController stateController)
     {
