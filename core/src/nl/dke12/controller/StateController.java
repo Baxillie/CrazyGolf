@@ -2,6 +2,7 @@ package nl.dke12.controller;
 
 import com.badlogic.gdx.Game;
 import nl.dke12.screens.*;
+import nl.dke12.util.GameWorldLoader;
 
 /**
  * Switches between different screens
@@ -44,7 +45,7 @@ public class StateController extends Game
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        setScreen(new GameDisplay());
+        setScreen(new GameDisplay(GameWorldLoader.createGameWorld("test")));
     }
 
     @Override
