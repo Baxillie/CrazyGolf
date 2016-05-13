@@ -13,8 +13,8 @@ public class DesktopLauncher {
 		config.foregroundFPS = 30;
 
 		StateController stateController = new StateController();
-		new LwjglApplication(stateController.getDisplay(), config);
-		stateController.displayMenuScreen();
+		new LwjglApplication(stateController, config);
+//		stateController.displayMenuScreen();
 		//new LwjglApplication(new HeightmapConverter(200,200,50,"Heightmap.png"), config);
 	}
 }

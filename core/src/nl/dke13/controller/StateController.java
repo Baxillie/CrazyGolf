@@ -7,55 +7,48 @@ import nl.dke13.screens.*;
  * Switches between different screens
  * Has logic for screen switching and loading
  */
-public class StateController
+public class StateController extends Game
 {
     //GameController
     //Display
     //needs to know every screen
     //methods that create the screens
-    private Game display;
-
-    public StateController()
-    {
-        display = new Display();
-    }
-
-    public Game getDisplay()
-    {
-        return display;
-    }
 
     public void displayMenuScreen()
     {
-        display.setScreen(new MenuScreen(this));
+        setScreen(new MenuScreen(this));
     }
 
     public void displayEditorScreen()
     {
-        display.setScreen(new EditorScreen(this));
+        setScreen(new EditorScreen(this));
     }
 
     public void displayHoleSelectionScreen()
     {
-        display.setScreen(new HoleSelectionScreen(this));
+        setScreen(new HoleSelectionScreen(this));
     }
 
     public void displayGameOverScreen(int player1Turn, int player2Turn, boolean multiplayer)
     {
         if(multiplayer)
-            display.setScreen(new GameOverScreen(player1Turn, player2Turn, this));
+            setScreen(new GameOverScreen(player1Turn, player2Turn, this));
         else
-            display.setScreen(new GameOverScreen(player1Turn, this));
+            setScreen(new GameOverScreen(player1Turn, this));
     }
 
     public void displayInstructions()
     {
-        display.setScreen(new Instructions(this));
+        setScreen(new Instructions(this));
     }
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        display.setScreen(new GameDisplay());
+        setScreen(new GameDisplay());
     }
 
+    @Override
+    public void create() {
+        super.setScreen(new MenuScreen(this));
+    }
 }

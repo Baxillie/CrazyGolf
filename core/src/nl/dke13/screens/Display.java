@@ -2,7 +2,7 @@ package nl.dke13.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-
+@Deprecated
 public class Display extends Game
 {
 
