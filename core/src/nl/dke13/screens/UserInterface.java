@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
+@Deprecated
 public class UserInterface {
 
-    private final static float arrowSpeedPerSecond = 49;
+    private final static float arrowSpeedPerSecond = 120;
 
     private float ARROW_MIN_Y = 2;
     private float ARROW_MAX_Y = 100;
@@ -20,6 +20,8 @@ public class UserInterface {
 
     private float arrowHeight;
     private boolean moveArrow;
+
+    //todo: change controls
 
     public UserInterface()
     {

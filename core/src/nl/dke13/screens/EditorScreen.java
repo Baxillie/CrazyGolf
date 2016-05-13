@@ -4,23 +4,17 @@ import com.badlogic.gdx.Screen;
 import nl.dke13.controller.StateController;
 
 /**
- * allows you to select a hole and sends it to the state controller
+ * The current editor, without the physics implemented
+ * just allows you to create and save a world
  */
-public class HoleSelectionScreen implements Screen
+public class EditorScreen implements Screen
 {
-    //arraylist of all the files available
-    //button to apply your selection/confirm
-    //displays a list of the names of the levels
-    //can select more than one hole
-
     StateController stateController;
 
-    public HoleSelectionScreen(StateController stateController)
+    public EditorScreen(StateController stateController)
     {
         this.stateController = stateController;
     }
-
-
 
     @Override
     public void show() {

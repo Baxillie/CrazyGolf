@@ -2,23 +2,29 @@ package nl.dke13.physics;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
-
+import com.badlogic.gdx.math.collision.BoundingBox;
+@Deprecated
 public class Ball {
 
-    //mass of dynamic object is always 1 unit
+    //getMass of dynamic object is always 1 unit
     private final float DECCELERATION = 0.95f; //arbitrary number depending on input for velocity
     private ModelInstance object;
     private ObjectBox box;
     private Vector3 velocity;
     private Vector3 position;
-
+    private double radius;
+    private float mass;
+    private Vector3 prevVelocity;
     private boolean ballDone;
 
     public Ball(ModelInstance object, float modelX, float modelY, float modelZ, float modelWidth, float modelHeight, float modelDepth)
     {
         this.object = object;
         this.box = new ObjectBox(modelX, modelY, modelZ, modelWidth, modelHeight, modelDepth);
+        this.radius = modelWidth/2;
+        mass = 1f;
         velocity = new Vector3(0,0,0);
+        prevVelocity = new Vector3(0,0,2);
         position = new Vector3(modelX,modelY,modelZ);
         ballDone = false;
         object.transform.translate(0,13,0);
@@ -27,7 +33,8 @@ public class Ball {
 
     public void updateVelocity(Vector3 velocity)
     {
-        stopBall();
+        prevVelocity = velocity;
+        //stopBall();
         if(!velocity.isZero(0.001f))
         {
             this.velocity.x = velocity.x * DECCELERATION;
@@ -40,13 +47,19 @@ public class Ball {
         }
     }
 
+    public void incrementVelocity(Vector3 vector3)
+    {
+        velocity.x += vector3.x;
+        velocity.y += vector3.y;
+        velocity.z += vector3.z;
+    }
     //update object position according to velocity
     public void update()
     {
         updateVelocity(velocity);
         object.transform.translate(velocity);
         position.add(velocity);
-        box.setXYZ(velocity.x, velocity.y, velocity.z);
+        box.incrementXYZ(velocity.x, velocity.y, velocity.z);
     }
 
     public void stopBall()
@@ -86,8 +99,24 @@ public class Ball {
             return velocity;
         }
 
+    public Vector3 getPrevVelocity() { return prevVelocity; }
+
     public boolean getBallDone() {return ballDone;}
 
+    public double getRadius(){return radius;}
+
+    public float getMass() {return mass;}
+
+    public String debugString()
+    {
+        String s = "ball:\n";
+        s += "position: " + position.toString();
+        s += "\nvelocity: " + velocity.toString();
+        s += "\nprev vel: " + prevVelocity.toString();
+        s += "\nbounding box:\n";
+        s += box.debugString();
+        return s;
+    }
 }
 
 

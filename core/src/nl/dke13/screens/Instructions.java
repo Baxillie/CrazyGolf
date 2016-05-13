@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import nl.dke13.controller.StateController;
 
 public class Instructions implements Screen
 {
@@ -22,12 +23,12 @@ public class Instructions implements Screen
     private SpriteBatch batch;
     private Stage stage;
     private Skin skin;
-    private MenuScreen menuScreen;
-    private MainMenu mainMenu;
 
-    public Instructions(MainMenu mainMenu ,MenuScreen menuScreen){
-        this.menuScreen = menuScreen;
-        this.mainMenu = mainMenu;
+    private StateController stateController;
+
+    public Instructions(StateController stateController)
+    {
+        this.stateController = stateController;
         create();
     }
 
@@ -64,7 +65,7 @@ public class Instructions implements Screen
         backButton.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                // backButton.setText("Back to main menu");
-                mainMenu.setScreen(new MenuScreen(mainMenu));
+                stateController.displayMenuScreen();
             }
         });
     }

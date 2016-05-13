@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke13.physics.Ball;
-
+@Deprecated
 public class InputController implements InputProcessor {
 
     private UserInterface ui;

@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.collision.BoundingBox;
-
+@Deprecated
 public class WithCommentary implements ApplicationListener {
     PerspectiveCamera camera;
     CameraInputController cameraController; //makes the user be able to move the camera

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Tom Conneely on 24/04/2016.
  */
-
+@Deprecated
 public class GBall2
 {
     public Vector3 position;
