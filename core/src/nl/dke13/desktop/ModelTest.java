@@ -41,6 +41,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
 
 import javafx.scene.transform.Transform;
+import nl.dke13.controller.StateController;
 import nl.dke13.physics.StaticObject;
 import nl.dke13.screens.CrazyGolf;
 @Deprecated
@@ -68,6 +69,8 @@ public class ModelTest implements Screen {
     private ModelInstance golfBall;
     private ModelInstance golfBall2;
 
+    private StateController stateController;
+
 
     private Environment environment;
     private Environment skybox;
@@ -89,7 +92,7 @@ public class ModelTest implements Screen {
     private boolean floor = true;
     private boolean obstacle = false;
 
-    private Vector3 shotVector = new Vector3(0,3f,1f);
+    private Vector3 shotVector = new Vector3(0,2f,0.8f);
 
     public GBall ball;
     public GBall ball2;
@@ -98,7 +101,8 @@ public class ModelTest implements Screen {
 
     private int[][][] levelMatrix= new int[20][20][10];
 
-    public ModelTest() {
+    public ModelTest(StateController stateController){
+        this.stateController = stateController;
         create();
     }
 
@@ -127,8 +131,10 @@ public class ModelTest implements Screen {
 
         // Load models
 
+
+
         model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
-        TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/dude.G3DB"));
+        TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
         model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
         modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
         selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));

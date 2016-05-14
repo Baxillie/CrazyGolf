@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Tom Conneely on 24/04/2016.
  */
-@Deprecated
+
 public class GBall
 {
     public Vector3 position;
@@ -128,7 +128,7 @@ public class GBall
 
                     if((position.x<boxMinX-radius||position.x>boxMaxX+radius)&&
                     (nextY>boxMinY-radius&&nextY<boxMaxY+radius)&&
-                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))//&&
+                    (nextZ>boxMinZ&&nextZ<boxMaxZ))//&&
                     //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
                     {
                         velocityChange.x = 0 - velocityChange.x*1.1f;
@@ -138,7 +138,7 @@ public class GBall
                     }
                     else if((position.y<boxMinY-radius||position.y>boxMaxY+radius)&&
                     (nextX>boxMinX-radius&&nextX<boxMaxX+radius)&&
-                    (nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))//&&
+                    (nextZ>boxMinZ&&nextZ<boxMaxZ))//&&
                     //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
                     {
                         velocityChange.y = 0 - velocityChange.y*1.1f;
@@ -156,7 +156,7 @@ public class GBall
                             {
                                 //System.out.print("KLIP");
                                 //direction.z = 0 - direction.z*0.98f;
-                                velocityChange.z= 0 - velocityChange.z*0.80f;
+                                velocityChange.z= 0 - velocityChange.z*0.98f;
                                 //velocityChange.z = 0;
                                 //zcollide = true;
                                 gravity=true;
@@ -424,7 +424,7 @@ public class GBall
                 }*/
                 //this.direction.z = direction.z /direction.len();
                 //ystem.out.println("position={"+position+"}");
-                float friction = 0.95f;
+                float friction = 0.97f;
                 this.direction.x=this.direction.x*friction;
                 this.direction.y=this.direction.y*friction;
                 /*this.direction.x=this.direction.x*friction;*/
@@ -432,7 +432,7 @@ public class GBall
                 {
                     if (direction.z>0.08f)
                     {
-                        this.direction.z=this.direction.z/2;
+                        this.direction.z=this.direction.z/1.2f;
                     }
                     else
                     {
@@ -442,8 +442,9 @@ public class GBall
                         }
                         else
                         {
-                            this.direction.z=this.direction.z*2;
+                            this.direction.z=this.direction.z*1.2f;
                         }
+
                     }
                 }
                 else
@@ -532,7 +533,10 @@ public class GBall
                         gravity = false;
                         System.out.println("pork");
                     }
-
+                    if (height>1||direction.z!=0)
+                    {
+                        gravity = true;
+                    }
                 }
 
 

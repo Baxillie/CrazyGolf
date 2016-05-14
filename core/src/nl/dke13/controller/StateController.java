@@ -1,6 +1,7 @@
 package nl.dke13.controller;
 
 import com.badlogic.gdx.Game;
+import nl.dke13.desktop.ModelTest;
 import nl.dke13.screens.*;
 
 /**
