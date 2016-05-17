@@ -1,4 +1,4 @@
-package nl.dke13.screens;
+package nl.dke12.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -19,16 +19,11 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.UBJsonReader;
-import nl.dke13.controller.StateController;
-import nl.dke13.desktop.GBall;
-import nl.dke13.util.GameWorldLoader;
-import nl.dke13.util.GameWorldSaver;
+import nl.dke12.controller.StateController;
+import nl.dke12.util.GameWorldLoader;
+import nl.dke12.util.GameWorldSaver;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * The current editor, without the physics implemented
@@ -71,7 +66,7 @@ public class EditorScreen implements Screen
     private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
     private ArrayList<Model> models = new ArrayList<Model>();
     private ArrayList<Vector3> physObjects = new ArrayList<Vector3>();
-    public ArrayList<GBall> gballs = new ArrayList<GBall>();
+    //public ArrayList<GBall> gballs = new ArrayList<GBall>();
 
     private boolean swing = false;
 

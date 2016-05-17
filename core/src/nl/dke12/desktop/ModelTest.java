@@ -1,18 +1,10 @@
-package nl.dke13.desktop;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
+package nl.dke12.desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -29,21 +21,15 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.UBJsonReader;
 
-import javafx.scene.transform.Transform;
-
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
 
-import javafx.scene.transform.Transform;
-import nl.dke13.controller.StateController;
-import nl.dke13.physics.StaticObject;
-import nl.dke13.screens.CrazyGolf;
+import nl.dke12.controller.StateController;
+
 @Deprecated
 public class ModelTest implements Screen {
 
