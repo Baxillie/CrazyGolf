@@ -77,7 +77,7 @@ public class ModelTest implements Screen {
     private AnimationController controller;
     private AnimationController spincontroller;
     private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
-    private ArrayList<Vector3> physObjects = new ArrayList<Vector3>();
+    private ArrayList<SolidObject> physObjects = new ArrayList<SolidObject>();
     public ArrayList<GBall> gballs = new ArrayList<GBall>();
 
     private boolean swing = false;
@@ -92,9 +92,9 @@ public class ModelTest implements Screen {
     private boolean floor = true;
     private boolean obstacle = false;
 
-    private Vector3 shotVector = new Vector3(0,2f,0.8f);
+    private Vector3 shotVector = new Vector3(0,1.5f,0.8f);
 
-    public GBall ball;
+    public NewBallPhysics ball;
     public GBall ball2;
 
 
@@ -171,6 +171,7 @@ public class ModelTest implements Screen {
         modelInstancewall.transform.translate(0, 0, 0);
         windmill.transform.translate(0, 0, 5);
         select.transform.translate(0, 0, 0);
+
 
         // Scale the model down
         modelInstance.transform.scale(10f, 10f, 10f);
@@ -259,9 +260,9 @@ public class ModelTest implements Screen {
             }
 
         });
-        this.ball = new GBall(golfBall,0,0,0,0,0,0,this.physObjects,this.gballs);
-        this.ball2 = new GBall(golfBall2,0,0,0,0,0,0,this.physObjects,this.gballs);
-        gballs.add(this.ball);
+        this.ball = new NewBallPhysics(golfBall,0,0,0,0,0,0,this.physObjects,this.gballs);
+        //this.ball2 = new GBall(golfBall2,0,0,0,0,0,0,this.physObjects,this.gballs);
+        //gballs.add(this.ball);
         //gballs.add(ball2);
     }
 
@@ -297,19 +298,22 @@ public class ModelTest implements Screen {
             this.ball.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Keys.PLUS)) {
-            this.ball.push(0,0,0.2f);
-            this.ball.updatePosition();
+            if (ball.position.z<5)
+            {
+                this.ball.push(0,0,10);
+                this.ball.updatePosition();
+            }
         }
 
 
         this.ball.updatePosition();
-        this.ball2.updatePosition();
+        //this.ball2.updatePosition();
 /*        if (ball.collides())
         {
             ball.stop();
         }*/
         modelBatch.render(ball.object, environment);
-        modelBatch.render(ball2.object, environment);
+        //modelBatch.render(ball2.object, environment);
 
 
 
@@ -543,13 +547,20 @@ public class ModelTest implements Screen {
         instances.add(modelInstance3);
         if (model == model2) {
             addToLevel(x, y, z, (char) 1);
-            this.physObjects.add(new Vector3(x,y,z-10));
+            this.physObjects.add(new SolidObject(x,y,z-5,4,4,4));
+            System.out.println("plce"+x+" "+y+" "+z);
+            System.out.println("poss"+ball.position);
+            if(ball.closest!=null)
+            {
+                //System.out.println("close"+ball.closest.position);
+            }
+
         }
         if (model == modelwall) {
             addToLevel(x, y, z-5, (char) 2);
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
-            this.physObjects.add(new Vector3(x,y,z-5));
+            this.physObjects.add(new SolidObject(x,y,z-5,4,4,4));
             //modelInstancewall.transform.rotate(1, 0, 0, -90);
 //            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }

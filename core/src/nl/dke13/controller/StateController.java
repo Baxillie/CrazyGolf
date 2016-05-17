@@ -22,7 +22,7 @@ public class StateController extends Game
 
     public void displayEditorScreen()
     {
-        setScreen(new EditorScreen(this));
+        setScreen(new ModelTest(this));
     }
 
     public void displayHoleSelectionScreen()
