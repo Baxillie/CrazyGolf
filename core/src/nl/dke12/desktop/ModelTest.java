@@ -276,8 +276,8 @@ public class ModelTest implements Screen {
             this.ball.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Keys.Y)) {
-            this.ball2.push(shotVector.x,shotVector.y,shotVector.z);
-            this.ball2.updatePosition();
+            this.ball.push(shotVector.x,shotVector.y,shotVector.z);
+            this.ball.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Keys.G)) {
             this.ball.push(shotVector.x,shotVector.y,0);
@@ -533,12 +533,12 @@ public class ModelTest implements Screen {
         instances.add(modelInstance3);
         if (model == model2) {
             addToLevel(x, y, z, (char) 1);
-            this.physObjects.add(new SolidObject(x,y,z-5,4,4,4));
+            this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
             System.out.println("plce"+x+" "+y+" "+z);
             System.out.println("poss"+ball.position);
             if(ball.closest!=null)
             {
-                //System.out.println("close"+ball.closest.position);
+                //System.out.println("close"+ball.cloqsest.position);
             }
 
         }
@@ -546,12 +546,18 @@ public class ModelTest implements Screen {
             addToLevel(x, y, z-5, (char) 2);
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
-            this.physObjects.add(new SolidObject(x,y,z-5,4,4,4));
+            this.physObjects.add(new SolidObject(x,y,z-5f,4f,4f,4f));
             //modelInstancewall.transform.rotate(1, 0, 0, -90);
 //            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }
-        if (model == TWstatue) {
+        if (model == mill) {
             addToLevel(x, y, z, (char) 3);
+            SolidObject object = new SolidObject(x,y,z-5);
+            this.physObjects.add(object);
+            object.addPoint(x-4,y,z+4);
+            object.addPoint(x+4,y,z+4);
+            object.addPoint(x,y-4,z+4);
+            object.addPoint(x,y+4,z+4);
         }
 		/*if (model==model2)
 		{

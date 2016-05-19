@@ -2,15 +2,17 @@ package nl.dke12.desktop;
 
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by Tom Conneely on 16/05/2016.
  */
 public class Triangle {
 
-    public Vector3 point1;
-    public Vector3 point2;
-    public Vector3 point3;
+    private Vector3 point1;
+    private Vector3 point2;
+    private Vector3 point3;
     private Vector3 normal;
 
     public Triangle(Vector3 pointOne,Vector3 pointTwo, Vector3 pointThree)
@@ -31,7 +33,8 @@ public class Triangle {
 
     public Vector3 getNormal()
     {
-        return this.normal;
+
+        return normal;
     }
 
     public Vector3 getIntersection(Vector3 point)
@@ -43,7 +46,7 @@ public class Triangle {
         float t = norm1.dot(vector1)-norm2.dot(point);
         Vector3 norm3 = new Vector3(this.normal);
         Vector3 intersection = new Vector3(point);
-        intersection.add(norm3.scl(t));
+        intersection.add(new Vector3(norm3).scl(t));
 
         return intersection;
     }
@@ -88,7 +91,7 @@ public class Triangle {
             Vector3 closestPoint = new Vector3(clamp(baryPoint.x,0f,1f),clamp(baryPoint.y,0f,1f),clamp(baryPoint.z,0f,1f));
             Vector3 pointTwo = new Vector3(closestPoint);
             float distance=pointTwo.sub(point).len();
-            //System.out.println("lol");
+            //System.out.println("lol"+pointTwo);
             return distance;
         }
 
@@ -149,7 +152,7 @@ public class Triangle {
 
         Vector3 baryPoint = new Vector3(Barycentric(point,new Vector3(new Vector3(point1).sub(point2))
                 ,new Vector3(new Vector3(point2).sub(point3)),new Vector3(new Vector3(point1).sub(point3)),0f,0f,0f));
-        if (baryPoint.x<1&&baryPoint.x>0&&baryPoint.y<1&&baryPoint.y>0&&baryPoint.z<1&&baryPoint.z>0)
+        if (baryPoint.x<=1&&baryPoint.x>=0&&baryPoint.y<=1&&baryPoint.y>=0&&baryPoint.z<=1&&baryPoint.z>=0)
         {
             return true;
         }
@@ -158,5 +161,112 @@ public class Triangle {
             return false;
         }
 
+    }
+
+    public Vector3 closestPoint(Vector3 point )
+    {
+        Vector3 edge0 = new Vector3(new Vector3(point2).sub(point1));
+        Vector3 edge1 = new Vector3(new Vector3(point3).sub(point1));
+        Vector3 v0 = new Vector3(new Vector3(point1).sub(point));
+
+        float a = edge0.dot( edge0 );
+        float b = edge0.dot( edge1 );
+        float c = edge1.dot( edge1 );
+        float d = edge0.dot( v0 );
+        float e = edge1.dot( v0 );
+
+        float det = a*c - b*b;
+        float s = b*e - c*d;
+        float t = b*d - a*e;
+
+        if ( s + t < det )
+        {
+            if ( s < 0.f )
+            {
+                if ( t < 0.f )
+                {
+                    if ( d < 0.f )
+                    {
+                        s = clamp( -d/a, 0.f, 1.f );
+                        t = 0.f;
+                    }
+                    else
+                    {
+                        s = 0.f;
+                        t = clamp( -e/c, 0.f, 1.f );
+                    }
+                }
+                else
+                {
+                    s = 0.f;
+                    t = clamp( -e/c, 0.f, 1.f );
+                }
+            }
+            else if ( t < 0.f )
+            {
+                s = clamp( -d/a, 0.f, 1.f );
+                t = 0.f;
+            }
+            else
+            {
+                float invDet = 1.f / det;
+                s *= invDet;
+                t *= invDet;
+            }
+        }
+        else
+        {
+            if ( s < 0.f )
+            {
+                float tmp0 = b+d;
+                float tmp1 = c+e;
+                if ( tmp1 > tmp0 )
+                {
+                    float numer = tmp1 - tmp0;
+                    float denom = a-2*b+c;
+                    s = clamp( numer/denom, 0.f, 1.f );
+                    t = 1-s;
+                }
+                else
+                {
+                    t = clamp( -e/c, 0.f, 1.f );
+                    s = 0.f;
+                }
+            }
+            else if ( t < 0.f )
+            {
+                if ( a+d > b+e )
+                {
+                    float numer = c+e-b-d;
+                    float denom = a-2*b+c;
+                    s = clamp( numer/denom, 0.f, 1.f );
+                    t = 1-s;
+                }
+                else
+                {
+                    s = clamp( -e/c, 0.f, 1.f );
+                    t = 0.f;
+                }
+            }
+            else
+            {
+                float numer = c+e-b-d;
+                float denom = a-2*b+c;
+                s = clamp( numer/denom, 0.f, 1.f );
+                t = 1.f - s;
+            }
+        }
+
+        return new Vector3(new Vector3(point1).add(new Vector3(edge0).scl(s).add(new Vector3(edge1).scl(t))));
+    }
+
+    public ArrayList<Vector3> getPoints()
+    {
+        ArrayList<Vector3> points= new ArrayList<Vector3>();
+        points.add(point1);
+        points.add(point2);
+        points.add(point3);
+
+        return points;
     }
 }
