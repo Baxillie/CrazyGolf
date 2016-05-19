@@ -57,7 +57,6 @@ public class ModelTest implements Screen {
 
     private StateController stateController;
 
-
     private Environment environment;
     private Environment skybox;
     private AnimationController controller;
@@ -82,9 +81,6 @@ public class ModelTest implements Screen {
 
     public NewBallPhysics ball;
     public GBall ball2;
-
-
-
     private int[][][] levelMatrix= new int[20][20][10];
 
     public ModelTest(StateController stateController){
@@ -116,9 +112,6 @@ public class ModelTest implements Screen {
         G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
         // Load models
-
-
-
         model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
         TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
         model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
@@ -147,9 +140,6 @@ public class ModelTest implements Screen {
         select.transform.rotate(1, 0, 0, 90);*/
         //windmill.transform.rotate(1, 0, 0, 90);
 
-
-
-
         // Move the model down a bit on the screen ( in a z-up world, down is -z ).
         modelInstance.transform.translate(0, 0, 0);
         modelInstance1.transform.translate(0, 0, 0);
@@ -158,7 +148,6 @@ public class ModelTest implements Screen {
         windmill.transform.translate(0, 0, 5);
         select.transform.translate(0, 0, 0);
 
-
         // Scale the model down
         modelInstance.transform.scale(10f, 10f, 10f);
         modelInstance1.transform.scale(0.4f, 0.4f, 0.4f);
@@ -166,8 +155,6 @@ public class ModelTest implements Screen {
         modelInstancewall.transform.scale(4f, 4f, 4f);
         select.transform.scale(4f, 4f, 4f);
         //golfBall.transform.scale(1.5f, 1.5f, 1.5f);
-
-
 
 
         // Finally we want some light, or we wont see our color.  The environment gets passed in during
@@ -218,24 +205,6 @@ public class ModelTest implements Screen {
 
             @Override
             public void onEnd(AnimationDesc animation) {
-                // this will be called when the current animation is done.
-                // queue up another animation called "balloon".
-                // Passing a negative to loop count loops forever.  1f for speed is normal speed.
-                //controller.queue("balloon",-1,1f,null,0f);
-                /*if (swing == false)
-                {
-                    controller.queue("Bend",1,1f,null,0f);
-                }
-                else
-                {
-
-                }*/
-                /*if (swing== true)
-                {
-                    spincontroller.queue("Bend", -1, 1f, null, 0f);
-                }
-                swing = false;*/
-                //swing = false;
                 spincontroller.queue("Spin", -1, 1f, null, 0f);
             }
 
@@ -247,9 +216,6 @@ public class ModelTest implements Screen {
 
         });
         this.ball = new NewBallPhysics(golfBall,0,0,0,0,0,0,this.physObjects,this.gballs);
-        //this.ball2 = new GBall(golfBall2,0,0,0,0,0,0,this.physObjects,this.gballs);
-        //gballs.add(this.ball);
-        //gballs.add(ball2);
     }
 
     @Override
@@ -268,8 +234,6 @@ public class ModelTest implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-
-
 
         if (Gdx.input.isKeyPressed(Keys.T)) {
             this.ball.push(shotVector.x,shotVector.y,shotVector.z);
@@ -300,8 +264,6 @@ public class ModelTest implements Screen {
         }*/
         modelBatch.render(ball.object, environment);
         //modelBatch.render(ball2.object, environment);
-
-
 
         // Pass in the box Instance and the environment
         modelBatch.begin(camera);
@@ -505,21 +467,6 @@ public class ModelTest implements Screen {
         modelBatch.end();
     }
 
-/*   public Vector3 crossProduct(Vector3 v)
-    {
-        double x= this.x;
-        double y= this.y;
-        double z= this.z;
-
-        //return this.set(y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x);
-
-        Vector3 vector = new Vector3();
-        vector.set((float)(y * v.z - z * v.y),(float) (z * v.x - x * v.z),(float)( x * v.y - y * v.x));
-
-        return vector;
-    }*/
-
-
     public void placeTile(int x, int y, int z, Model model) {
 
         ModelInstance modelInstance3 = new ModelInstance(model);
@@ -528,7 +475,6 @@ public class ModelTest implements Screen {
         modelInstance3.transform.scale(4f, 4f, 4f);
 
         placementZ = z;
-
 
         instances.add(modelInstance3);
         if (model == model2) {
@@ -547,8 +493,6 @@ public class ModelTest implements Screen {
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
             this.physObjects.add(new SolidObject(x,y,z-5f,4f,4f,4f));
-            //modelInstancewall.transform.rotate(1, 0, 0, -90);
-//            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }
         if (model == mill) {
             addToLevel(x, y, z, (char) 3);
@@ -559,15 +503,6 @@ public class ModelTest implements Screen {
             object.addPoint(x,y-4,z+4);
             object.addPoint(x,y+4,z+4);
         }
-		/*if (model==model2)
-		{
-			saveLevel(x,y,0);
-		}
-		if (model==model2)
-		{
-			saveLevel(x,y,0);
-		}*/
-
     }
 
     public void resetCamera() {
@@ -584,62 +519,12 @@ public class ModelTest implements Screen {
 
     }
 
-
     private int[][][] level = new int[30][30][30];
 
-    public void addToLevel(int x, int y, int z, char type) {
-        /*if (x < level.length / 2 && y < level.length / 2 && x > -level[0].length / 2 && y > -level[0].length / 2 && z < level[0][0].length / 2 && z > -level[0][0].length / 2) {
-            level[x + 10][y + 10][z + 5] = type;
-            System.out.print(level[x + 10][y + 10][z + 5]);
-        }*/
+    public void addToLevel(int x, int y, int z, char type)
+    {
         level[x/8+10][y/8+10][1] = type;
-        //System.out.println(level[(x+10)/8][(y+10)/8][(z+10)/8]);
-        //System.out.println(" x/8+10 = "+x/8+10+" y/8+10 = "+y/8+10+" z/8+10 = "+z/8+10);
     }
-
-	/*
-	public void saveLevel(String name)
-	{
-
-		    String s;
-		    try
-		    {
-		    File file = new File(name);
-		    FileWriter fWriter = new FileWriter (file);
-		    PrintWriter pWriter = new PrintWriter (fWriter);
-		    StringBuilder string = new StringBuilder();
-		    for(int j=0;j<level.length;j++)
-    		{
-    			for (int k=0;k<level[0].length;k++)
-    			{
-    				if(level[j][k]==1)
-    				{
-    					//pWriter.print("1");
-    					//System.out.println("j="+j+" k="+k);
-    					string.setCharAt((k+50)%50,(char)1);
-    				}
-    				else
-    				{
-    					pWriter.print("0");
-    				}
-
-    			}
-
-    		}
-		    pWriter.print(string);
-		    pWriter.close();
-		    }
-		    catch (FileNotFoundException e)
-		    {
-		        e.printStackTrace();
-		    }
-		    catch (IOException e)
-		    {
-				e.printStackTrace();
-			}
-
-	}
-	*/
 
     public void fileReader(String name) {
         File file = ((Gdx.files.internal(name)).file());
@@ -653,21 +538,18 @@ public class ModelTest implements Screen {
             int semiColonCount = 0;
             while (sc.hasNext()) {
                 s = sc.next();
-
-
                 for (int i = 0; i < s.length(); i++) {
                     //System.out.println(s.charAt(i));
-
                     if (s.charAt(i) == '1') {
-                        placeTile((xPos-10)*8, (yPos-10)*8, -3, model2);
+                        placeTile((xPos - 10) * 8, (yPos - 10) * 8, -3, model2);
                         yPos += 1;
                     }
                     if (s.charAt(i) == '2') {
-                        placeTile((xPos-10)*8, (yPos-10)*8, -3, modelwall);
+                        placeTile((xPos - 10) * 8, (yPos - 10) * 8, -3, modelwall);
                         yPos += 1;
                     }
                     if (s.charAt(i) == '3') {
-                        placeTile((xPos-10)*8, (yPos-10)*8, 0,mill);
+                        placeTile((xPos - 10) * 8, (yPos - 10) * 8, 0, mill);
                         yPos += 1;
                     }
                     if (s.charAt(i) == '0') {
@@ -675,88 +557,11 @@ public class ModelTest implements Screen {
                     }
                     if (s.charAt(i) == ';') {
                         semiColonCount++;
-                        //if (semiColonCount == 1)
-                        //{
                         xPos += 1;
                         yPos = 0;
-                        //}
-                            /*if (semiColonCount == 2)
-                            {
-                                xPos+=1;
-                            }*/
                     }
-
                 }
-
-
-                // s = sc.nextLine();
-		            /*for (int i = 0; i < s.length(); i++)
-					{
-		            	//if (s.charAt(i) == '1')
-		            	{
-		            		for(int j=0;j<50;j++)
-		            		{
-		            			for (int k=0;k<50;k++)
-		            			{
-
-		            				level[j][k]=s.charAt(i);
-
-		            			}
-		            		}
-
-		            		for(int j=0;j<50;j++)
-		            		{
-		            			for (int k=0;k<50;k++)
-		            			{
-		            				if(level[j][k]==1)
-		            				{
-		            					placeTile(10,0,10,model2);
-		            				}
-
-		            			}
-		            		}
-
-		            	}
-					}*/
-                //char[] text = new char[50];
-		            /*for(int i=0;i<s.length();i++)
-            		{
-		            	text[i] = s.charAt(i);
-            		}*/
-		            /*for(int i=0;i<s.length();i++)
-            		{
-            				/*if (s.length()>100)
-            				{
-	            				if (s.charAt(i) == '1')
-	            				{
-	            					level[(int) Math.floor(i/25)][i%25]=1;
-	            					System.out.println("load");
-	            				}
-            				}*/
-                //s.getChars(0, s.length(), level[i], 0);
-                //level[i] = text[i].toCharArray();
-		            	/*if (s.charAt(i) == '1')
-        				{
-		            		level[(int) Math.floor(i/50)][i%50]=1;
-        				}*/
-
-
             }
-            		/*
-		            for(int j=0;j<level.length;j++)
-            		{
-            			for (int k=0;k<level[0].length;k++)
-            			{
-            				if(level[j][k]==1)
-            				{
-            					placeTile((j),-2,(k),model2);
-            					System.out.println("j="+j+" k="+k);
-            				}
-
-            			}
-            		}*/
-
-
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -800,47 +605,10 @@ public class ModelTest implements Screen {
 
     @Override
     public void show() {
-        // TODO Auto-generated method stub
 
     }
-
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
-
     }
 }
-
-/*
-	public void actionPerformed(ActionEvent e)
-	{
-		//String pointslist = points.getText();
-		//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-//		String points = "(4,3),(4,6),(4,5),(3,6),(3,2),(6,2),(6,7),(5,7),(5,1),(2,7),(7,1)";
-//		readPoints(pointslist);
-		//search();
-
-		try {
-			File file = new File("level1.txt");
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			//bw.write(pointslist);
-			bw.close();
-			//readPoints(file);
-
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-
-	}
-
-};
-*/
