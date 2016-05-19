@@ -27,13 +27,10 @@ public class Triangle {
         this.normal = new Vector3(vector1);
         this.normal.crs(vector2);
         this.normal.scl(1/this.normal.len());
-        //System.out.println("  norm="+normal);
-
     }
 
     public Vector3 getNormal()
     {
-
         return normal;
     }
 
@@ -91,7 +88,6 @@ public class Triangle {
             Vector3 closestPoint = new Vector3(clamp(baryPoint.x,0f,1f),clamp(baryPoint.y,0f,1f),clamp(baryPoint.z,0f,1f));
             Vector3 pointTwo = new Vector3(closestPoint);
             float distance=pointTwo.sub(point).len();
-            //System.out.println("lol"+pointTwo);
             return distance;
         }
 
@@ -123,7 +119,6 @@ public class Triangle {
 
     public boolean testIntersection(Vector3 point)
     {
-
         Vector3 p1 = new Vector3(this.point1);
         Vector3 p2 = new Vector3(this.point2);
         Vector3 p3 = new Vector3(this.point3);
@@ -131,27 +126,9 @@ public class Triangle {
         // (finding floats e,r,u  for the triangle formed by Vector3s v1,v2,v3 such that e⋅v1+r⋅v2+u⋅v3=p0
         //  where p0 is the point being tested for intersection)
 
-            /*
-            if(point.sub(p1).len()>p1.sub(p2).len()||
-                point.sub(p1).len()>p1.sub(p3).len()||
-                point.sub(p1).len()>p2.sub(p3).len()||
-                point.sub(p2).len()>p1.sub(p2).len()||
-                point.sub(p2).len()>p1.sub(p3).len()||
-                point.sub(p2).len()>p2.sub(p3).len()||
-                point.sub(p3).len()>p1.sub(p2).len()||
-                point.sub(p3).len()>p1.sub(p3).len()||
-                point.sub(p3).len()>p2.sub(p3).len())
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-            */
+        Vector3 baryPoint = new Vector3(Barycentric(point,new Vector3(new Vector3(p1).sub(p2))
+                ,new Vector3(new Vector3(p2).sub(p3)),new Vector3(new Vector3(p1).sub(p3)),0f,0f,0f));
 
-        Vector3 baryPoint = new Vector3(Barycentric(point,new Vector3(new Vector3(point1).sub(point2))
-                ,new Vector3(new Vector3(point2).sub(point3)),new Vector3(new Vector3(point1).sub(point3)),0f,0f,0f));
         if (baryPoint.x<=1&&baryPoint.x>=0&&baryPoint.y<=1&&baryPoint.y>=0&&baryPoint.z<=1&&baryPoint.z>=0)
         {
             return true;
@@ -160,7 +137,6 @@ public class Triangle {
         {
             return false;
         }
-
     }
 
     public Vector3 closestPoint(Vector3 point )

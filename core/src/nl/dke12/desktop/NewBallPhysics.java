@@ -51,13 +51,9 @@ public class NewBallPhysics {
         float zvect=direction.z+zpush;
         Vector3 dir = new Vector3(xvect/2,yvect/2,zvect/2);
         if (dir.z>0)
-        {
             gravity = true;
 
-        }
         direction.set(dir);
-        //System.out.print( direction.x+ direction.y+ direction.z+"\n");
-        //System.out.print( xpush+ ypush+  zpush+"\n");
     }
 
     public void stop()
@@ -181,83 +177,13 @@ public class NewBallPhysics {
                     {
                         gravity = false;
                         velocityChange.z= 0;
-
                         //push(direction.x,direction.y,0);
                     }
-
-/*
-                    for(float i=0;i<direction.len();i+=0.1f)
-                    {
-                        float posX=position.x+direction.x*i;
-                        float posY=position.y+direction.y*i;
-                        float posZ=position.z+direction.z*i;
-
-                        if ((posX>boxMinX-radius&&posX<boxMaxX+radius)
-                            &&(posY>boxMinY-radius&&posY<boxMaxY+radius)
-                            &&(posZ>boxMinZ-radius&&posZ<boxMaxZ+radius))
-                        {
-                            float length= i-0.1f;
-                            float locatX = position.x+direction.x*length;
-                            float locatY = position.y+direction.y*length;
-                            float locatZ = position.z+direction.z*length;
-
-                            if((locatX<boxMinX-radius||locatX>boxMaxX+radius)&&
-                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius)&&
-                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
-                            //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
-                            {
-                                velocityChange.x = 0 - velocityChange.x*1.1f;
-                                //velocityChange.x = 0;
-                                System.out.print("trup");
-
-                            }
-                            else if((locatY<boxMinY-radius||locatY>boxMaxY+radius)&&
-                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
-                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
-                            //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
-                            {
-                                velocityChange.y = 0 - velocityChange.y*1.1f;
-                                //velocityChange.y = 0;
-                                System.out.print("HArp");
-                            }
-                            else if((locatZ<boxMinZ-radius||locatZ>boxMaxZ+radius)&&
-                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
-                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius))//&&
-                            //(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
-                            {
-                                if (direction.z<-0.08||direction.z>=0.08)
-                                {
-                                    //System.out.print("KLIP");
-                                    //direction.z = 0 - direction.z*0.98f;
-                                    velocityChange.z= 0 - velocityChange.z*0.80f;
-                                    //velocityChange.z = 0;
-                                    //zcollide = true;
-                                    gravity=true;
-
-                                    //push(direction.x,direction.y,0);
-                                }
-                                else if (direction.z>=-0.08&&direction.z<=0.08)
-                                {
-                                    gravity = false;
-                                    velocityChange.z= 0;
-
-                                    //push(direction.x,direction.y,0);
-                                }
-                            }
-                        }
-                    }
-*/
-                    //}
-                    //else
-                    //{
-                    //    gravity = true;
-                    //}
                 }
                 else
                 {
                     zcollide = false;
                 }
-
             }
             else
             {
@@ -265,7 +191,6 @@ public class NewBallPhysics {
                 wy =false;
                 zed = false;
             }
-
         }
         //}
         /*if(position.z>boxMinZ-radius&&position.z<boxMaxZ+radius)
@@ -329,19 +254,6 @@ public class NewBallPhysics {
                     }*/
         // }
 
-
-        //todo: fix Z next period
-        //todo: corners are a bit fucked :3
-        //velocityChange.z = 0 - velocityChange.z;
-        //System.out.println("BOUNCE");
-
-        //}
-        //position.set(position.x-velocityChange.x/2,position.y-velocityChange.y/2,position.z-velocityChange.z/2);
-        /*if (zcollide = true)
-        {
-            push(velocityChange.x,velocityChange.y,velocityChange.z);
-            push(velocityChange.x,velocityChange.y,velocityChange.z);
-        }*/
         push(velocityChange.x,velocityChange.y,velocityChange.z);
         push(velocityChange.x,velocityChange.y,velocityChange.z);
         //updatePosition();
@@ -360,9 +272,6 @@ public class NewBallPhysics {
         {
             //obstacles = list of the solid (ie: with which the ball can interact) objects in the room,
             //each of which contains a list of it's (outer) points
-
-            //System.out.println("h="+h);
-
             if(closest!=null)
             {
                 Vector3 waill = new Vector3(obstacles.get(h).getPosition());
@@ -370,14 +279,8 @@ public class NewBallPhysics {
                 if(new Vector3(new Vector3(waill).sub(this.position)).len()<new Vector3(new Vector3(cloisest).sub(this.position)).len())
                 //if(wall.position.
                 {
-
-                    //System.out.println("new object"+closest.getPosition());
                     plane = null;
-                    /*System.out.println("near"+obstacles.get(h).position);
-                    System.out.println("far"+closest.position);
-                    System.out.println("pos"+position);*/
                     closest = obstacles.get(h);
-                    //System.out.println("new object"+closest.getPosition());
                 }
                 else
                 {
@@ -393,21 +296,6 @@ public class NewBallPhysics {
             System.out.println("ball"+this.position);*/
         }
 
-
-            /*
-            Vector3 point1 = new Vector3(wall.points.get(i));
-            plane = new Plane(close,closer,closest);
-            if (plane!=null)
-            {
-                if((new Plane(close,closer,closest).distance(position)<plane.distance(position)))
-                {
-                    plane= new Plane(close,closer,closest);
-                }
-            }
-            else
-            {
-                plane= new Plane(close,closer,closest);
-            }*/
         if(closest!=null)
         {
             for(int i=0; i<closest.getPoints().size();i++)
@@ -540,18 +428,6 @@ public class NewBallPhysics {
     {
         if(direction.len()>0.08)
         {
-                /*if (false)
-                {
-                    //this.direction.sub(direction.x/50,direction.y/50,0);
-                    this.direction.scl(0.99f);
-                }
-                else
-                {
-                    //this.direction.sub(direction.x/60,direction.y/60,0);
-                    this.direction.scl(0.99f);
-                }*/
-            //this.direction.z = direction.z /direction.len();
-            //ystem.out.println("position={"+position+"}");
             float friction = 0.97f;
             this.direction.x=this.direction.x*friction;
             this.direction.y=this.direction.y*friction;
@@ -588,64 +464,6 @@ public class NewBallPhysics {
         }
         else
         {
-                /*for(int i=0;i<this.instances.size();i++)
-                {
-                    if (instances.size()>0);
-                    {
-                        float boxMinX = instances.get(i).x-4f;
-                        float boxMinY = instances.get(i).y-4f;
-                        float boxMinZ = instances.get(i).z-4f;
-                        float boxMaxX = instances.get(i).x+4f;
-                        float boxMaxY = instances.get(i).y+4f;
-                        float boxMaxZ = instances.get(i).z+4f;
-
-                        Vector3 corner1 = new Vector3(instances.get(i).sub(4,4,4));
-                        Vector3 corner2 = new Vector3(instances.get(i).sub(-4,4,4));
-                        Vector3 corner3 = new Vector3(instances.get(i).sub(-4,-4,4));
-                        Vector3 corner4 = new Vector3(instances.get(i).sub(-4,-4,-4));
-                        Vector3 corner5 = new Vector3(instances.get(i).sub(4,4,-4));
-                        Vector3 corner6 = new Vector3(instances.get(i).sub(4,-4,-4));
-                        Vector3 corner7 = new Vector3(instances.get(i).sub(4,-4,4));
-                        Vector3 corner8 = new Vector3(instances.get(i).sub(-4,4,-4));
-
-                        if (corner1.sub(position).len()<1)
-                        {
-                            push(position.sub(corner1).x*-2,position.sub(corner1).y*-2,position.sub(corner1).z*-2);
-                        }
-                        else if(corner2.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else if(corner3.sub(position).len()<1)
-                        {
-                            push(position.sub(corner3).x*-2,position.sub(corner3).y*-2,position.sub(corner3).z*-2);
-                        }
-                        else if(corner4.sub(position).len()<1)
-                        {
-                            push(position.sub(corner4).x*-2,position.sub(corner4).y*-2,position.sub(corner4).z*-2);
-                        }
-                        else if(corner5.sub(position).len()<1)
-                        {
-                            push(position.sub(corner5).x*-2,position.sub(corner5).y*-2,position.sub(corner5).z*-2);
-                        }
-                        else if(corner6.sub(position).len()<1)
-                        {
-                            push(position.sub(corner6).x*-2,position.sub(corner6).y*-2,position.sub(corner6).z*-2);
-                        }
-                        else if(corner7.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else if(corner8.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else
-                        {
-                            this.direction.set(0, 0, 0);
-                        }
-                    }
-                }*/
             if (direction.x<0.081 && direction.x>-0.081)
             {
                 direction.x = 0;
@@ -667,37 +485,6 @@ public class NewBallPhysics {
                 }
             }
         }
-        //}
-        //else
-        //{
-
-        //GRAVITY
-        /*if (gravity)
-        {
-                if (this.direction.z>0)
-                {
-
-                    if (this.direction.z>0.11)
-                    {
-                        this.direction.z*=0.5;
-                    }
-                    else
-                    {
-                        this.direction.z=-this.direction.z;
-
-                    }
-                }
-                else if (this.direction.z>-1.1)
-                {
-
-                        this.direction.z*=2;
-                }
-            //}
-        }
-        else
-        {
-            System.out.print("position:"+position);
-        }*/
     }
 
     public void updatePosition()
@@ -788,66 +575,18 @@ public class NewBallPhysics {
 
                 if(ex&&wy&&zed)
                 {
-                    if (position.z>boxMaxZ&&position.z-1<=boxMaxZ)
-                    {
-                        if (direction.z<0.08&&direction.z>-0.08) {
+                    if (position.z>boxMaxZ&&position.z-1<=boxMaxZ) {
+                        if (direction.z < 0.08 && direction.z > -0.08) {
                             Vector3 velocityChange = new Vector3();
                             velocityChange.set(direction);
                             //direction.z=0f;
                             System.out.print("HERE");
                             zcollide = true;
-                            gravity=false;
-                                /*if (position.z!=boxMaxZ+1)
-                                {
-                                    velocityChange.z=boxMaxZ+1-position.z;
-                                }*/
-                                /*velocityChange.z = 0 - velocityChange.z;
-                                zcollide = true;
-                                updateVelocity(velocityChange)*/
+                            gravity = false;
                         }
-
-                            /*else
-                            {
-                                if (this.direction.z>0)
-                                {
-                                    if (this.direction.z>0.01)
-                                    {
-                                        this.direction.z*=0.5;
-                                    }
-                                    else
-                                    {
-                                        this.direction.z=-this.direction.z;
-                                    }
-                                }
-                                else if (this.direction.z>-1.1)
-                                {
-                                    this.direction.z*=2;
-                                }
-                            }*/
                     }
-                        /*else if (position.z>boxMaxZ&&position.z+direction.z>boxMaxZ)
-                        {
-                            if (this.direction.z>0)
-                            {
-                                if (this.direction.z>0.008)
-                                {
-                                    this.direction.z*=0.5;
-                                }
-                                else
-                                {
-                                    this.direction.z=-this.direction.z;
-                                }
-                            }
-                            else if (this.direction.z>-1.1)
-                            {
-                                this.direction.z*=2;
-                            }
-                            this.position.add(this.direction);
-                            object.transform.translate(this.direction);
-                        }*/
                 }
             }
         }
-        //}
     }
 }
