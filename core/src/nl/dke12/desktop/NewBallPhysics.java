@@ -14,7 +14,7 @@ public class NewBallPhysics {
 
     public Vector3 position;
     public Vector3 direction;
-    public ArrayList<Vector3> instances = new ArrayList<Vector3>();
+    public ArrayList<Vector3> instances = new ArrayList<>();
     public BoundingBox box;
     public ModelInstance object;
     public Vector3 nextPosition = new Vector3(0,0,0);
@@ -114,6 +114,7 @@ public class NewBallPhysics {
             float boxMinX = instances.get(index).x-4.0f;
             float boxMinY = instances.get(index).y-4.0f;
             float boxMinZ = instances.get(index).z-2.0f;
+
             float boxMaxX = instances.get(index).x+4.0f;
             float boxMaxY = instances.get(index).y+4.0f;
             float boxMaxZ = instances.get(index).z+6.0f;
@@ -490,9 +491,7 @@ public class NewBallPhysics {
                 (plane.getDistance(nextPosition)<1)&&
                 (plane.testIntersection(plane.getIntersection(position))))*/
             if(new Vector3(new Vector3(nextposPlane).sub(nextPosition)).len()<1)
-
             {
-
                 //centreline = inward facing normal of collision plane
                 Vector3 unitNormal = new Vector3(plane.getNormal());
                 //check if normal is outward facing
@@ -539,8 +538,6 @@ public class NewBallPhysics {
 
     public void updateVelocity(Vector3 direction)
     {
-        //if (zcollide)
-        //{
         if(direction.len()>0.08)
         {
                 /*if (false)
@@ -665,13 +662,10 @@ public class NewBallPhysics {
                     gravity = false;
                     System.out.println("pork");
                 }
-                if (height>1||direction.z!=0)
-                {
+                if (height > 1 || direction.z != 0) {
                     gravity = true;
                 }
             }
-
-
         }
         //}
         //else
@@ -711,9 +705,6 @@ public class NewBallPhysics {
         float dist = 1f;
         float shoot = 0f;
 
-        //if (direction.len()>0)
-        //{
-
         if (collides(dist))
         {
             boolean bloop=false;
@@ -734,12 +725,9 @@ public class NewBallPhysics {
         }
         else
         {
-
             this.position.add(this.direction);
             object.transform.translate(this.direction);
             //System.out.println(this.position);
-
-
             updateVelocity(this.direction);
         }
 
@@ -802,8 +790,7 @@ public class NewBallPhysics {
                 {
                     if (position.z>boxMaxZ&&position.z-1<=boxMaxZ)
                     {
-                        if (direction.z<0.08&&direction.z>-0.08)
-                        {
+                        if (direction.z<0.08&&direction.z>-0.08) {
                             Vector3 velocityChange = new Vector3();
                             velocityChange.set(direction);
                             //direction.z=0f;

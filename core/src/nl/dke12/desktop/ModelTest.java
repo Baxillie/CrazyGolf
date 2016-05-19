@@ -62,9 +62,9 @@ public class ModelTest implements Screen {
     private Environment skybox;
     private AnimationController controller;
     private AnimationController spincontroller;
-    private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
-    private ArrayList<SolidObject> physObjects = new ArrayList<SolidObject>();
-    public ArrayList<GBall> gballs = new ArrayList<GBall>();
+    private ArrayList<ModelInstance> instances = new ArrayList<>();
+    private ArrayList<SolidObject> physObjects = new ArrayList<>();
+    public ArrayList<GBall> gballs = new ArrayList<>();
 
     private boolean swing = false;
 

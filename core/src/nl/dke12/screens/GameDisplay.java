@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import nl.dke12.game.GameObject;
 import nl.dke12.game.GameWorld;
 
 /**
@@ -30,18 +29,19 @@ public class GameDisplay implements Screen
         camera.translate(0,-10, 10);
         camera.lookAt(0,0,0);
 
-
         this.renderer = new ModelBatch();
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
 
     }
 
     @Override
-    public void render(float delta) {
-    //main loop of game
+    public void render(float delta)
+    {
+        //main loop of game
         //call render of GameWorld which does the physics stuff
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -54,27 +54,32 @@ public class GameDisplay implements Screen
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
 
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void hide()
+    {
 
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
 
     }
 
