@@ -9,11 +9,15 @@ import java.util.ArrayList;
  */
 public class SolidObject
 {
-    private ArrayList<Vector3> points = new ArrayList<>();
-    private Vector3 position = new Vector3();
-    public SolidObject(float x, float y, float z, float width, float depth, float height)
+    private ArrayList<Vector3> points;
+    private Vector3 position;
+    private String type;
+
+
+    public SolidObject(float x, float y, float z, float width, float depth, float height, String type)
     {
         position = new Vector3(x,y,z);
+        this.type = type;
         points=new ArrayList<>();
         addPoint(x-width,y-depth,z-height);
         addPoint(x-width,y-depth,z+height);
@@ -45,4 +49,10 @@ public class SolidObject
     {
         return position;
     }
+
+    public String getType()
+    {
+        return type;
+    }
+
 }

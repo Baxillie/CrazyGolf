@@ -114,8 +114,6 @@ public class GameDisplay implements Screen
 
         // Load models
 
-
-
         model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
         TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
         model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));

@@ -13,7 +13,6 @@ public class DesktopLauncher {
 
 		StateController stateController = new StateController();
 		new LwjglApplication(stateController, config);
-		GameWorld gameWorld = new GameWorld();
 //		stateController.displayMenuScreen();
 		//new LwjglApplication(new HeightmapConverter(200,200,50,"Heightmap.png"), config);
 	}

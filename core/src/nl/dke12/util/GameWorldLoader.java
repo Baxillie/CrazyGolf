@@ -2,13 +2,16 @@
 
     import com.badlogic.gdx.Gdx;
     import com.badlogic.gdx.graphics.Color;
+    import com.badlogic.gdx.graphics.VertexAttributes;
+    import com.badlogic.gdx.graphics.g3d.Material;
     import com.badlogic.gdx.graphics.g3d.Model;
     import com.badlogic.gdx.graphics.g3d.ModelInstance;
     import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
     import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+    import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+    import com.badlogic.gdx.utils.Array;
     import com.badlogic.gdx.utils.UBJsonReader;
     import nl.dke12.game.SolidObject;
-    import nl.dke12.screens.GameDisplay;
 
     import java.io.File;
     import java.io.FileNotFoundException;
@@ -21,28 +24,31 @@
     */
     public class GameWorldLoader
     {
-        private GameDisplay screen;
         private ArrayList<ModelInstance> instances;
-        private ModelInstance modelInstance;
-        private ModelInstance modelInstance1;
-        private ModelInstance modelInstance2;
-        public static ModelInstance modelInstancewall;
+        private ArrayList<SolidObject> solidObjects;
+
+        private ModelInstance skybox;
+        private ModelInstance TWstatue;
+        private ModelInstance floor;
         private ModelInstance select;
         private ModelInstance windmill;
+        private ModelInstance wall;
+        private ModelInstance golfBall;
+        private ModelInstance golfBall2;
 
-        public Model model;
-        public Model TWstatue;
-        public Model model2;
-        public Model modelwall;
-        public Model selecter;
-        public Model mill;
+        private Model skyboxModel;
+        private Model TWstatueModel;
+        private Model floorModel;
+        private Model wallModel;
+        private Model selecterModel;
+        private Model millModel;
         private Model ballModel;
 
-
-        public GameWorldLoader(GameDisplay screen)
+        public GameWorldLoader(String name)
         {
-            this.screen = screen;
             this.instances = new ArrayList<>();
+            this.solidObjects = new ArrayList<>();
+            fileReader(name);
         }
 
         public void loadModels()
@@ -50,20 +56,33 @@
             UBJsonReader jsonReader = new UBJsonReader();
             G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
-            model = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
-            TWstatue = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
-            model2 = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
-            modelwall = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
-            selecter = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
-            mill = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
+            skyboxModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skyboxModel.G3DB"));
+            TWstatueModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
+            floorModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floorModel.G3DB"));
+            wallModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
+            selecterModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
+            millModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
+            ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10,
+                        new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
-            modelInstance = new ModelInstance(model);
-            modelInstance1 = new ModelInstance(TWstatue);
-            modelInstance2 = new ModelInstance(model2);
-            modelInstancewall = new ModelInstance(modelwall);
-            select = new ModelInstance(selecter);
-            windmill = new ModelInstance(mill);
+            skybox = new ModelInstance(skyboxModel);
+            TWstatue = new ModelInstance(TWstatueModel);
+            floor = new ModelInstance(floorModel);
+            wall = new ModelInstance(wallModel);
+            select = new ModelInstance(selecterModel);
+            windmill = new ModelInstance(millModel);
+            golfBall = new ModelInstance(ballModel);
+            golfBall2 = new ModelInstance(ballModel);
+            golfBall2.materials.get(0).set(ColorAttribute.createDiffuse(Color.RED));
 
+            instances.add(skybox);
+            instances.add(TWstatue);
+            instances.add(floor);
+            instances.add(wall);
+            instances.add(select);
+            instances.add(windmill);
+            instances.add(golfBall);
+            instances.add(golfBall2);
         }
 
         public void addObject(float x, float y, float z, Model model)
@@ -74,21 +93,23 @@
             modelInstance3.transform.scale(4f, 4f, 4f);
             instances.add(modelInstance3);
 
-            if (model == model2)
+            if (model == floorModel)
             {
-                this.gameWorld.solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f));
+                solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f, "floor"));
             }
-            if (model == modelwall)
+            if (model == wallModel)
             {
-                this.gameWorld.solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f));
+                solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "wall"));
             }
-            if (model == TWstatue)
+            if (model == millModel)
             {
-
+                solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
             }
         }
 
         public void fileReader(String name) {
+            loadModels();
+
             File file = ((Gdx.files.internal(name)).file());
 
             String s;
@@ -96,30 +117,27 @@
                 Scanner sc = new Scanner(file);
                 int xPos = 0;
                 int yPos = 0;
-                int zPos = 0;
-                int semiColonCount = 0;
                 while (sc.hasNext()) {
                     s = sc.next();
 
                     for (int i = 0; i < s.length(); i++) {
 
                         if (s.charAt(i) == '1') {
-                            screen.addObject((xPos-10)*8, (yPos-10)*8, 4, screen.model2);
+                            addObject((xPos-10)*8, (yPos-10)*8, 4, floorModel);
                             yPos += 1;
                         }
                         if (s.charAt(i) == '2') {
-                            screen.addObject((xPos-10)*8, (yPos-10)*8, 8, screen.modelwall);
+                            addObject((xPos-10)*8, (yPos-10)*8, 8, wallModel);
                             yPos += 1;
                         }
                         if (s.charAt(i) == '3') {
-                            screen.addObject((xPos-10)*8, (yPos-10)*8, 4, screen.mill);
+                            addObject((xPos-10)*8, (yPos-10)*8, 4, millModel);
                             yPos += 1;
                         }
                         if (s.charAt(i) == '0') {
                             yPos += 1;
                         }
                         if (s.charAt(i) == ';') {
-                            semiColonCount++;
                             xPos += 1;
                             yPos = 0;
                         }
@@ -131,6 +149,17 @@
                 e.printStackTrace();
             }
         }
+
+        public ArrayList<ModelInstance> getModelInstances()
+        {
+            return instances;
+        }
+
+        public ArrayList<SolidObject> getSolidObjects()
+        {
+            return solidObjects;
+        }
+
     }
 
 

@@ -2,6 +2,9 @@ package nl.dke12.game;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import nl.dke12.controller.GameController;
+import nl.dke12.screens.GameDisplay;
+import nl.dke12.util.GameWorldLoader;
 
 import java.util.ArrayList;
 
@@ -10,47 +13,41 @@ import java.util.ArrayList;
  */
 public class GameWorld
 {
-    //GameController
-
     //render method that renders every object in the gameWorld  and also calls render from physics
     public ArrayList<SolidObject> solidObjects;
-    private Environment environment;
     private ArrayList<ModelInstance> instances;
     protected boolean multiplayer;
     private Ball ball;
     private Ball ball2;
+    private GameWorldLoader worldLoader;
+    private GameController gameController;
+    private GameDisplay gameDisplay;
 
-    private ModelInstance golfBall;
-    private ModelInstance golfBall2;
 
-    public GameWorld(ArrayList<SolidObject> gameObjects, Environment environment, boolean multiplayer)
+    public GameWorld(boolean multiplayer)
     {
         this.solidObjects = gameObjects;
-        this.environment = environment;
         this.multiplayer = multiplayer;
 
+        this.worldLoader = new GameWorldLoader();
+        this.instances = worldLoader.getModelInstances();
+        this.solidObjects = worldLoader.getSolidObjects();
+
+        this.gameDisplay = new GameDisplay();
+        this.gameController = new GameController();
+        createBalls(multiplayer);
     }
-
-
-    public GameWorld()
-    {
-        this.solidObjects= new ArrayList<>();
-        this.instances = new ArrayList<>();
-        createBalls(false);
-    }
-
 
     public void createBalls(boolean multiplayer)
     {
         if(multiplayer)
         {
-            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
-            this.ball2 = new Ball(golfBall2,0,0,0,0,0,0,this.solidObjects);
-
+            this.ball = new Ball(0,0,0,0,0,0,this.solidObjects);
+            this.ball2 = new Ball(0,0,0,0,0,0,this.solidObjects);
         }
         else
         {
-            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
+            this.ball = new Ball(0,0,0,0,0,0,this.solidObjects);
         }
     }
 
@@ -58,20 +55,12 @@ public class GameWorld
     {
         this.ball=ball;
         advance(ball);
-
     }
 
     public void setBall2(Ball ball)
     {
         this.ball2=ball;
         advance(ball2);
-    }
-
-
-
-    public void addGameObject(SolidObject gameObject)
-    {
-        solidObjects.add(gameObject);
     }
 
     public void advance(Ball ball)
