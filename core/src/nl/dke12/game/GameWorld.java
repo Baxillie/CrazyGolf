@@ -15,6 +15,7 @@ public class GameWorld
 {
     private ArrayList<SolidObject> solidObjects;
     private ArrayList<InstanceModel> instances;
+    private ArrayList<InstanceModel> mapOfWorld;
     private boolean multiplayer;
     private Ball ball;
     private Ball ball2;
@@ -30,6 +31,7 @@ public class GameWorld
 
         this.worldLoader = new GameWorldLoader("core/assets/level1.txt");
         this.instances = worldLoader.getModelInstances();
+        this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
@@ -44,13 +46,13 @@ public class GameWorld
     public void setDisplay(GameDisplay display)
     {
         this.gameDisplay = display;
-        gameDisplay.setInstances(instances);
+        gameDisplay.setInstances(instances, mapOfWorld);
         gameDisplay.setBall(ball);
     }
 
     public void setDisplayAfterCreation()
     {
-        gameDisplay.setInstances(instances);
+        gameDisplay.setInstances(instances, mapOfWorld);
         gameDisplay.setBall(ball);
     }
 
@@ -83,7 +85,7 @@ public class GameWorld
     public void render()
     {
         gameController.moveCamera(gameDisplay.getCamera());
-
+        gameController.move();
         advance(ball);
     }
 

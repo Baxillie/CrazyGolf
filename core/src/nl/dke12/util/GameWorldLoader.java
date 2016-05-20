@@ -25,6 +25,7 @@
     public class GameWorldLoader
     {
         private ArrayList<InstanceModel> instances;
+        private ArrayList<InstanceModel> mapOfWorld;
         private ArrayList<SolidObject> solidObjects;
 
         private ModelInstance skybox;
@@ -47,6 +48,7 @@
         public GameWorldLoader(String name)
         {
             this.instances = new ArrayList<>();
+            this.mapOfWorld = new ArrayList<>();
             this.solidObjects = new ArrayList<>();
             fileReader(name);
         }
@@ -123,17 +125,17 @@
             if (model == floorModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f, "floor"));
-                instances.add(new InstanceModel(modelInstance3, "floor"));
+                mapOfWorld.add(new InstanceModel(modelInstance3, "floor"));
             }
             if (model == wallModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "wall"));
-                instances.add(new InstanceModel(modelInstance3, "wall"));
+                mapOfWorld.add(new InstanceModel(modelInstance3, "wall"));
             }
             if (model == millModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
-                instances.add(new InstanceModel(modelInstance3, "windmill"));
+                mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
             }
         }
 
@@ -182,6 +184,11 @@
         public ArrayList<InstanceModel> getModelInstances()
         {
             return instances;
+        }
+
+        public ArrayList<InstanceModel> getMapOfWorld()
+        {
+            return mapOfWorld;
         }
 
         public ArrayList<SolidObject> getSolidObjects()

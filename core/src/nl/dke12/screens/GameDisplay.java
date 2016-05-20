@@ -29,6 +29,8 @@ public class GameDisplay implements Screen
 
     private boolean multiplayer;
     private ArrayList<InstanceModel> instances;
+    private ArrayList<InstanceModel> mapOfWorld;
+
 
     private Ball ball;
     private Ball ball2;
@@ -144,13 +146,11 @@ public class GameDisplay implements Screen
         renderer.render(ballModel, environment);
        // renderer.render(ball2Model, environment);
 
-        for (int i = 0; i < instances.size(); i++)
+        for (int i = 0; i < mapOfWorld.size(); i++)
         {
-            renderer.render(instances.get(i).modelInstance, environment);
+            renderer.render(mapOfWorld.get(i).modelInstance, environment);
         }
         renderer.end();
-
-
 
         camera.update();
     }
@@ -160,9 +160,10 @@ public class GameDisplay implements Screen
         return camera;
     }
 
-    public void setInstances(ArrayList<InstanceModel> instances)
+    public void setInstances(ArrayList<InstanceModel> instances, ArrayList<InstanceModel> mapOfWorld)
     {
         this.instances = instances;
+        this.mapOfWorld = mapOfWorld;
         find();
     }
 

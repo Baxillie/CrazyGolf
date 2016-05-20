@@ -401,10 +401,6 @@ public class EditorScreen implements Screen
 
         }
 
-
-
-
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             resetCamera();
 
