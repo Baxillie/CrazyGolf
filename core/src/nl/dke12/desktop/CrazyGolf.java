@@ -1,4 +1,4 @@
-package nl.dke12.screens;
+package nl.dke12.desktop;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
@@ -16,9 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import nl.dke12.physics.Ball;
-import nl.dke12.physics.Physics;
-import nl.dke12.physics.StaticObject;
+import nl.dke12.desktop.physics.Ball;
+import nl.dke12.desktop.physics.Physics;
+import nl.dke12.desktop.physics.StaticObject;
 
 import java.util.ArrayList;
 @Deprecated

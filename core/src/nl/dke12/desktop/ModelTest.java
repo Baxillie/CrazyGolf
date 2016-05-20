@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
 
 import nl.dke12.controller.StateController;
+import nl.dke12.game.SolidObject;
 
 @Deprecated
 public class ModelTest implements Screen {

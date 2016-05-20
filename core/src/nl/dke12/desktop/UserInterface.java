@@ -1,4 +1,4 @@
-package nl.dke12.screens;
+package nl.dke12.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

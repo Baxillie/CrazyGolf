@@ -14,10 +14,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.UBJsonReader;
 import nl.dke12.controller.GameController;
 import nl.dke12.controller.StateController;
-import nl.dke12.desktop.SolidObject;
+import nl.dke12.game.SolidObject;
 import nl.dke12.game.Ball;
 import nl.dke12.game.GameWorld;
-import nl.dke12.game.NewBallPhysics;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,7 @@ public class GameDisplay implements Screen
     private ModelInstance golfBall;
     private ModelInstance golfBall2;
 
-    private ArrayList<Model> models = new ArrayList<Model>();
+    private ArrayList<Model> models = new ArrayList<>();
 
     private StateController stateController;
 
@@ -247,16 +246,7 @@ public class GameDisplay implements Screen
         //gballs.add(this.ball);
         //gballs.add(ball2);
 
-        if(multiplayer)
-        {
-            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
-            this.ball2 = new Ball(golfBall2,0,0,0,0,0,0,this.solidObjects);
 
-        }
-        else
-        {
-            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
-        }
 
 
     }
@@ -276,28 +266,7 @@ public class GameDisplay implements Screen
 
     }
 
-    public void addObject(float x, float y, float z, Model model)
-    {
 
-        ModelInstance modelInstance3 = new ModelInstance(model);
-        modelInstance3.transform.translate(x, y, z-5);
-        modelInstance3.transform.rotate(1, 0, 0, -90);
-        modelInstance3.transform.scale(4f, 4f, 4f);
-        instances.add(modelInstance3);
-
-        if (model == model2)
-        {
-            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f));
-        }
-        if (model == modelwall)
-        {
-            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f));
-        }
-        if (model == TWstatue)
-        {
-
-        }
-    }
 
 
 

@@ -1,10 +1,11 @@
-package nl.dke12.game;
+package nl.dke12.desktop;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 
 /**
  * Created by Ajki on 12/05/2016.
  */
+@Deprecated
 public class GameObject {
     //position
     //model

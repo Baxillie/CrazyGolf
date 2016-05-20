@@ -1,4 +1,4 @@
-package nl.dke12.physics;
+package nl.dke12.desktop.physics;
 @Deprecated
 public class ObjectBox
 {

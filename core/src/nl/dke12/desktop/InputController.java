@@ -1,10 +1,11 @@
-package nl.dke12.screens;
+package nl.dke12.desktop;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import nl.dke12.physics.Ball;
+import nl.dke12.desktop.physics.Ball;
+
 @Deprecated
 public class InputController implements InputProcessor {
 

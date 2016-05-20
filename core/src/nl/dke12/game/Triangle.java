@@ -1,4 +1,4 @@
-package nl.dke12.desktop;
+package nl.dke12.game;
 
 import com.badlogic.gdx.math.Vector3;
 

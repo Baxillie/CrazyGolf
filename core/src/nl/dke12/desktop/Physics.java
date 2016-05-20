@@ -1,9 +1,11 @@
-package nl.dke12.game;
+package nl.dke12.desktop;
 
 /**
  *  Actual physics of the game
  *
  */
+
+@Deprecated
 
 public class Physics
 {

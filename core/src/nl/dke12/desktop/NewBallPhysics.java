@@ -3,6 +3,8 @@ package nl.dke12.desktop;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import nl.dke12.game.SolidObject;
+import nl.dke12.game.Triangle;
 
 import java.util.ArrayList;
 
