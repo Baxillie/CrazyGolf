@@ -20,35 +20,31 @@ public class GameWorld
     private Environment environment;
     private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
     protected boolean multiplayer;
+    private Ball ball;
+    private Ball ball2;
+
+    private ModelInstance golfBall;
+    private ModelInstance golfBall2;
 
     public GameWorld(ArrayList<SolidObject> gameObjects, Environment environment,boolean multiplayer)
     {
         this.solidObjects = gameObjects;
         this.environment = environment;
         this.multiplayer = multiplayer;
+
     }
 
-    //@Override
-    public void render(ModelBatch renderer)
+    public void setBall(Ball ball)
     {
-        /*for(SolidObject gameObject : solidObjects)
-        {
-            renderer.render(gameObject.getModelInstance(), environment);
-        }*/
-        for (int i = 0; i < instances.size(); i++) {
-            renderer.render(instances.get(i), environment);
-        }
-    }
-    //@Override
-    public void dispose() {
-
-        //modelBatch.dispose();
+        this.ball=ball;
     }
 
-//    public ArrayList<GameObject> getGameObjects()
-//    {
-//        return solidObjects;
-//    }
+    public void setBall2(Ball ball)
+    {
+        this.ball2=ball;
+    }
+
+
 
     public void addGameObject(SolidObject gameObject)
     {

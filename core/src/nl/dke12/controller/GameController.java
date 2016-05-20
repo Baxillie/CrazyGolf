@@ -62,6 +62,28 @@ public class GameController
     {
         GameWorldLoader loader = new GameWorldLoader(gameDisplay);
         loader.fileReader("core/assets/level1.txt");
+    }
 
+    public void move(Vector3 shotVector)
+    {
+        if (Gdx.input.isKeyPressed(Input.Keys.T)) {
+            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,shotVector.z);
+            gameDisplay.getBall().getPhysics().updatePosition();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
+            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,shotVector.z);
+            gameDisplay.getBall().getPhysics().updatePosition();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.G)) {
+            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,0);
+            gameDisplay.getBall().getPhysics().updatePosition();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
+            if (gameDisplay.getBall().position.z<5)
+            {
+                gameDisplay.getBall().getPhysics().push(0,0,10);
+                gameDisplay.getBall().getPhysics().updatePosition();
+            }
+        }
     }
 }

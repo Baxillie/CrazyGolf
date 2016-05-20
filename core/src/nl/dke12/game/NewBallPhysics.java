@@ -37,18 +37,19 @@ public class NewBallPhysics {
 
     public NewBallPhysics(ArrayList<SolidObject> obstacles, Ball ball)
     {
-        /*this.obstacles=obstacles;
+        this.obstacles=obstacles;
         position = new Vector3();
         direction = new Vector3();
         position.set(ball.position);
         direction.set(ball.direction);
-        this.radius=ball.radius;*/
+        this.radius=ball.radius;
     }
 
 
 
     public void push(float xpush, float ypush, float zpush)
     {
+        //System.out.println(position);
         float xvect=direction.x+xpush;
         float yvect=direction.y+ypush;
         float zvect=direction.z+zpush;
@@ -68,280 +69,6 @@ public class NewBallPhysics {
         Vector3 dir = new Vector3(0,0,0);
         direction.set(dir);
         System.out.print("stop");
-    }
-
-    public void bounce(float j)
-    {
-        Vector3 velocityChange = new Vector3();
-        velocityChange.set(direction);
-        //stop();
-
-        //float j = how far in the future to predict
-        boolean ex=false;
-        boolean wy=false;
-        boolean zed=false;
-
-        /*if (instances.get(index).x )
-        {
-
-        }*/
-/*
-        float boxMinX = instances.get(index).x-4.2f;
-        float boxMinY = instances.get(index).y-4.2f;
-        float boxMinZ = instances.get(index).z-4.2f;
-        float boxMaxX = instances.get(index).x+4.2f;
-        float boxMaxY = instances.get(index).y+4.2f;
-        float boxMaxZ = instances.get(index).z+4.2f;
-
-
-        if(position.x<boxMinX-radius||position.x>boxMaxX+radius)
-        {
-            velocityChange.x = 0 - velocityChange.x;
-        }
-        if(position.y<boxMinY-radius||position.y>boxMaxY+radius)
-        {
-            velocityChange.y = 0 - velocityChange.y;
-        }
-*/
-
-        //for(int i=0;i<this.instances.size();i++)
-        //{
-        if (instances.size()>0);
-        {
-            float boxMinX = instances.get(index).x-4.0f;
-            float boxMinY = instances.get(index).y-4.0f;
-            float boxMinZ = instances.get(index).z-2.0f;
-            float boxMaxX = instances.get(index).x+4.0f;
-            float boxMaxY = instances.get(index).y+4.0f;
-            float boxMaxZ = instances.get(index).z+6.0f;
-
-            //System.out.print("get position {"+instances.get(index)+"}");
-
-            float nextX = position.x+(direction.x*j);
-            float nextY = position.y+(direction.y*j);
-            float nextZ = position.z+(direction.z*j);
-            if(nextX>boxMinX-radius&&nextX<boxMaxX+radius)
-            {
-                ex = true;
-            }
-            if(nextY>boxMinY-radius&&nextY<boxMaxY+radius)
-            {
-                wy = true;
-            }
-            if(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius)
-            {
-                zed = true;
-            }
-            if(ex&&wy&&zed)
-            {
-
-
-                if((position.x<boxMinX-radius||position.x>boxMaxX+radius)&&
-                        (nextY>boxMinY-radius&&nextY<boxMaxY+radius)&&
-                        (nextZ>boxMinZ&&nextZ<boxMaxZ))//&&
-                //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
-                {
-                    velocityChange.x = 0 - velocityChange.x*1.1f;
-                    //velocityChange.x = 0;
-                    System.out.print("trup");
-
-                }
-                else if((position.y<boxMinY-radius||position.y>boxMaxY+radius)&&
-                        (nextX>boxMinX-radius&&nextX<boxMaxX+radius)&&
-                        (nextZ>boxMinZ&&nextZ<boxMaxZ))//&&
-                //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
-                {
-                    velocityChange.y = 0 - velocityChange.y*1.1f;
-                    //velocityChange.y = 0;
-                    System.out.print("HArp");
-                }
-                else if((position.z<boxMinZ-radius||position.z>boxMaxZ+radius)&&
-                        (nextX>boxMinX-radius&&nextX<boxMaxX+radius)&&
-                        (nextY>boxMinY-radius&&nextY<boxMaxY+radius))//&&
-                //(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
-                {
-
-
-                    if (direction.z<-0.08||direction.z>=0.08)
-                    {
-                        //System.out.print("KLIP");
-                        //direction.z = 0 - direction.z*0.98f;
-                        velocityChange.z= 0 - velocityChange.z*0.98f;
-                        //velocityChange.z = 0;
-                        //zcollide = true;
-                        gravity=true;
-
-                        //push(direction.x,direction.y,0);
-                    }
-                    else if (direction.z>=-0.08&&direction.z<=0.08)
-                    {
-                        gravity = false;
-                        velocityChange.z= 0;
-
-                        //push(direction.x,direction.y,0);
-                    }
-
-/*
-                    for(float i=0;i<direction.len();i+=0.1f)
-                    {
-                        float posX=position.x+direction.x*i;
-                        float posY=position.y+direction.y*i;
-                        float posZ=position.z+direction.z*i;
-
-                        if ((posX>boxMinX-radius&&posX<boxMaxX+radius)
-                            &&(posY>boxMinY-radius&&posY<boxMaxY+radius)
-                            &&(posZ>boxMinZ-radius&&posZ<boxMaxZ+radius))
-                        {
-                            float length= i-0.1f;
-                            float locatX = position.x+direction.x*length;
-                            float locatY = position.y+direction.y*length;
-                            float locatZ = position.z+direction.z*length;
-
-                            if((locatX<boxMinX-radius||locatX>boxMaxX+radius)&&
-                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius)&&
-                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
-                            //(nextX>boxMinX-radius&&nextX<boxMaxX+radius))
-                            {
-                                velocityChange.x = 0 - velocityChange.x*1.1f;
-                                //velocityChange.x = 0;
-                                System.out.print("trup");
-
-                            }
-                            else if((locatY<boxMinY-radius||locatY>boxMaxY+radius)&&
-                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
-                                    (locatZ>boxMinZ-radius&&locatZ<boxMaxZ+radius))//&&
-                            //(nextY>boxMinY-radius&&nextY<boxMaxY+radius))
-                            {
-                                velocityChange.y = 0 - velocityChange.y*1.1f;
-                                //velocityChange.y = 0;
-                                System.out.print("HArp");
-                            }
-                            else if((locatZ<boxMinZ-radius||locatZ>boxMaxZ+radius)&&
-                                    (locatX>boxMinX-radius&&locatX<boxMaxX+radius)&&
-                                    (locatY>boxMinY-radius&&locatY<boxMaxY+radius))//&&
-                            //(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius))
-                            {
-                                if (direction.z<-0.08||direction.z>=0.08)
-                                {
-                                    //System.out.print("KLIP");
-                                    //direction.z = 0 - direction.z*0.98f;
-                                    velocityChange.z= 0 - velocityChange.z*0.80f;
-                                    //velocityChange.z = 0;
-                                    //zcollide = true;
-                                    gravity=true;
-
-                                    //push(direction.x,direction.y,0);
-                                }
-                                else if (direction.z>=-0.08&&direction.z<=0.08)
-                                {
-                                    gravity = false;
-                                    velocityChange.z= 0;
-
-                                    //push(direction.x,direction.y,0);
-                                }
-                            }
-                        }
-                    }
-*/
-                    //}
-                    //else
-                    //{
-                    //    gravity = true;
-                    //}
-                }
-                else
-                {
-                    zcollide = false;
-                }
-
-            }
-            else
-            {
-                ex=false;
-                wy =false;
-                zed = false;
-            }
-
-        }
-        //}
-        /*if(position.z>boxMinZ-radius&&position.z<boxMaxZ+radius)
-        {
-            zed = true;
-        }*/
-
-
-        //ALMOST WORKS
-        /*for(int i=0;i<this.instances.size();i++)
-        {
-            if (instances.size()>0);
-            {
-                float boxMinX = instances.get(i).x-4f;
-                float boxMinY = instances.get(i).y-4f;
-                float boxMinZ = instances.get(i).z-4f;
-                float boxMaxX = instances.get(i).x+4f;
-                float boxMaxY = instances.get(i).y+4f;
-                float boxMaxZ = instances.get(i).z+4f;
-
-                if ((position.x+direction.len()*1.8>boxMinX-radius&&position.x+direction.len()*1.8<boxMaxX+radius))
-                    //||(position.x-direction.x()*1.8>boxMinX-radius&&position.x-direction.x()*1.8<boxMaxX+radius))
-                {
-                    velocityChange.x = 0 - velocityChange.x;
-
-                }
-                if ((position.y+direction.len()*1.8>boxMinY-radius&&position.y+direction.len()*1.8<boxMaxY+radius))
-                    //|| (position.y-direction.y*1.8>boxMinY-radius&&position.y-direction.y*1.8<boxMaxY+radius))
-                {
-                    velocityChange.y = 0 - velocityChange.y;
-                }*/
-/*
-                Vector3 Leftface = new Vector3(instances.get(i).x-4,instances.get(i).y,instances.get(i).z);
-                Vector3 Rightface = new Vector3(instances.get(i).x+4,instances.get(i).y,instances.get(i).z);
-                Vector3 Topface = new Vector3(instances.get(i).x,instances.get(i).y,instances.get(i).z+4);
-                Vector3 Bottomface = new Vector3(instances.get(i).x,instances.get(i).y,instances.get(i).z-4);
-                Vector3 Frontface = new Vector3(instances.get(i).x,instances.get(i).y+4,instances.get(i).z);
-                Vector3 Backface = new Vector3(instances.get(i).x,instances.get(i).y-4,instances.get(i).z);
-
-                if ((Leftface.sub(position).len()<Topface.sub(position).len()&&
-                    Leftface.sub(position).len()<Bottomface.sub(position).len()&&
-                    Leftface.sub(position).len()<Frontface.sub(position).len()&&
-                    Leftface.sub(position).len()<Backface.sub(position).len())||
-                    (Rightface.sub(position).len()<Topface.sub(position).len()&&
-                    Rightface.sub(position).len()<Bottomface.sub(position).len()&&
-                    Rightface.sub(position).len()<Frontface.sub(position).len()&&
-                    Rightface.sub(position).len()<Backface.sub(position).len()))
-                    {
-                        velocityChange.x = 0 - velocityChange.x;
-                    }
-                if ((Frontface.sub(position).len()<Topface.sub(position).len()&&
-                    Frontface.sub(position).len()<Bottomface.sub(position).len()&&
-                    Frontface.sub(position).len()<Leftface.sub(position).len()&&
-                    Frontface.sub(position).len()<Rightface.sub(position).len())||
-                    (Backface.sub(position).len()<Topface.sub(position).len()&&
-                    Backface.sub(position).len()<Bottomface.sub(position).len()&&
-                    Backface.sub(position).len()<Leftface.sub(position).len()&&
-                    Backface.sub(position).len()<Rightface.sub(position).len()))
-                    {
-                        velocityChange.y = 0 - velocityChange.y;
-                    }*/
-        // }
-
-
-        //todo: fix Z next period
-        //todo: corners are a bit fucked :3
-        //velocityChange.z = 0 - velocityChange.z;
-        //System.out.println("BOUNCE");
-
-        //}
-        //position.set(position.x-velocityChange.x/2,position.y-velocityChange.y/2,position.z-velocityChange.z/2);
-        /*if (zcollide = true)
-        {
-            push(velocityChange.x,velocityChange.y,velocityChange.z);
-            push(velocityChange.x,velocityChange.y,velocityChange.z);
-        }*/
-        push(velocityChange.x,velocityChange.y,velocityChange.z);
-        push(velocityChange.x,velocityChange.y,velocityChange.z);
-        //updatePosition();
-        updateVelocity(velocityChange);
     }
 
     public boolean collides(float j)
@@ -630,6 +357,6 @@ public class NewBallPhysics {
     {
         ball.position=this.position;
         ball.direction=this.direction;
-        //GameWorld.advance(this.ball);
+        //gameWorld.advance(this.ball);
     }
 }

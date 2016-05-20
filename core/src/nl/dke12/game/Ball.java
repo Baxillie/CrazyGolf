@@ -16,9 +16,10 @@ public class Ball extends GameObject
     public Vector3 direction;
     public Vector3 nextPosition = new Vector3(0,0,0);
     public float radius;
+    private ModelInstance ballModel;
     protected NewBallPhysics physics;
     //velocity
-    public Ball(float x, float y, float z, float xspeed, float yspeed, float zspeed, ArrayList<SolidObject> solidObjects)
+    public Ball(ModelInstance model, float x, float y, float z, float xspeed, float yspeed, float zspeed, ArrayList<SolidObject> solidObjects)
     {
         position = new Vector3();
         direction = new Vector3();
@@ -26,10 +27,16 @@ public class Ball extends GameObject
         direction.set(xspeed,yspeed,zspeed);
         this.radius = 0.5f;
         this.physics= new NewBallPhysics(solidObjects,this);
+        this.ballModel=model;
     }
     public NewBallPhysics getPhysics()
     {
         return this.physics;
+    }
+
+    public ModelInstance getModelInstance()
+    {
+        return ballModel;
     }
 
     //getters and setters for everything

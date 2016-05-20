@@ -61,7 +61,10 @@ public class GameDisplay implements Screen
 
     private StateController stateController;
 
+    private boolean multiplayer;
+
     private Ball ball;
+    private Ball ball2;
 
     private Environment environment;
     private Environment skybox;
@@ -76,6 +79,7 @@ public class GameDisplay implements Screen
     {
         gameController = new GameController(this);
         create();
+        this.multiplayer=multiplayer;
         this.gameWorld = new GameWorld(solidObjects,environment,multiplayer);
         gameController.load();
     }
@@ -244,9 +248,29 @@ public class GameDisplay implements Screen
         //gballs.add(this.ball);
         //gballs.add(ball2);
 
-        this.ball = new Ball(0,0,0,0,0,0,this.solidObjects);
+        if(multiplayer)
+        {
+            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
+            this.ball2 = new Ball(golfBall2,0,0,0,0,0,0,this.solidObjects);
+
+        }
+        else
+        {
+            this.ball = new Ball(golfBall,0,0,0,0,0,0,this.solidObjects);
+        }
+
+
     }
 
+    public Ball getBall()
+    {
+        return ball;
+    }
+
+    public Ball getBall2()
+    {
+        return ball2;
+    }
 
     @Override
     public void show() {
@@ -264,11 +288,11 @@ public class GameDisplay implements Screen
 
         if (model == model2)
         {
-            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
+            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f));
         }
         if (model == modelwall)
         {
-            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f));
+            this.gameWorld.solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f));
         }
         if (model == TWstatue)
         {
@@ -290,6 +314,8 @@ public class GameDisplay implements Screen
         renderer.begin(camera);
         renderer.render(modelInstance, skybox);
         renderer.render(modelInstance1, environment);
+        renderer.render(ball.getModelInstance(), environment);
+
 
 
         //renderer.begin(camera);
@@ -300,8 +326,20 @@ public class GameDisplay implements Screen
         renderer.end();
 
         gameController.moveCamera(camera);
+        gameController.move(shotVector);
 
         camera.update();
+
+        if(multiplayer)
+        {
+            gameWorld.setBall(ball);
+            gameWorld.setBall2(ball2);
+
+        }
+        else
+        {
+            gameWorld.setBall(ball);
+        }
     }
 
     @Override
