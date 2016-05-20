@@ -56,9 +56,9 @@
             UBJsonReader jsonReader = new UBJsonReader();
             G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
-            skyboxModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skyboxModel.G3DB"));
+            skyboxModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/skybox.G3DB"));
             TWstatueModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/man.G3DB"));
-            floorModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floorModel.G3DB"));
+            floorModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/floor.G3DB"));
             wallModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
             selecterModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
             millModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
@@ -109,8 +109,8 @@
             instances.add(new InstanceModel(wall, "wall"));
             instances.add(new InstanceModel(select, "select"));
             instances.add(new InstanceModel(windmill, "windmill"));
-            instances.add(new InstanceModel(golfBall, "golfball"));
-            instances.add(new InstanceModel(golfBall2, "golfball2"));
+            instances.add(new InstanceModel(golfBall, "ball"));
+            instances.add(new InstanceModel(golfBall2, "ball2"));
         }
 
         public void addObject(float x, float y, float z, Model model)

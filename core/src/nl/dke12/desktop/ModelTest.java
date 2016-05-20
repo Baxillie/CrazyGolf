@@ -534,7 +534,7 @@ public class ModelTest implements Screen {
         instances.add(modelInstance3);
         if (model == model2) {
             addToLevel(x, y, z, (char) 1);
-            this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
+            //this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
             System.out.println("plce"+x+" "+y+" "+z);
             System.out.println("poss"+ball.position);
             if(ball.closest!=null)
@@ -547,7 +547,7 @@ public class ModelTest implements Screen {
             addToLevel(x, y, z-5, (char) 2);
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
-            this.physObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f));
+            //this.physObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f));
             //modelInstancewall.transform.rotate(1, 0, 0, -90);
 //            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }

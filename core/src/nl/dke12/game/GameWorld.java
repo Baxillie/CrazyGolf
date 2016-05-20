@@ -32,11 +32,26 @@ public class GameWorld
         this.instances = worldLoader.getModelInstances();
         this.solidObjects = worldLoader.getSolidObjects();
 
+        //this.gameDisplay = new GameDisplay(multiplayer, this);
+        //gameDisplay.setInstances(instances);
+
         createBalls(multiplayer);
         createPhysics(multiplayer);
 
-        this.gameDisplay = new GameDisplay(instances, multiplayer);
         this.gameController = new GameController(physics);
+    }
+
+    public void setDisplay(GameDisplay display)
+    {
+        this.gameDisplay = display;
+        gameDisplay.setInstances(instances);
+        gameDisplay.setBall(ball);
+    }
+
+    public void setDisplayAfterCreation()
+    {
+        gameDisplay.setInstances(instances);
+        gameDisplay.setBall(ball);
     }
 
     private void createPhysics(boolean multiplayer)
@@ -65,9 +80,11 @@ public class GameWorld
         }
     }
 
-    public void doStuff()
+    public void render()
     {
         gameController.moveCamera(gameDisplay.getCamera());
+
+        advance(ball);
     }
 
     public void advance(Ball ball)

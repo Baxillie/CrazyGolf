@@ -557,14 +557,14 @@ public class EditorScreen implements Screen
 
         if (model == model2) {
             addToLevel(x, y, z, (char) 1);
-            this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
+            this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f,"floor"));
         }
         if (model == modelwall) {
             addToLevel(x, y, z, (char) 2);
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
             //this.physObjects.add(new Vector3(x,y,z-5));
-            this.physObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f));
+            this.physObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f,"wall"));
             //modelInstancewall.transform.rotate(1, 0, 0, -90);
 //            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }

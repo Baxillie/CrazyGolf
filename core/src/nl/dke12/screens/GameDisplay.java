@@ -1,5 +1,6 @@
 package nl.dke12.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import nl.dke12.game.GameWorld;
 import nl.dke12.game.InstanceModel;
 import nl.dke12.game.SolidObject;
 import nl.dke12.game.Ball;
@@ -40,14 +43,16 @@ public class GameDisplay implements Screen
     private AnimationController controller;
     private AnimationController spincontroller;
 
-    public GameDisplay(ArrayList<InstanceModel> instances, boolean multiplayer)
+    private GameWorld gameWorld;
+
+    public GameDisplay(boolean multiplayer, GameWorld gameWorld)
             //todo: add multiplayer to the constructor
     {
         create();
         ball2Model = null; //todo: change this thing into NOT this :P
-        find();
-        this.instances = instances;
+        this.instances = new ArrayList<>();
         this.multiplayer = multiplayer;
+        this.gameWorld = gameWorld;
     }
 
     public void create()
@@ -69,8 +74,8 @@ public class GameDisplay implements Screen
         skyEnvironment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-        //controller = new AnimationController(modelInstance1);
+/*
+        controller = new AnimationController(TWModel);
         controller.setAnimation("Bend", 1, new AnimationController.AnimationListener() {
             @Override
             public void onEnd(AnimationController.AnimationDesc animation) {
@@ -90,12 +95,12 @@ public class GameDisplay implements Screen
                 {
                     controller.queue("Bend", -1, 1f, null, 0f);
                 }
-                swing = false;*/
+                swing = false;
                 //swing = false;
             }
             @Override
             public void onLoop(AnimationController.AnimationDesc animation) {}
-        });
+        });*/
     }
 
     public void find()
@@ -131,6 +136,8 @@ public class GameDisplay implements Screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        gameWorld.render();
+
         renderer.begin(camera);
         renderer.render(skyboxModel, skyEnvironment);
         renderer.render(TWModel, environment);
@@ -143,6 +150,8 @@ public class GameDisplay implements Screen
         }
         renderer.end();
 
+
+
         camera.update();
     }
 
@@ -150,6 +159,13 @@ public class GameDisplay implements Screen
     {
         return camera;
     }
+
+    public void setInstances(ArrayList<InstanceModel> instances)
+    {
+        this.instances = instances;
+        find();
+    }
+
     public void setBall(Ball ball)
     {
         this.ball=ball;

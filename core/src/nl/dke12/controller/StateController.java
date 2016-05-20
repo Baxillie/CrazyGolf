@@ -46,8 +46,11 @@ public class StateController extends Game
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        new GameWorld(multiplayer);
-        setScreen(new GameDisplay(multiplayer));
+        GameWorld gameWorld = new GameWorld(multiplayer);
+        GameDisplay gameDisplay = new GameDisplay(multiplayer, gameWorld);
+        gameWorld.setDisplay(gameDisplay);
+
+        setScreen(gameDisplay);
     }
 
     @Override
