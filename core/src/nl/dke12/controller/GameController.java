@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
-import nl.dke12.screens.EditorScreen;
-import nl.dke12.screens.GameDisplay;
+import nl.dke12.game.Physics;
 import nl.dke12.util.GameWorldLoader;
 
 /**
@@ -16,14 +15,14 @@ public class GameController
 {
     //Ball
     //InputProcessor
-    //Makes GameDisplay
-    //Makes GameWorld
-    //
-    private GameDisplay gameDisplay;
-    public GameController(GameDisplay gameDisplay)
+    private Physics physics;
+
+
+    public GameController(Physics physics)
     {
-        this.gameDisplay = gameDisplay;
+        this.physics = physics;
     }
+
     public void moveCamera(Camera camera)
     {
         Vector3 directVector = new Vector3(camera.direction);

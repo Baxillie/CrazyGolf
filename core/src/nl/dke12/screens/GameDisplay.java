@@ -59,8 +59,6 @@ public class GameDisplay implements Screen
 
     private StateController stateController;
 
-    private boolean multiplayer;
-
     private Ball ball;
     private Ball ball2;
 
@@ -73,11 +71,10 @@ public class GameDisplay implements Screen
     private GameController gameController;
     private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
 
-    public GameDisplay(boolean multiplayer)
+    public GameDisplay()
     {
         gameController = new GameController(this);
         create();
-        this.multiplayer=multiplayer;
         this.gameWorld = new GameWorld(solidObjects,environment,multiplayer);
         gameController.load();
     }

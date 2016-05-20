@@ -109,7 +109,6 @@
 
         public void fileReader(String name) {
             loadModels();
-
             File file = ((Gdx.files.internal(name)).file());
 
             String s;

@@ -14,59 +14,63 @@ import java.util.ArrayList;
 public class GameWorld
 {
     //render method that renders every object in the gameWorld  and also calls render from physics
-    public ArrayList<SolidObject> solidObjects;
+    private ArrayList<SolidObject> solidObjects;
     private ArrayList<ModelInstance> instances;
-    protected boolean multiplayer;
+    private boolean multiplayer;
     private Ball ball;
     private Ball ball2;
     private GameWorldLoader worldLoader;
     private GameController gameController;
     private GameDisplay gameDisplay;
-
+    private Physics physics;
+    private Physics physics2;
 
     public GameWorld(boolean multiplayer)
     {
-        this.solidObjects = gameObjects;
         this.multiplayer = multiplayer;
 
-        this.worldLoader = new GameWorldLoader();
+        this.worldLoader = new GameWorldLoader("core/assets/level1.txt");
         this.instances = worldLoader.getModelInstances();
         this.solidObjects = worldLoader.getSolidObjects();
 
-        this.gameDisplay = new GameDisplay();
-        this.gameController = new GameController();
         createBalls(multiplayer);
+        createPhysics(multiplayer);
+
+        this.gameDisplay = new GameDisplay();
+        this.gameController = new GameController(physics);
     }
 
-    public void createBalls(boolean multiplayer)
+    private void createPhysics(boolean multiplayer)
     {
         if(multiplayer)
         {
-            this.ball = new Ball(0,0,0,0,0,0,this.solidObjects);
-            this.ball2 = new Ball(0,0,0,0,0,0,this.solidObjects);
+            this.physics = new Physics(solidObjects, ball);
+            this.physics2 = new Physics(solidObjects, ball2);
         }
         else
         {
-            this.ball = new Ball(0,0,0,0,0,0,this.solidObjects);
+            this.physics = new Physics(solidObjects, ball);
         }
     }
 
-    public void setBall(Ball ball)
+    private void createBalls(boolean multiplayer)
     {
-        this.ball=ball;
-        advance(ball);
-    }
-
-    public void setBall2(Ball ball)
-    {
-        this.ball2=ball;
-        advance(ball2);
+        if(multiplayer)
+        {
+            this.ball = new Ball(0,0,0);
+            this.ball2 = new Ball(0,0,0);
+        }
+        else
+        {
+            this.ball = new Ball(0,0,0);
+        }
     }
 
     public void advance(Ball ball)
     {
         ball.position.add(ball.direction);
-        ball.getModelInstance().transform.translate(ball.direction);
-        ball.getPhysics().update();
+        //update graphics here :D
+        //ball.getModelInstance().transform.translate(ball.direction);
+        physics.update();
     }
 }
