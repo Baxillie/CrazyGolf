@@ -12,10 +12,19 @@ public class SolidObject
     private Vector3 position;
     private ArrayList<Vector3> points;
 
-    public SolidObject(float x, float y, float z, float scalex, float scaley, float scalez)
+    public SolidObject(float x, float y, float z, float width, float height, float depth)
     {
-        position = new Vector3(x,y,z).scl(scalex);
+        position = new Vector3(x,y,z);
         points = new ArrayList<>();
+
+        addPoint(x-width,y-depth,z-height);
+        addPoint(x-width,y-depth,z+height);
+        addPoint(x-width,y+depth,z+height);
+        addPoint(x-width,y+depth,z-height);
+        addPoint(x+width,y+depth,z-height);
+        addPoint(x+width,y+depth,z+height);
+        addPoint(x+width,y-depth,z+height);
+        addPoint(x+width,y-depth,z-height);
     }
 
     public SolidObject(float x, float y, float z)
@@ -38,4 +47,5 @@ public class SolidObject
     {
         return points;
     }
+
 }
