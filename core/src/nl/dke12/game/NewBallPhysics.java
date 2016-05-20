@@ -1,15 +1,18 @@
-package nl.dke12.desktop;
+package nl.dke12.game;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import nl.dke12.desktop.GBall;
+import nl.dke12.desktop.SolidObject;
+import nl.dke12.desktop.Triangle;
 
 import java.util.ArrayList;
 
 /**
  * Created by Tom Conneely on 13/05/2016.
  */
-@Deprecated
+
 public class NewBallPhysics {
 
     public Vector3 position;
@@ -24,7 +27,7 @@ public class NewBallPhysics {
     public boolean fall;
     //height from object beneath it
     public float height=10;
-    public ArrayList<GBall> gballs;
+    public Ball ball;
     public ArrayList<SolidObject> obstacles;
     public boolean gravity=true;
     private Vector3 bounceVector;
@@ -32,17 +35,17 @@ public class NewBallPhysics {
     public SolidObject closest;
     private boolean gravit = false;
 
-    public NewBallPhysics(ModelInstance mod ,float x, float y, float z,float xspeed,float yspeed,float zspeed,ArrayList<SolidObject> models,ArrayList<GBall> gballs)
+    public NewBallPhysics(ArrayList<SolidObject> obstacles, Ball ball)
     {
+        /*this.obstacles=obstacles;
         position = new Vector3();
         direction = new Vector3();
-        position.set(x,y,z);
-        direction.set(xspeed,yspeed,zspeed);
-        this.obstacles=models;
-        this.object = mod;
-        this.radius = 0.5f;
-        this.gballs = gballs;
+        position.set(ball.position);
+        direction.set(ball.direction);
+        this.radius=ball.radius;*/
     }
+
+
 
     public void push(float xpush, float ypush, float zpush)
     {
@@ -65,12 +68,6 @@ public class NewBallPhysics {
         Vector3 dir = new Vector3(0,0,0);
         direction.set(dir);
         System.out.print("stop");
-    }
-
-    public Vector3 getNormal(float point1, float point2, float point3)
-    {
-        Vector3 normal = new Vector3();
-        return normal;
     }
 
     public void bounce(float j)
@@ -437,22 +434,13 @@ public class NewBallPhysics {
                                 if(new Vector3(planePos).sub(position).len()>new Vector3(newPlanePos).sub(position).len())
                                 {
                                     plane = new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
-                                    /*System.out.println("new closest face"+
-                                            closest.getPoints().get(i)+" "+closest.getPoints().get(k)+" "+closest.getPoints().get(l));*/
-                                    //System.out.println("i="+i+" k="+k+" l="+l);
-                                    //System.out.println("pos="+planePos);
 
                                 }
                             }
                             else
                             {
                                 plane= new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
-                                //System.out.println("make plane"+closest.points.get(i)+" "+closest.points.get(k)+" "+closest.points.get(l));
                             }
-                            /*System.out.println("new face"+
-                                    closest.points.get(i)+" "+closest.points.get(k)+" "+closest.points.get(l));
-                            System.out.println("dist="+newPlane.getDistance(position));
-                            System.out.println("intersect="+newPlane.getIntersection(position));*/
                         }
                     }
                 }
@@ -526,47 +514,6 @@ public class NewBallPhysics {
                 //stop();
                 return true;
             }
-            //////////////////////////////////////////////////////////////////////////////////////////
-            /*
-            if(new Vector3(new Vector3(nextposPlane).sub(nextPosition)).len()<1)
-
-            {
-
-                //centreline = inward facing normal of collision plane
-                Vector3 unitNormal = new Vector3(plane.getNormal());
-                //check if normal is outward facing
-                Vector3 cent = new Vector3(unitNormal);
-                Vector3 nextDist = new Vector3(nextposPlane).sub(nextPosition);
-                if(nextDist.len()>(new Vector3(nextDist).add(cent)).len())
-                {
-                    unitNormal.scl(-1);
-                }
-
-
-                //*** THE NEXT LINE IS BROKEN (maybe)
-                //normalLine = perpendicular to centreLine parallel to the direction
-                //Vector3 planeDirection =  new Vector3(new Vector3(nextposPlane).sub(posPlane));
-                //normalLine.scl(1/normalLine.len());
-                //perpComponent = component of direction that is perpendicular to unitNormal
-                float normalDirectionComp = (new Vector3(unitNormal).dot(direction)/unitNormal.len());
-                //paraComponent = component of direction that is parallel to centreLine
-                //float paraComponent = (new Vector3(direction).dot(normalLine))/centreLine.len();
-                Vector3 normalDirection = new Vector3(new Vector3(unitNormal).scl(-normalDirectionComp));
-                Vector3 planeDirection =  new Vector3(new Vector3(direction).add(normalDirection));
-                //Vector3 paraLine = new Vector3(new Vector3(centreLine).scl(paraComponent));
-                //Vector3 paraLine = new Vector3(new Vector3(direction).add(normalLine));
-                //paraLine.scl(-1);
-
-
-                Vector3 bounce = new Vector3(new Vector3(planeDirection).add(normalDirection));
-                this.bounceVector = bounce.scl(0.9f);
-                System.out.println("bounce"+bounceVector);
-                System.out.println("plane"+plane.getPoints());
-                System.out.println("direction"+direction);
-
-                //stop();
-                return true;
-            }*/
             else
             {
                 gravit = true;
@@ -578,26 +525,11 @@ public class NewBallPhysics {
 
     public void updateVelocity(Vector3 direction)
     {
-        //if (zcollide)
-        //{
         if(direction.len()>0.08)
         {
-                /*if (false)
-                {
-                    //this.direction.sub(direction.x/50,direction.y/50,0);
-                    this.direction.scl(0.99f);
-                }
-                else
-                {
-                    //this.direction.sub(direction.x/60,direction.y/60,0);
-                    this.direction.scl(0.99f);
-                }*/
-            //this.direction.z = direction.z /direction.len();
-            //ystem.out.println("position={"+position+"}");
             float friction = 0.97f;
             this.direction.x=this.direction.x*friction;
             this.direction.y=this.direction.y*friction;
-                /*this.direction.x=this.direction.x*friction;*/
             if (gravit)
             {
                 if (direction.z>0.08f)
@@ -621,7 +553,7 @@ public class NewBallPhysics {
             else
             {
                 direction.z=0;
-                //updatePosition();
+                updatePosition();
                 if (height>1||direction.z!=0)//||(new Vector3(closest.getPosition()).sub(position).len()>3.9))
                 {
                     gravity = true;
@@ -630,64 +562,7 @@ public class NewBallPhysics {
         }
         else
         {
-                /*for(int i=0;i<this.instances.size();i++)
-                {
-                    if (instances.size()>0);
-                    {
-                        float boxMinX = instances.get(i).x-4f;
-                        float boxMinY = instances.get(i).y-4f;
-                        float boxMinZ = instances.get(i).z-4f;
-                        float boxMaxX = instances.get(i).x+4f;
-                        float boxMaxY = instances.get(i).y+4f;
-                        float boxMaxZ = instances.get(i).z+4f;
 
-                        Vector3 corner1 = new Vector3(instances.get(i).sub(4,4,4));
-                        Vector3 corner2 = new Vector3(instances.get(i).sub(-4,4,4));
-                        Vector3 corner3 = new Vector3(instances.get(i).sub(-4,-4,4));
-                        Vector3 corner4 = new Vector3(instances.get(i).sub(-4,-4,-4));
-                        Vector3 corner5 = new Vector3(instances.get(i).sub(4,4,-4));
-                        Vector3 corner6 = new Vector3(instances.get(i).sub(4,-4,-4));
-                        Vector3 corner7 = new Vector3(instances.get(i).sub(4,-4,4));
-                        Vector3 corner8 = new Vector3(instances.get(i).sub(-4,4,-4));
-
-                        if (corner1.sub(position).len()<1)
-                        {
-                            push(position.sub(corner1).x*-2,position.sub(corner1).y*-2,position.sub(corner1).z*-2);
-                        }
-                        else if(corner2.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else if(corner3.sub(position).len()<1)
-                        {
-                            push(position.sub(corner3).x*-2,position.sub(corner3).y*-2,position.sub(corner3).z*-2);
-                        }
-                        else if(corner4.sub(position).len()<1)
-                        {
-                            push(position.sub(corner4).x*-2,position.sub(corner4).y*-2,position.sub(corner4).z*-2);
-                        }
-                        else if(corner5.sub(position).len()<1)
-                        {
-                            push(position.sub(corner5).x*-2,position.sub(corner5).y*-2,position.sub(corner5).z*-2);
-                        }
-                        else if(corner6.sub(position).len()<1)
-                        {
-                            push(position.sub(corner6).x*-2,position.sub(corner6).y*-2,position.sub(corner6).z*-2);
-                        }
-                        else if(corner7.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else if(corner8.sub(position).len()<1)
-                        {
-                            push(position.sub(corner2).x*-2,position.sub(corner2).y*-2,position.sub(corner2).z*-2);
-                        }
-                        else
-                        {
-                            this.direction.set(0, 0, 0);
-                        }
-                    }
-                }*/
             if (direction.x<0.081 && direction.x>-0.081)
             {
                 direction.x = 0;
@@ -712,37 +587,6 @@ public class NewBallPhysics {
 
 
         }
-        //}
-        //else
-        //{
-
-        //GRAVITY
-        /*if (gravity)
-        {
-                if (this.direction.z>0)
-                {
-
-                    if (this.direction.z>0.11)
-                    {
-                        this.direction.z*=0.5;
-                    }
-                    else
-                    {
-                        this.direction.z=-this.direction.z;
-
-                    }
-                }
-                else if (this.direction.z>-1.1)
-                {
-
-                        this.direction.z*=2;
-                }
-            //}
-        }
-        else
-        {
-            System.out.print("position:"+position);
-        }*/
     }
 
     public void updatePosition()
@@ -778,131 +622,14 @@ public class NewBallPhysics {
         {
 
             this.position.add(this.direction);
-            object.transform.translate(this.direction);
-            //System.out.println(this.position);
-
-
             updateVelocity(this.direction);
         }
+    }
 
-        for(int i=0;i<this.instances.size();i++)
-        {
-            if (instances.size()>0);
-            {
-                boolean ex = false;
-                boolean wy = false;
-                boolean zed = false;
-
-                float boxMinX = instances.get(index).x-4.0f;
-                float boxMinY = instances.get(index).y-4.0f;
-                float boxMinZ = instances.get(index).z-2.0f;
-                float boxMaxX = instances.get(index).x+4.0f;
-                float boxMaxY = instances.get(index).y+4.0f;
-                float boxMaxZ = instances.get(index).z+6.0f;
-
-                //System.out.print("get position {"+instances.get(index)+"}");
-
-                float nextX = position.x;
-                float nextY = position.y;
-                float nextZ = position.z;
-                if(nextX>boxMinX-radius&&nextX<boxMaxX+radius)
-                {
-                    ex = true;
-                }
-                if(nextY>boxMinY-radius&&nextY<boxMaxY+radius)
-                {
-                    wy = true;
-                }
-                if(nextZ>boxMinZ-radius&&nextZ<boxMaxZ+radius)
-                {
-                    zed = true;
-                }
-
-                //CHECK IF FALLING
-                if((position.z>boxMaxZ+radius)&&
-                        (position.x>boxMinX-radius&&position.x<boxMaxX+radius)&&
-                        (position.y>boxMinY-radius&&position.y<boxMaxY+radius))
-                {
-                    this.fall=false;
-                    this.height=position.z-boxMaxZ;
-                    //System.out.println(height);
-                }
-                else
-                {
-                    this.fall=false;
-                }
-
-                //DEBUG
-                    /*if(position.z>boxMinZ-radius&&position.z<boxMaxZ+radius)
-                    {
-                        Vector3 up = new Vector3(0,0,1);
-                        this.position.add(up);
-                        object.transform.translate(up);
-                    }*/
-
-                if(ex&&wy&&zed)
-                {
-                    if (position.z>boxMaxZ&&position.z-1<=boxMaxZ)
-                    {
-                        if (direction.z<0.08&&direction.z>-0.08)
-                        {
-                            Vector3 velocityChange = new Vector3();
-                            velocityChange.set(direction);
-                            //direction.z=0f;
-                            System.out.print("HERE");
-                            zcollide = true;
-                            gravity=false;
-                                /*if (position.z!=boxMaxZ+1)
-                                {
-                                    velocityChange.z=boxMaxZ+1-position.z;
-                                }*/
-                                /*velocityChange.z = 0 - velocityChange.z;
-                                zcollide = true;
-                                updateVelocity(velocityChange)*/
-                        }
-
-                            /*else
-                            {
-                                if (this.direction.z>0)
-                                {
-                                    if (this.direction.z>0.01)
-                                    {
-                                        this.direction.z*=0.5;
-                                    }
-                                    else
-                                    {
-                                        this.direction.z=-this.direction.z;
-                                    }
-                                }
-                                else if (this.direction.z>-1.1)
-                                {
-                                    this.direction.z*=2;
-                                }
-                            }*/
-                    }
-                        /*else if (position.z>boxMaxZ&&position.z+direction.z>boxMaxZ)
-                        {
-                            if (this.direction.z>0)
-                            {
-                                if (this.direction.z>0.008)
-                                {
-                                    this.direction.z*=0.5;
-                                }
-                                else
-                                {
-                                    this.direction.z=-this.direction.z;
-                                }
-                            }
-                            else if (this.direction.z>-1.1)
-                            {
-                                this.direction.z*=2;
-                            }
-                            this.position.add(this.direction);
-                            object.transform.translate(this.direction);
-                        }*/
-                }
-            }
-        }
-        //}
+    public void update()
+    {
+        ball.position=this.position;
+        ball.direction=this.direction;
+        //GameWorld.advance(this.ball);
     }
 }

@@ -1,7 +1,10 @@
 package nl.dke12.game;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import nl.dke12.desktop.SolidObject;
 
 import java.util.ArrayList;
 
@@ -13,41 +16,54 @@ public class GameWorld
     //GameController
 
     //render method that renders every object in the gameWorld  and also calls render from physics
-    private ArrayList<GameObject> gameObjects;
+    public ArrayList<SolidObject> solidObjects= new ArrayList<SolidObject>();;
     private Environment environment;
+    private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
+    protected boolean multiplayer;
 
-    public GameWorld()
+    public GameWorld(ArrayList<SolidObject> gameObjects, Environment environment,boolean multiplayer)
     {
-        this(new ArrayList<GameObject>(), new Environment());
-    }
-
-    public GameWorld(ArrayList<GameObject> gameObjects, Environment environment)
-    {
-        this.gameObjects = gameObjects;
+        this.solidObjects = gameObjects;
         this.environment = environment;
+        this.multiplayer = multiplayer;
     }
 
-    public GameWorld(Environment environment)
-    {
-        this(new ArrayList<GameObject>(), environment);
-    }
-
+    //@Override
     public void render(ModelBatch renderer)
     {
-        for(GameObject gameObject : gameObjects)
+        /*for(SolidObject gameObject : solidObjects)
         {
             renderer.render(gameObject.getModelInstance(), environment);
+        }*/
+        for (int i = 0; i < instances.size(); i++) {
+            renderer.render(instances.get(i), environment);
         }
+    }
+    //@Override
+    public void dispose() {
+
+        //modelBatch.dispose();
     }
 
 //    public ArrayList<GameObject> getGameObjects()
 //    {
-//        return gameObjects;
+//        return solidObjects;
 //    }
 
-    public void addGameObject(GameObject gameObject)
+    public void addGameObject(SolidObject gameObject)
     {
-        gameObjects.add(gameObject);
+        solidObjects.add(gameObject);
     }
+
+    public void advance(Ball ball)
+    {
+        ball.position.add(ball.direction);
+        ball.getModelInstance().transform.translate(ball.direction);
+        ball.getPhysics().update();
+    }
+
+
+
+
 
 }

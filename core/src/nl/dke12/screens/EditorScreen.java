@@ -3,6 +3,11 @@ package nl.dke12.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ModelLoader;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -12,14 +17,17 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import nl.dke12.controller.StateController;
+import nl.dke12.desktop.SolidObject;
 import nl.dke12.util.GameWorldLoader;
 import nl.dke12.util.GameWorldSaver;
 
@@ -46,7 +54,6 @@ public class EditorScreen implements Screen
     public Model mill;
     private Model ballModel;
 
-
     private ModelInstance modelInstance;
     private ModelInstance modelInstance1;
     private ModelInstance modelInstance2;
@@ -65,7 +72,7 @@ public class EditorScreen implements Screen
     private AnimationController spincontroller;
     private ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
     private ArrayList<Model> models = new ArrayList<Model>();
-    private ArrayList<Vector3> physObjects = new ArrayList<Vector3>();
+    private ArrayList<SolidObject> physObjects = new ArrayList<SolidObject>();
     //public ArrayList<GBall> gballs = new ArrayList<GBall>();
 
     private boolean swing = false;
@@ -397,8 +404,9 @@ public class EditorScreen implements Screen
         if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
             //swing = true;
 
-            GameWorldLoader loader = new GameWorldLoader(getEditorScreen());
-            loader.fileReader("core/assets/level1.txt");
+            /*GameWorldLoader loader = new GameWorldLoader(getEditorScreen());
+            loader.fileReader("core/assets/level1.txt");*/
+
         }
 
 
@@ -554,15 +562,17 @@ public class EditorScreen implements Screen
 
 
         instances.add(modelInstance3);
+
         if (model == model2) {
             addToLevel(x, y, z, (char) 1);
-            this.physObjects.add(new Vector3(x,y,z-10));
+            this.physObjects.add(new SolidObject(x,y,z-8,4f,4f,4f));
         }
         if (model == modelwall) {
             addToLevel(x, y, z, (char) 2);
             BoundingBox box = new BoundingBox();
             //modelInstancewall.calculateBoundingBox(box);
-            this.physObjects.add(new Vector3(x,y,z-5));
+            //this.physObjects.add(new Vector3(x,y,z-5));
+            this.physObjects.add(new SolidObject(x,y,z-4.5f,4f,4f,4f));
             //modelInstancewall.transform.rotate(1, 0, 0, -90);
 //            CrazyGolf.staticObjects.add(0, new StaticObject(modelInstancewall, x+4, y-4, z, 8 , 8 , 8 ));
         }

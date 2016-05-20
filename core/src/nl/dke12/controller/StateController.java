@@ -22,7 +22,7 @@ public class StateController extends Game
 
     public void displayEditorScreen()
     {
-        setScreen(new ModelTest(this));
+        setScreen(new EditorScreen(this));
     }
 
     public void displayHoleSelectionScreen()
@@ -45,7 +45,7 @@ public class StateController extends Game
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        //setScreen(new GameDisplay());
+        setScreen(new GameDisplay(multiplayer));
     }
 
     @Override
