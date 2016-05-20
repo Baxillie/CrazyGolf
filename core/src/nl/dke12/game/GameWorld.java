@@ -1,10 +1,7 @@
 package nl.dke12.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 

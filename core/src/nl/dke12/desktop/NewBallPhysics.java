@@ -478,8 +478,8 @@ public class NewBallPhysics {
             Vector3 popo = new Vector3(position);
             Vector3 popo1 = new Vector3(position);
 
-            /*Vector3 planePos= new Vector3(plane.closestPoint(nextPosition));
-            Vector3 planePosNow= new Vector3(plane.closestPoint(position));*/
+            Vector3 planePos= new Vector3(plane.closestPoint(nextPosition));
+            Vector3 planePosNow= new Vector3(plane.closestPoint(position));
             /*System.out.println("distance = "+new Vector3(closest.position).sub(position).len());
             System.out.println("closest = "+closest.position+" position = "+position);*/
 
@@ -489,6 +489,45 @@ public class NewBallPhysics {
             /*if (new Vector3(closest.position).sub(nextPosition).len()<3.9)&&
                 (plane.getDistance(nextPosition)<1)&&
                 (plane.testIntersection(plane.getIntersection(position))))*/
+
+            ///////////////////////////Wat////////////////////////////////////////////
+            if(new Vector3(planePos).sub(nextPosition).len()<1)
+
+            {
+
+                //centreline = inward facing normal of collision plane
+                Vector3 centreLine = new Vector3(plane.getNormal());
+                centreLine.scl(1/centreLine.len());
+                //check if normal is outward facing
+                Vector3 cent = new Vector3(centreLine);
+                /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
+                {
+                    centreLine.scl(-1);
+                }*/
+
+
+                //normalLine = perpendicular to centreLine parallel to the direction
+                Vector3 normalLine = new Vector3(new Vector3(planePosNow).sub(planePos));
+                normalLine.scl(1/normalLine.len());
+                //perpComponent = component of direction that is perpendicular to centreLine
+                float perpComponent = (new Vector3(direction).dot(centreLine));
+                //paraComponent = component of direction that is parallel to centreLine
+                Vector3 perpLine = new Vector3(new Vector3(normalLine).scl(perpComponent));
+                Vector3 paraLine = new Vector3(new Vector3(direction).add(perpLine));
+                //perpLine.scl(-1);
+
+
+                Vector3 bounce = new Vector3(new Vector3(perpLine).add(paraLine));
+                this.bounceVector = bounce.scl(-0.5f);
+                System.out.println("bounce"+bounceVector);
+                System.out.println("plane"+plane.getPoints());
+                System.out.println("direction"+direction);
+
+                //stop();
+                return true;
+            }
+            //////////////////////////////////////////////////////////////////////////////////////////
+            /*
             if(new Vector3(new Vector3(nextposPlane).sub(nextPosition)).len()<1)
 
             {
@@ -527,7 +566,7 @@ public class NewBallPhysics {
 
                 //stop();
                 return true;
-            }
+            }*/
             else
             {
                 gravit = true;
@@ -726,9 +765,12 @@ public class NewBallPhysics {
                 }
                 else
                 {
-                    /*gravit = false;
+                    //we should not be setting the gravity here, but oh well
+                    gravit = false;
                     direction.x=bounceVector.x;
-                    direction.y=bounceVector.y;*/
+                    direction.y=bounceVector.y;
+
+                    //direction.z=0;
                 }
             }
         }

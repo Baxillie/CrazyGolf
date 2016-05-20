@@ -1,8 +1,8 @@
-package nl.dke13.controller;
+package nl.dke12.controller;
 
 import com.badlogic.gdx.Game;
-import nl.dke13.desktop.ModelTest;
-import nl.dke13.screens.*;
+import nl.dke12.desktop.ModelTest;
+import nl.dke12.screens.*;
 
 /**
  * Switches between different screens
@@ -45,7 +45,7 @@ public class StateController extends Game
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        setScreen(new GameDisplay());
+        //setScreen(new GameDisplay());
     }
 
     @Override

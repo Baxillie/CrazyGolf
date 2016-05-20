@@ -26,7 +26,7 @@ public class Triangle {
         vector2.add(point2);
         this.normal = new Vector3(vector1);
         this.normal.crs(vector2);
-        this.normal.scl(1/this.normal.len());
+        //this.normal.scl(1/this.normal.len());
         //System.out.println("  norm="+normal);
 
     }

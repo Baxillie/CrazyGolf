@@ -62,7 +62,7 @@ public class CrazyGolf implements Screen {
         stage = new Stage();
         ui = new UserInterface();
         this.mainMenu = mainMenu;
-        models = new ArrayList<>();
+        models = new ArrayList<Model>();
 
         //make the camera
         camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //construct the camera
