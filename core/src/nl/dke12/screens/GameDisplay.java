@@ -47,7 +47,6 @@ public class GameDisplay implements Screen
     public Model mill;
     private Model ballModel;
 
-
     private ModelInstance modelInstance;
     private ModelInstance modelInstance1;
     private ModelInstance modelInstance2;
@@ -346,6 +345,16 @@ public class GameDisplay implements Screen
     public void resize(int width, int height)
     {
 
+    }
+
+    public void setBall(Ball ball)
+    {
+        this.ball=ball;
+    }
+
+    public void setBall2(Ball ball)
+    {
+        this.ball2=ball;
     }
 
     @Override

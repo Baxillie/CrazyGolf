@@ -34,14 +34,18 @@ public class GameWorld
 
     }
 
+
     public void setBall(Ball ball)
     {
         this.ball=ball;
+        advance(ball);
+
     }
 
     public void setBall2(Ball ball)
     {
         this.ball2=ball;
+        advance(ball2);
     }
 
 
@@ -57,9 +61,4 @@ public class GameWorld
         ball.getModelInstance().transform.translate(ball.direction);
         ball.getPhysics().update();
     }
-
-
-
-
-
 }
