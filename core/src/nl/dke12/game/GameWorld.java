@@ -13,9 +13,8 @@ import java.util.ArrayList;
  */
 public class GameWorld
 {
-    //render method that renders every object in the gameWorld  and also calls render from physics
     private ArrayList<SolidObject> solidObjects;
-    private ArrayList<ModelInstance> instances;
+    private ArrayList<InstanceModel> instances;
     private boolean multiplayer;
     private Ball ball;
     private Ball ball2;
@@ -36,7 +35,7 @@ public class GameWorld
         createBalls(multiplayer);
         createPhysics(multiplayer);
 
-        this.gameDisplay = new GameDisplay();
+        this.gameDisplay = new GameDisplay(instances, multiplayer);
         this.gameController = new GameController(physics);
     }
 
@@ -66,11 +65,15 @@ public class GameWorld
         }
     }
 
+    public void doStuff()
+    {
+        gameController.moveCamera(gameDisplay.getCamera());
+    }
+
     public void advance(Ball ball)
     {
         ball.position.add(ball.direction);
         //update graphics here :D
-        //ball.getModelInstance().transform.translate(ball.direction);
-        physics.update();
+        gameDisplay.updateBall(ball.direction);
     }
 }

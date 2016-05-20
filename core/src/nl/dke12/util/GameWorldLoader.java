@@ -9,8 +9,8 @@
     import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
     import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
     import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-    import com.badlogic.gdx.utils.Array;
     import com.badlogic.gdx.utils.UBJsonReader;
+    import nl.dke12.game.InstanceModel;
     import nl.dke12.game.SolidObject;
 
     import java.io.File;
@@ -24,7 +24,7 @@
     */
     public class GameWorldLoader
     {
-        private ArrayList<ModelInstance> instances;
+        private ArrayList<InstanceModel> instances;
         private ArrayList<SolidObject> solidObjects;
 
         private ModelInstance skybox;
@@ -75,14 +75,42 @@
             golfBall2 = new ModelInstance(ballModel);
             golfBall2.materials.get(0).set(ColorAttribute.createDiffuse(Color.RED));
 
-            instances.add(skybox);
-            instances.add(TWstatue);
-            instances.add(floor);
-            instances.add(wall);
-            instances.add(select);
-            instances.add(windmill);
-            instances.add(golfBall);
-            instances.add(golfBall2);
+            transformInstances();
+            fillInstances();
+
+        }
+
+        public void transformInstances()
+        {
+            TWstatue.transform.rotate(1, 0, 0, 90);
+
+            // Move the model down a bit on the screen ( in a z-up world, down is -z ).
+            skybox.transform.translate(0, 0, 0);
+            TWstatue.transform.translate(0, 0, 0);
+            floor.transform.translate(0, 0, 0);
+            wall.transform.translate(0, 0, 0);
+            windmill.transform.translate(0, 0, 5);
+            select.transform.translate(0, 0, 0);
+
+            // Scale the model down
+            skybox.transform.scale(10f, 10f, 10f);
+            TWstatue.transform.scale(0.4f, 0.4f, 0.4f);
+            floor.transform.scale(4f, 4f, 4f);
+            wall.transform.scale(4f, 4f, 4f);
+            select.transform.scale(4.3f, 4.3f, 4.3f);
+
+        }
+
+        public void fillInstances()
+        {
+            instances.add(new InstanceModel(skybox, "skybox"));
+            instances.add(new InstanceModel(TWstatue, "twstatue"));
+            instances.add(new InstanceModel(floor, "floor"));
+            instances.add(new InstanceModel(wall, "wall"));
+            instances.add(new InstanceModel(select, "select"));
+            instances.add(new InstanceModel(windmill, "windmill"));
+            instances.add(new InstanceModel(golfBall, "golfball"));
+            instances.add(new InstanceModel(golfBall2, "golfball2"));
         }
 
         public void addObject(float x, float y, float z, Model model)
@@ -91,19 +119,21 @@
             modelInstance3.transform.translate(x, y, z-5);
             modelInstance3.transform.rotate(1, 0, 0, -90);
             modelInstance3.transform.scale(4f, 4f, 4f);
-            instances.add(modelInstance3);
 
             if (model == floorModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-10,4f,4f,4f, "floor"));
+                instances.add(new InstanceModel(modelInstance3, "floor"));
             }
             if (model == wallModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "wall"));
+                instances.add(new InstanceModel(modelInstance3, "wall"));
             }
             if (model == millModel)
             {
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
+                instances.add(new InstanceModel(modelInstance3, "windmill"));
             }
         }
 
@@ -149,7 +179,7 @@
             }
         }
 
-        public ArrayList<ModelInstance> getModelInstances()
+        public ArrayList<InstanceModel> getModelInstances()
         {
             return instances;
         }

@@ -22,4 +22,9 @@ public class Ball
         this.radius = 0.5f;
     }
 
+    public Vector3 getPosition()
+    {
+        return position;
+    }
+
 }

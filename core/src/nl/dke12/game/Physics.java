@@ -230,4 +230,9 @@ public class Physics
             updateVelocity(ball.direction);
         }
     }
+
+    public Ball getBall()
+    {
+        return this.ball;
+    }
 }

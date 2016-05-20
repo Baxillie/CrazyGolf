@@ -1,7 +1,6 @@
 package nl.dke12.controller;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.game.Physics;
@@ -13,14 +12,29 @@ import nl.dke12.util.GameWorldLoader;
  */
 public class GameController
 {
-    //Ball
-    //InputProcessor
     private Physics physics;
+    private Physics physics2;
+    private Vector3 shotVector;
+
+    private InputProcessor inputProcessor;
+    private AIInputProcessor aiInputProcessor;
 
 
     public GameController(Physics physics)
     {
         this.physics = physics;
+        this.shotVector = new Vector3(0,1,0.8f);
+        inputProcessor = new InputProcessor();
+        aiInputProcessor = new AIInputProcessor();
+    }
+
+    public GameController(Physics physics, Physics physics2)
+    {
+        this.physics = physics;
+        this.physics2 = physics2;
+        this.shotVector  = new Vector3(0,1,0.8f);
+        inputProcessor = new InputProcessor();
+        aiInputProcessor = new AIInputProcessor();
     }
 
     public void moveCamera(Camera camera)
@@ -35,7 +49,6 @@ public class GameController
         if (Gdx.input.isKeyPressed(Input.Keys.Z))
         {
             camera.translate(directVector.x/2,directVector.y/2,0);
-        //camera.direction.x;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q))
         {
@@ -48,40 +61,34 @@ public class GameController
         if (Gdx.input.isKeyPressed(Input.Keys.A))
         {
             camera.rotate(4,0,0,4);
-            gameDisplay.turn(4,0,0,4);
+            shotVector.rotate(4,0,0,4);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.E))
         {
             camera.rotate(-4,0,0,4);
-            gameDisplay.turn(-4,0,0,4);
+            shotVector.rotate(-4,0,0,4);
         }
     }
 
-    public void load()
-    {
-        GameWorldLoader loader = new GameWorldLoader(gameDisplay);
-        loader.fileReader("core/assets/level1.txt");
-    }
-
-    public void move(Vector3 shotVector)
+    public void move()
     {
         if (Gdx.input.isKeyPressed(Input.Keys.T)) {
-            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,shotVector.z);
-            gameDisplay.getBall().getPhysics().updatePosition();
+            physics.push(shotVector.x,shotVector.y,shotVector.z);
+            physics.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
-            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,shotVector.z);
-            gameDisplay.getBall().getPhysics().updatePosition();
+            physics2.push(shotVector.x,shotVector.y,shotVector.z);
+            physics2.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.G)) {
-            gameDisplay.getBall().getPhysics().push(shotVector.x,shotVector.y,0);
-            gameDisplay.getBall().getPhysics().updatePosition();
+            physics.push(shotVector.x,shotVector.y,0);
+            physics.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
-            if (gameDisplay.getBall().position.z<5)
+            if (physics.getBall().getPosition().z<5)
             {
-                gameDisplay.getBall().getPhysics().push(0,0,10);
-                gameDisplay.getBall().getPhysics().updatePosition();
+                physics.push(0,0,10);
+                physics.updatePosition();
             }
         }
     }
