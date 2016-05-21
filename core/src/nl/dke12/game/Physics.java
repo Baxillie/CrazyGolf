@@ -120,24 +120,32 @@ public class Physics
                 Vector3 centreLine = new Vector3(plane.getNormal());
                 centreLine.scl(1/centreLine.len());
 
+
                 //check if normal is outward facing
-                /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
-                {
-                    centreLine.scl(-1);
-                }*/
+//                if(new Vector3(nextPosPlane).sub(nextPosition).len()<(new Vector3(nextPosPlane).sub(new Vector3(nextPosition).add(centreLine)).len()))
+//                {
+//                    normalLine.scl(-1);
+//                }
 
                 //normalLine = perpendicular to centreLine parallel to the direction
+
                 Vector3 normalLine = new Vector3(new Vector3(currPosPlane).sub(nextPosPlane));
                 normalLine.scl(1/normalLine.len());
-                //perpComponent = component of direction that is perpendicular to centreLine
+
                 float perpComponent = (new Vector3(ball.direction).dot(centreLine));
-                //paraComponent = component of direction that is parallel to centreLine
+
                 Vector3 perpLine = new Vector3(new Vector3(normalLine).scl(perpComponent));
                 Vector3 paraLine = new Vector3(new Vector3(ball.direction).add(perpLine));
                 //perpLine.scl(-1);
 
                 Vector3 bounce = new Vector3(new Vector3(perpLine).add(paraLine));
                 this.bounceVector = bounce.scl(-0.5f);
+
+                System.out.println("centreLine= " + centreLine);
+                System.out.println("normalLine= " + normalLine);
+                System.out.println("perpLine  = " + perpLine);
+                System.out.println("paraLine  = " + paraLine);
+                System.out.println();
 
                 return true;
             }
