@@ -46,7 +46,7 @@ public class GameController
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Z))
+        if (Gdx.input.isKeyPressed(Input.Keys.W))
         {
             camera.translate(directVector.x/2,directVector.y/2,0);
         }
