@@ -50,7 +50,7 @@ public class GameController
         {
             camera.translate(directVector.x/2,directVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Q))
+        if (Gdx.input.isKeyPressed(Input.Keys.A))
         {
             camera.translate(sideVector.x/2,sideVector.y/2,0);
         }
@@ -58,7 +58,7 @@ public class GameController
         {
             camera.translate(-sideVector.x/2,-sideVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        if (Gdx.input.isKeyPressed(Input.Keys.Q))
         {
             camera.rotate(4,0,0,4);
             shotVector.rotate(4,0,0,4);
