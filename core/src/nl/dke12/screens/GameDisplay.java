@@ -1,6 +1,5 @@
 package nl.dke12.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
@@ -10,11 +9,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import nl.dke12.game.GameWorld;
 import nl.dke12.game.InstanceModel;
-import nl.dke12.game.SolidObject;
-import nl.dke12.game.Ball;
 
 import java.util.ArrayList;
 
@@ -30,9 +26,6 @@ public class GameDisplay implements Screen
     private boolean multiplayer;
     private ArrayList<InstanceModel> instances;
     private ArrayList<InstanceModel> mapOfWorld;
-
-    private Ball ball;
-    private Ball ball2;
 
     private ModelInstance skyboxModel;
     private ModelInstance TWModel;
@@ -164,16 +157,6 @@ public class GameDisplay implements Screen
         this.instances = instances;
         this.mapOfWorld = mapOfWorld;
         find();
-    }
-
-    public void setBall(Ball ball)
-    {
-        this.ball=ball;
-    }
-
-    public void setBall2(Ball ball)
-    {
-        this.ball2=ball;
     }
 
     @Override

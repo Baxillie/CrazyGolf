@@ -1,31 +1,17 @@
 package nl.dke12.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import nl.dke12.controller.EditorController;
-import nl.dke12.controller.GameController;
 import nl.dke12.controller.StateController;
 import nl.dke12.game.InstanceModel;
-import nl.dke12.game.SolidObject;
 import nl.dke12.util.GameWorldLoader;
-import nl.dke12.util.GameWorldSaver;
-import sun.security.jca.GetInstance;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 
 /**

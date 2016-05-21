@@ -1,7 +1,6 @@
 package nl.dke12.game;
 
 import com.badlogic.gdx.math.Vector3;
-import nl.dke12.desktop.GameObject;
 
 import java.util.ArrayList;
 

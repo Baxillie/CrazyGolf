@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.game.Physics;
-import nl.dke12.util.GameWorldLoader;
 
 /**
  * Controlls the flow of the game

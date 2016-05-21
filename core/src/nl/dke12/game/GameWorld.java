@@ -1,7 +1,5 @@
 package nl.dke12.game;
 
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import nl.dke12.controller.GameController;
 import nl.dke12.screens.GameDisplay;
 import nl.dke12.util.GameWorldLoader;
