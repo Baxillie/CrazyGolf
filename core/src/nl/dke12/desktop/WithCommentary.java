@@ -173,7 +173,7 @@ public class WithCommentary implements ApplicationListener {
         boolean firstclick = true;
         if (Gdx.input.isKeyJustPressed(Keys.SPACE))
         {
-            //modelBatch.render(placeTile(box2),environment);
+            //renderer.render(placeTile(box2),environment);
             placeTile(emptyX,emptyY,emptyZ, model2);
         }
 
@@ -232,7 +232,7 @@ public class WithCommentary implements ApplicationListener {
             Gdx.gl.glViewport( Gdx.graphics.getWidth()/4,0,3*Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight() );
             Gdx.gl.glViewport( 0,0,3*Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight() );
             select.transform.translate(0,0,0);
-            //modelBatch.render(select, environment);
+            //renderer.render(select, environment);
 
             if (Gdx.input.isKeyJustPressed(Keys.UP))
             {

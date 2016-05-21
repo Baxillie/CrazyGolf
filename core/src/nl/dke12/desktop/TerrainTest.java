@@ -1,6 +1,6 @@
 package nl.dke12.desktop;
 
-/*
+
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -21,10 +21,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.tests.utils.GdxTest;
+//import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class TerrainTest extends GdxTest {
+@Deprecated
+public class TerrainTest { /*extends GdxTest {
+    /*
+}
     ImmediateModeRenderer20 renderer;
     TerrainChunk chunk;
     Mesh mesh;
@@ -256,3 +259,4 @@ public class TerrainTest extends GdxTest {
         return false;
     }
 }*/
+}

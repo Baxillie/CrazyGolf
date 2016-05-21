@@ -11,7 +11,7 @@ import java.io.PrintWriter;
  */
 public class GameWorldSaver
 {
-    public static void fileWriter(String name, int[][][] level)
+    public void fileWriter(String name, int[][][] level)
     {
         try {
             File file = ((Gdx.files.internal(name)).file());

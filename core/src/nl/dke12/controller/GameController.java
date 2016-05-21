@@ -19,7 +19,6 @@ public class GameController
     private InputProcessor inputProcessor;
     private AIInputProcessor aiInputProcessor;
 
-
     public GameController(Physics physics)
     {
         this.physics = physics;

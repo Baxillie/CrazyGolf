@@ -300,7 +300,7 @@ public class ModelTest implements Screen {
             ball.stop();
         }*/
         modelBatch.render(ball.object, environment);
-        //modelBatch.render(ball2.object, environment);
+        //renderer.render(ball2.object, environment);
 
 
 
@@ -308,7 +308,7 @@ public class ModelTest implements Screen {
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, skybox);
         modelBatch.render(modelInstance1, environment);
-        //modelBatch.render(windmill, environment);
+        //renderer.render(windmill, environment);
 
         if (Gdx.input.isKeyJustPressed(Keys.BACKSPACE)) {
             //swing = true;
@@ -410,7 +410,7 @@ public class ModelTest implements Screen {
             Gdx.gl.glViewport(Gdx.graphics.getWidth() / 4, 0, 3 * Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight());
             Gdx.gl.glViewport(0, 0, 3 * Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight());
 
-            //modelBatch.render(modelInstance2, environment);
+            //renderer.render(modelInstance2, environment);
 
             select.transform.translate(0, 0, 0);
 
@@ -495,14 +495,14 @@ public class ModelTest implements Screen {
         ModelInstance customModel = new ModelInstance(customMod);
         customModel.transform.translate(12, 0, 0);
 
-       // modelBatch.render(customModel, environment);
+       // renderer.render(customModel, environment);
 
         if (editor == false) {
             //Gdx.input.setInputProcessor(cameraController);
             //Gdx.input.setInputProcessor(null);
             Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
-        //modelBatch.render(modelInstance2, environment);
+        //renderer.render(modelInstance2, environment);
         modelBatch.end();
     }
 

@@ -31,7 +31,6 @@ public class GameDisplay implements Screen
     private ArrayList<InstanceModel> instances;
     private ArrayList<InstanceModel> mapOfWorld;
 
-
     private Ball ball;
     private Ball ball2;
 

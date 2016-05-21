@@ -53,6 +53,14 @@
             fileReader(name);
         }
 
+        public GameWorldLoader()
+        {
+            this.instances = new ArrayList<>();
+            this.mapOfWorld = new ArrayList<>();
+            this.solidObjects = new ArrayList<>();
+            loadModels();
+        }
+
         public void loadModels()
         {
             UBJsonReader jsonReader = new UBJsonReader();
@@ -79,7 +87,6 @@
 
             transformInstances();
             fillInstances();
-
         }
 
         public void transformInstances()
