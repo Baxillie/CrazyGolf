@@ -71,23 +71,23 @@ public class GameController
 
     public void move()
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.T)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             physics.push(shotVector.x,shotVector.y,shotVector.z);
-            physics.updatePosition();
+            //physics.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
             physics2.push(shotVector.x,shotVector.y,shotVector.z);
-            physics2.updatePosition();
+            //physics2.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.G)) {
             physics.push(shotVector.x,shotVector.y,0);
-            physics.updatePosition();
+            //physics.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
             if (physics.getBall().getPosition().z<5)
             {
                 physics.push(0,0,10);
-                physics.updatePosition();
+                //physics.updatePosition();
             }
         }
     }

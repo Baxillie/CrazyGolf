@@ -14,10 +14,10 @@ public class Physics
     private float height = 10;
     private Ball ball;
     private ArrayList<SolidObject> obstacles;
-    private Vector3 bounceVector;
+    protected Vector3 bounceVector;
     private Triangle plane;
     private SolidObject closest;
-    private boolean gravit = false;
+    protected boolean gravit;
 
     public Physics(ArrayList<SolidObject> obstacles, Ball ball)
     {
@@ -113,6 +113,7 @@ public class Physics
             Vector3 nextPosPlane = new Vector3(plane.closestPoint(nextPosition));
             Vector3 currPosPlane = new Vector3(plane.closestPoint(ball.position));
 
+            //todo: ADD MORE STUFF
             if(new Vector3(nextPosPlane).sub(nextPosition).len()<1)
             {
                 //centreline = inward facing normal of collision plane
@@ -180,7 +181,6 @@ public class Physics
             else
             {
                 direction.z=0;
-                updatePosition();
                 //todo: set gravit to true???
             }
         }
@@ -202,34 +202,35 @@ public class Physics
         }
     }
 
-    public void updatePosition()
-    {
-        if (collides())
-        {
-            if (bounceVector!=null)
-            {
-                if(bounceVector.z>0.08)
-                {
-                    gravit = true;
-                    ball.direction.set(bounceVector);
-                }
-                else
-                {
-                    //we should not be setting the gravity here, but oh well
-                    gravit = false;
-                    ball.direction.x=bounceVector.x;
-                    ball.direction.y=bounceVector.y;
-
-                    ball.direction.z=0;
-                }
-            }
-        }
-        else
-        {
-            ball.position.add(ball.direction);
-            updateVelocity(ball.direction);
-        }
-    }
+//    public void updatePosition()
+//    {
+//        System.out.println(ball.direction.z);
+//        if (collides())
+//        {
+//            if (bounceVector!=null)
+//            {
+//                if(bounceVector.z>0.08)
+//                {
+//                    gravit = true;
+//                    ball.direction.set(bounceVector);
+//                }
+//                else
+//                {
+//                    //we should not be setting the gravity here, but oh well
+//                    //gravit = false;
+//                    ball.direction.x=bounceVector.x;
+//                    ball.direction.y=bounceVector.y;
+//
+//                    ball.direction.z=0;
+//                }
+//            }
+//        }
+//        else
+//        {
+//            ball.position.add(ball.direction);
+//            updateVelocity(ball.direction);
+//        }
+//    }
 
     public Ball getBall()
     {

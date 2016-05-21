@@ -86,12 +86,44 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
         gameController.move();
-        advance(ball);
+        updatePosition();
+        /*dont advance here*/
     }
 
     public void advance(Ball ball)
     {
         ball.position.add(ball.direction);
         gameDisplay.updateBall(ball.direction);
+    }
+
+    public void updatePosition()
+    {
+        //System.out.println(ball.direction.z);
+        if (physics.collides())
+        {
+            if (physics.bounceVector!=null)
+            {
+                if(physics.bounceVector.z>0.08)
+                {
+                    physics.gravit = true;
+                    ball.direction.set(physics.bounceVector);
+                }
+                else
+                {
+                    //we should not be setting the gravity here, but oh well
+                    physics.gravit = false;
+                    ball.direction.x=physics.bounceVector.x;
+                    ball.direction.y=physics.bounceVector.y;
+
+                    //ball.direction.z=0;
+                }
+            }
+        }
+        else
+        {
+            ball.position.add(ball.direction);
+            gameDisplay.updateBall(ball.direction);
+            physics.updateVelocity(ball.direction);
+        }
     }
 }
