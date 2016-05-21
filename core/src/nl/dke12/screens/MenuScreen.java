@@ -53,7 +53,6 @@ public class MenuScreen implements Screen {
 		skin.add("white", new Texture(pixmap));
 
 		BitmapFont bfont = new BitmapFont();
-		//bfont.scale(1);
 		skin.add("default",bfont);
 
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -70,7 +69,7 @@ public class MenuScreen implements Screen {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//if(backButton.isPressed() == true)
 				//playgGameButton.setText("Starting new game");
-				System.out.println("single player button gets clicked");
+				//System.out.println("single player button gets clicked");
 				stateController.displayGameDisplay(false);
 			}
 		});

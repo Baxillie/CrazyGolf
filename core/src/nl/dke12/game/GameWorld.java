@@ -92,7 +92,6 @@ public class GameWorld
     public void advance(Ball ball)
     {
         ball.position.add(ball.direction);
-        //update graphics here :D
         gameDisplay.updateBall(ball.direction);
     }
 }
