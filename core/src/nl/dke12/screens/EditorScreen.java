@@ -167,7 +167,6 @@ public class EditorScreen implements Screen
             if (whatToPlace.equals("wall"))
             {
                 placeTile(placementX, placementY, 8, wallModel);
-                System.out.print("call spacebar");
             }
             if (whatToPlace.equals("windmill"))
             {

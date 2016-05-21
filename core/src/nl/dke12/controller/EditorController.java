@@ -22,17 +22,14 @@ public class EditorController
     {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1))
         {
-            System.out.println("f");
             whatToPlace = "floor";
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2))
         {
-            System.out.println("wall");
             whatToPlace = "wall";
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3))
         {
-            System.out.println("w");
             whatToPlace = "windmill";
         }
     }
