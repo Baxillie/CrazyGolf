@@ -76,7 +76,6 @@
             millModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
             ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10,
                         new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
-
             holeModel = new ModelBuilder().createSphere(0.3f, 0.3f, 0.3f, 10, 10,
                         new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
 
@@ -98,6 +97,7 @@
         public void transformInstances()
         {
             TWstatue.transform.rotate(1, 0, 0, 90);
+            windmill.transform.rotate(1, 0, 0, 180);
 
             // Move the model down a bit on the screen ( in a z-up world, down is -z ).
             skybox.transform.translate(0, 0, 0);
@@ -105,7 +105,7 @@
             floor.transform.translate(0, 0, 0);
             hole.transform.translate(0,0,0);
             wall.transform.translate(0, 0, 0);
-            windmill.transform.translate(0, 0, 5);
+            windmill.transform.translate(0, 0, -2);
             select.transform.translate(0, 0, 0);
 
             // Scale the model down

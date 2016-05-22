@@ -89,9 +89,8 @@ public class EditorScreen implements Screen
             type = instance.type;
             if (type == "floor")
                 floorModel = instance.modelInstance;
-            else if (type == "wall"){
-                System.out.print("make wall");
-                wallModel = instance.modelInstance;}
+            else if (type == "wall")
+                wallModel = instance.modelInstance;
             else if (type == "windmill")
                 millModel = instance.modelInstance;
             else if (type == "skybox")
@@ -125,6 +124,7 @@ public class EditorScreen implements Screen
         }
         if (model == millModel) {
             addToLevel(x, y, z, (char) 4);
+            System.out.println("add hole");
             mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
         }
     }
