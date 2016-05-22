@@ -37,8 +37,9 @@ public class GameWorld
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
 
-        this.physics = new Physics(solidObjects, ball);
         createBalls();
+        this.physics = new Physics(solidObjects, ball);
+
         //createPhysics();
         createController();
     }
