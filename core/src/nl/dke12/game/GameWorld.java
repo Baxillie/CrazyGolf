@@ -1,5 +1,7 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import nl.dke12.controller.GameController;
 import nl.dke12.screens.GameDisplay;
 import nl.dke12.util.GameWorldLoader;
@@ -22,12 +24,10 @@ public class GameWorld
     private GameDisplay gameDisplay;
     private Physics physics;
     private Physics physics2;
-    private boolean player1Turn;
 
     public GameWorld(boolean multiplayer)
     {
         this.multiplayer = multiplayer;
-        this.player1Turn = true;
 
         this.worldLoader = new GameWorldLoader("core/assets/level1.txt");
         this.instances = worldLoader.getModelInstances();
@@ -37,31 +37,26 @@ public class GameWorld
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
 
-        this.physics = new Physics(solidObjects, ball);
-        createBalls();
-        //createPhysics();
-        createController();
+        createBalls(multiplayer);
+        createPhysics(multiplayer);
+
+        this.gameController = new GameController(physics);
     }
 
     public void setDisplay(GameDisplay display)
     {
         this.gameDisplay = display;
         gameDisplay.setInstances(instances, mapOfWorld);
+        //gameDisplay.setBall(ball);
     }
 
-    private void createController()
+    public void setDisplayAfterCreation()
     {
-        if(multiplayer)
-        {
-            this.gameController = new GameController(physics, physics2);
-        }
-        else
-        {
-            this.gameController = new GameController(physics);
-        }
+        gameDisplay.setInstances(instances, mapOfWorld);
+        //gameDisplay.setBall(ball);
     }
 
-    private void createPhysics()
+    private void createPhysics(boolean multiplayer)
     {
         if(multiplayer)
         {
@@ -74,7 +69,7 @@ public class GameWorld
         }
     }
 
-    private void createBalls()
+    private void createBalls(boolean multiplayer)
     {
         if(multiplayer)
         {
@@ -91,29 +86,17 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
         gameController.move();
-
-//        if(player1Turn)
-//        {
-            updatePosition(physics, ball);
-//            if (multiplayer)
-//                player1Turn = false;
-//        }
-//        else
-//        {
-//            updatePosition(physics2, ball2);
-//            player1Turn = true;
-//        }
-
+        updatePosition();
         /*dont advance here*/
     }
 
-//    public void advance(Ball ball)
-//    {
-//        ball.position.add(ball.direction);
-//        gameDisplay.updateBall(ball.direction);
-//    }
+    public void advance(Ball ball)
+    {
+        ball.position.add(ball.direction);
+        gameDisplay.updateBall(ball.direction);
+    }
 
-    public void updatePosition(Physics physics, Ball ball)
+    public void updatePosition()
     {
         //System.out.println(ball.direction.z);
         if (physics.collides())
@@ -128,8 +111,7 @@ public class GameWorld
                 else
                 {
                     //we should not be setting the gravity here, but oh well
-                   // physics.gravit = false;
-                    //todo:new ? error where normal line perpline and para line are NAN and centre line is 0 -1, 0
+                    physics.gravit = false;
                     ball.direction.x=physics.bounceVector.x;
                     ball.direction.y=physics.bounceVector.y;
 
@@ -140,12 +122,8 @@ public class GameWorld
         else
         {
             ball.position.add(ball.direction);
+            gameDisplay.updateBall(ball.direction);
             physics.updateVelocity(ball.direction);
-
-            //if(this.ball == ball)
-                gameDisplay.updateBall(ball.direction);
-//            else
-//                gameDisplay.updateBall2(ball.direction);
         }
     }
 }
