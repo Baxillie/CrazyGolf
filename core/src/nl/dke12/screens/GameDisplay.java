@@ -137,8 +137,8 @@ public class GameDisplay implements Screen
         renderer.render(TWModel, environment);
         renderer.render(ballModel, environment);
 
-        if (multiplayer)
-            renderer.render(ball2Model, environment);
+//        if (multiplayer)
+//            renderer.render(ball2Model, environment);
 
         for (int i = 0; i < mapOfWorld.size(); i++)
         {

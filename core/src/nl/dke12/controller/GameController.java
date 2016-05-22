@@ -74,7 +74,7 @@ public class GameController
             physics.push(shotVector.x,shotVector.y,shotVector.z);
             //physics.updatePosition();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.H)) {
             physics2.push(shotVector.x,shotVector.y,shotVector.z);
             //physics2.updatePosition();
         }

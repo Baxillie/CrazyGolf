@@ -37,8 +37,9 @@ public class GameWorld
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
 
+        this.physics = new Physics(solidObjects, ball);
         createBalls();
-        createPhysics();
+        //createPhysics();
         createController();
     }
 
@@ -91,17 +92,18 @@ public class GameWorld
         gameController.moveCamera(gameDisplay.getCamera());
         gameController.move();
 
-        if(player1Turn)
-        {
+//        if(player1Turn)
+//        {
             updatePosition(physics, ball);
-            if (multiplayer)
-                player1Turn = false;
-        }
-        else
-        {
-            updatePosition(physics2, ball2);
-            player1Turn = true;
-        }
+//            if (multiplayer)
+//                player1Turn = false;
+//        }
+//        else
+//        {
+//            updatePosition(physics2, ball2);
+//            player1Turn = true;
+//        }
+
         /*dont advance here*/
     }
 
@@ -140,10 +142,10 @@ public class GameWorld
             ball.position.add(ball.direction);
             physics.updateVelocity(ball.direction);
 
-            if(this.ball == ball)
+            //if(this.ball == ball)
                 gameDisplay.updateBall(ball.direction);
-            else
-                gameDisplay.updateBall2(ball.direction);
+//            else
+//                gameDisplay.updateBall2(ball.direction);
         }
     }
 }
