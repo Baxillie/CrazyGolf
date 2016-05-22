@@ -127,7 +127,7 @@ public class GameWorld
                 else
                 {
                     //we should not be setting the gravity here, but oh well
-                    physics.gravit = false;
+                    //physics.gravit = false;
                     ball.direction.x=physics.bounceVector.x;
                     ball.direction.y=physics.bounceVector.y;
 
