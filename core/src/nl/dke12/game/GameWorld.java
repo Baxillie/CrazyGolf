@@ -27,7 +27,7 @@ public class GameWorld
     public GameWorld(boolean multiplayer)
     {
         this.multiplayer = multiplayer;
-        this.player1Turn = true;
+        player1Turn = true;
 
         this.worldLoader = new GameWorldLoader("core/assets/level1.txt");
         this.instances = worldLoader.getModelInstances();
@@ -38,9 +38,7 @@ public class GameWorld
         //gameDisplay.setInstances(instances);
 
         createBalls();
-        this.physics = new Physics(solidObjects, ball);
-
-        //createPhysics();
+        createPhysics();
         createController();
     }
 
@@ -54,7 +52,7 @@ public class GameWorld
     {
         if(multiplayer)
         {
-            this.gameController = new GameController(physics, physics2);
+            this.gameController = new GameController(physics,physics2);
         }
         else
         {
@@ -92,18 +90,18 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
         gameController.move();
-
-//        if(player1Turn)
-//        {
-            updatePosition(physics, ball);
-//            if (multiplayer)
-//                player1Turn = false;
-//        }
-//        else
-//        {
-//            updatePosition(physics2, ball2);
-//            player1Turn = true;
-//        }
+        //updatePosition();
+        if(player1Turn)
+        {
+            updatePosition(physics,ball);
+            if(multiplayer)
+                player1Turn = false;
+        }
+        else
+        {
+            updatePosition(physics2, ball2);
+            player1Turn = true;
+        }
 
         /*dont advance here*/
     }
@@ -129,8 +127,7 @@ public class GameWorld
                 else
                 {
                     //we should not be setting the gravity here, but oh well
-                   // physics.gravit = false;
-                    //todo:new ? error where normal line perpline and para line are NAN and centre line is 0 -1, 0
+                    physics.gravit = false;
                     ball.direction.x=physics.bounceVector.x;
                     ball.direction.y=physics.bounceVector.y;
 
@@ -141,12 +138,13 @@ public class GameWorld
         else
         {
             ball.position.add(ball.direction);
-            physics.updateVelocity(ball.direction);
 
-            //if(this.ball == ball)
+            if(this.ball == ball)
                 gameDisplay.updateBall(ball.direction);
-//            else
-//                gameDisplay.updateBall2(ball.direction);
+            else
+                gameDisplay.updateBall2(ball.direction);
+
+            physics.updateVelocity(ball.direction);
         }
     }
 }
