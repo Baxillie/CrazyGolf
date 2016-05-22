@@ -90,7 +90,6 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
         gameController.move();
-        //updatePosition();
         if(player1Turn)
         {
             updatePosition(physics,ball);
@@ -102,15 +101,7 @@ public class GameWorld
             updatePosition(physics2, ball2);
             player1Turn = true;
         }
-
-        /*dont advance here*/
     }
-
-//    public void advance(Ball ball)
-//    {
-//        ball.position.add(ball.direction);
-//        gameDisplay.updateBall(ball.direction);
-//    }
 
     public void updatePosition(Physics physics, Ball ball)
     {
