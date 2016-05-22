@@ -34,6 +34,7 @@
         private ModelInstance select;
         private ModelInstance windmill;
         private ModelInstance wall;
+        private ModelInstance hole;
         private ModelInstance golfBall;
         private ModelInstance golfBall2;
 
@@ -44,6 +45,7 @@
         private Model selecterModel;
         private Model millModel;
         private Model ballModel;
+        private Model holeModel;
 
         public GameWorldLoader(String name)
         {
@@ -75,12 +77,16 @@
             ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10,
                         new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
 
+            holeModel = new ModelBuilder().createSphere(0.3f, 0.3f, 0.3f, 10, 10,
+                        new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
+
             skybox = new ModelInstance(skyboxModel);
             TWstatue = new ModelInstance(TWstatueModel);
             floor = new ModelInstance(floorModel);
             wall = new ModelInstance(wallModel);
             select = new ModelInstance(selecterModel);
             windmill = new ModelInstance(millModel);
+            hole = new ModelInstance(holeModel);
             golfBall = new ModelInstance(ballModel);
             golfBall2 = new ModelInstance(ballModel);
             golfBall2.materials.get(0).set(ColorAttribute.createDiffuse(Color.RED));
@@ -97,6 +103,7 @@
             skybox.transform.translate(0, 0, 0);
             TWstatue.transform.translate(0, 0, 0);
             floor.transform.translate(0, 0, 0);
+            hole.transform.translate(0,0,0);
             wall.transform.translate(0, 0, 0);
             windmill.transform.translate(0, 0, 5);
             select.transform.translate(0, 0, 0);
@@ -105,6 +112,7 @@
             skybox.transform.scale(10f, 10f, 10f);
             TWstatue.transform.scale(0.4f, 0.4f, 0.4f);
             floor.transform.scale(4f, 4f, 4f);
+            hole.transform.scale(4f,4f,4f);
             wall.transform.scale(4f, 4f, 4f);
             select.transform.scale(4.3f, 4.3f, 4.3f);
 
@@ -118,6 +126,7 @@
             instances.add(new InstanceModel(wall, "wall"));
             instances.add(new InstanceModel(select, "select"));
             instances.add(new InstanceModel(windmill, "windmill"));
+            instances.add(new InstanceModel(hole, "hole"));
             instances.add(new InstanceModel(golfBall, "ball"));
             instances.add(new InstanceModel(golfBall2, "ball2"));
         }
@@ -146,6 +155,11 @@
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
                 mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
             }
+            if (model == holeModel)
+            {
+                solidObjects.add(new SolidObject(x,y,z-9.3f, 4f,4f,4f, "hole"));
+                mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
+            }
         }
 
         public void fileReader(String name) {
@@ -172,6 +186,10 @@
                         }
                         if (s.charAt(i) == '3') {
                             addObject((xPos-10)*8, (yPos-10)*8, 4, millModel);
+                            yPos += 1;
+                        }
+                        if (s.charAt(i) == '4') {
+                            addObject((xPos-10)*8, (yPos-10)*8, 4, holeModel);
                             yPos += 1;
                         }
                         if (s.charAt(i) == '0') {
