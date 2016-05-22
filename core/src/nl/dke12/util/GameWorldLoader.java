@@ -47,17 +47,17 @@
 
         public GameWorldLoader(String name)
         {
-            this.instances = new ArrayList<>();
-            this.mapOfWorld = new ArrayList<>();
-            this.solidObjects = new ArrayList<>();
+            this.instances = new ArrayList<InstanceModel>();
+            this.mapOfWorld = new ArrayList<InstanceModel>();
+            this.solidObjects = new ArrayList<SolidObject>();
             fileReader(name);
         }
 
         public GameWorldLoader()
         {
-            this.instances = new ArrayList<>();
-            this.mapOfWorld = new ArrayList<>();
-            this.solidObjects = new ArrayList<>();
+            this.instances = new ArrayList<InstanceModel>();
+            this.mapOfWorld = new ArrayList<InstanceModel>();
+            this.solidObjects = new ArrayList<SolidObject>();
             loadModels();
         }
 
@@ -131,7 +131,7 @@
 
             if (model == floorModel)
             {
-                solidObjects.add(new SolidObject(x,y,z-9.3f,4f,4f,4f, "floor"));
+                solidObjects.add(new SolidObject(x,y,z-9.3f,4.01f,4.01f,4f, "floor"));
                 mapOfWorld.add(new InstanceModel(modelInstance3, "floor"));
             }
             if (model == wallModel)

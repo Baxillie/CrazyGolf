@@ -18,7 +18,7 @@ public class SolidObject
     {
         position = new Vector3(x,y,z);
         this.type = type;
-        points=new ArrayList<>();
+        points=new ArrayList<Vector3>();
         addPoint(x-width,y-depth,z-height);
         addPoint(x-width,y-depth,z+height);
         addPoint(x-width,y+depth,z+height);
@@ -27,6 +27,7 @@ public class SolidObject
         addPoint(x+width,y+depth,z+height);
         addPoint(x+width,y-depth,z+height);
         addPoint(x+width,y-depth,z-height);
+
 
     }
 

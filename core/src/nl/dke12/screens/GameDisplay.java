@@ -44,7 +44,7 @@ public class GameDisplay implements Screen
     {
         create();
         ball2Model = null; //todo: change this thing into NOT this :P
-        this.instances = new ArrayList<>();
+        this.instances = new ArrayList<InstanceModel>();
         this.multiplayer = multiplayer;
         this.gameWorld = gameWorld;
     }

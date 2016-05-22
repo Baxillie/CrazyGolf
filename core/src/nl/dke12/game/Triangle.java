@@ -220,7 +220,7 @@ public class Triangle {
 
     public ArrayList<Vector3> getPoints()
     {
-        ArrayList<Vector3> points= new ArrayList<>();
+        ArrayList<Vector3> points= new ArrayList<Vector3>();
         points.add(point1);
         points.add(point2);
         points.add(point3);

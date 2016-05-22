@@ -49,10 +49,10 @@ public class EditorScreen implements Screen
 
     public EditorScreen(StateController stateController)
     {
-        instances = new ArrayList<>();
+        instances = new ArrayList<InstanceModel>();
         this.gameWorldLoader = new GameWorldLoader();
         this.instances = gameWorldLoader.getModelInstances();
-        this.mapOfWorld = new ArrayList<>();
+        this.mapOfWorld = new ArrayList<InstanceModel>();
         find();
 
         this.stateController = stateController;

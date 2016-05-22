@@ -109,6 +109,7 @@ public class Physics
         if (plane!=null)
         {
             //decide whether or not a collision occurs
+            nextPosition = new Vector3(new Vector3(ball.position).add(ball.direction));
 
             Vector3 nextPosPlane = new Vector3(plane.closestPoint(nextPosition));
             Vector3 currPosPlane = new Vector3(plane.closestPoint(ball.position));
@@ -117,7 +118,8 @@ public class Physics
             if(new Vector3(nextPosPlane).sub(nextPosition).len()<1)
             {
                 //centreline = inward facing normal of collision plane
-                Vector3 centreLine = new Vector3(plane.getNormal());
+                //Vector3 centreLine = new Vector3(plane.getNormal());
+                Vector3 centreLine = new Vector3(nextPosPlane).sub(nextPosition);
                 centreLine.scl(1/centreLine.len());
 
                 //check if normal is outward facing
@@ -127,17 +129,23 @@ public class Physics
                 }*/
 
                 //normalLine = perpendicular to centreLine parallel to the direction
-                Vector3 normalLine = new Vector3(new Vector3(currPosPlane).sub(nextPosPlane));
+                Vector3 normalLine = new Vector3(new Vector3(nextPosPlane).sub(currPosPlane));
                 normalLine.scl(1/normalLine.len());
                 //perpComponent = component of direction that is perpendicular to centreLine
                 float perpComponent = (new Vector3(ball.direction).dot(centreLine));
+                System.out.println("comp"+perpComponent);
                 //paraComponent = component of direction that is parallel to centreLine
-                Vector3 perpLine = new Vector3(new Vector3(normalLine).scl(perpComponent));
-                Vector3 paraLine = new Vector3(new Vector3(ball.direction).add(perpLine));
-                //perpLine.scl(-1);
+                Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(-perpComponent));
 
-                Vector3 bounce = new Vector3(new Vector3(perpLine).add(paraLine));
-                this.bounceVector = bounce.scl(-0.5f);
+                //perpLine.scl(-1);
+                Vector3 paraLine = new Vector3(new Vector3(ball.direction).sub(perpLine));
+
+                System.out.println("perp"+perpLine);
+                Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                this.bounceVector = bounce.scl(0.5f);
+                System.out.println("planedir"+normalLine);
+                System.out.println("updir"+bounceVector);
 
                 return true;
             }
