@@ -122,7 +122,7 @@ public class EditorScreen implements Screen
             addToLevel(x, y, z, (char) 3);
             mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
         }
-        if (model == millModel) {
+        if (model == holeModel) {
             addToLevel(x, y, z, (char) 4);
             System.out.println("add hole");
             mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));

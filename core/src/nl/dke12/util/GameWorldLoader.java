@@ -103,7 +103,7 @@
             skybox.transform.translate(0, 0, 0);
             TWstatue.transform.translate(0, 0, 0);
             floor.transform.translate(0, 0, 0);
-            hole.transform.translate(0,0,0);
+            hole.transform.translate(0,0,0.5f);
             wall.transform.translate(0, 0, 0);
             windmill.transform.translate(0, 0, -2);
             select.transform.translate(0, 0, 0);
@@ -152,6 +152,7 @@
             }
             if (model == millModel)
             {
+                modelInstance3.transform.rotate(1,0,0,180);
                 solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
                 mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
             }
