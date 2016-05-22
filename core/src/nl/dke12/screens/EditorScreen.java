@@ -32,6 +32,7 @@ public class EditorScreen implements Screen
     private ModelInstance skyboxModel;
     private ModelInstance TWmodel;
     private ModelInstance select;
+    private ModelInstance holeModel;
 
     private ArrayList<InstanceModel> mapOfWorld;
     private StateController stateController;
@@ -88,9 +89,8 @@ public class EditorScreen implements Screen
             type = instance.type;
             if (type == "floor")
                 floorModel = instance.modelInstance;
-            else if (type == "wall"){
-                System.out.print("make wall");
-                wallModel = instance.modelInstance;}
+            else if (type == "wall")
+                wallModel = instance.modelInstance;
             else if (type == "windmill")
                 millModel = instance.modelInstance;
             else if (type == "skybox")
@@ -99,6 +99,8 @@ public class EditorScreen implements Screen
                 TWmodel = instance.modelInstance;
             else if (type == "select")
                 select = instance.modelInstance;
+            else if (type == "hole")
+                holeModel = instance.modelInstance;
         }
     }
 
@@ -119,6 +121,11 @@ public class EditorScreen implements Screen
         if (model == millModel) {
             addToLevel(x, y, z, (char) 3);
             mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
+        }
+        if (model == holeModel) {
+            addToLevel(x, y, z, (char) 4);
+            System.out.println("add hole");
+            mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
         }
     }
 
@@ -145,7 +152,7 @@ public class EditorScreen implements Screen
         String whatToPlace = controller.getWhatToPlace();
         if (controller.spaceBar())
         {
-            System.out.println(whatToPlace);
+            System.out.println(whatToPlace + " " +  placementX + " " + placementY + " " + placementZ);
             if (whatToPlace.equals("floor"))
             {
                 placeTile(placementX, placementY, placementZ, floorModel);
@@ -157,6 +164,10 @@ public class EditorScreen implements Screen
             if (whatToPlace.equals("windmill"))
             {
                 placeTile(placementX, placementY, placementZ, millModel);
+            }
+            if (whatToPlace.equals("hole"))
+            {
+                placeTile(placementX, placementY, placementZ, holeModel);
             }
         }
 

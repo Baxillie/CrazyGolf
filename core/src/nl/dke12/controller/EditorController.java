@@ -32,6 +32,10 @@ public class EditorController
         {
             whatToPlace = "windmill";
         }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4))
+        {
+            whatToPlace = "hole";
+        }
     }
 
     public String getWhatToPlace()
@@ -66,7 +70,7 @@ public class EditorController
 
     public void save(int[][][] level)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.O))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
         {
             GameWorldSaver saver = new GameWorldSaver();
             saver.fileWriter("core/assets/level1.txt",level);

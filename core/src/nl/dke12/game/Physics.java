@@ -80,7 +80,7 @@ public class Physics
                 {
                     for(int l=0;l<closest.getPoints().size();l++)
                     {
-                        if(i!=k&&i!=l&&k!=l)
+                        if(i!=k && i!=l && k!=l)
                         {
                             Triangle newPlane = new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
                             if (plane!=null)
@@ -209,36 +209,6 @@ public class Physics
             //todo: or ball.stop();
         }
     }
-
-//    public void updatePosition()
-//    {
-//        System.out.println(ball.direction.z);
-//        if (collides())
-//        {
-//            if (bounceVector!=null)
-//            {
-//                if(bounceVector.z>0.08)
-//                {
-//                    gravit = true;
-//                    ball.direction.set(bounceVector);
-//                }
-//                else
-//                {
-//                    //we should not be setting the gravity here, but oh well
-//                    //gravit = false;
-//                    ball.direction.x=bounceVector.x;
-//                    ball.direction.y=bounceVector.y;
-//
-//                    ball.direction.z=0;
-//                }
-//            }
-//        }
-//        else
-//        {
-//            ball.position.add(ball.direction);
-//            updateVelocity(ball.direction);
-//        }
-//    }
 
     public Ball getBall()
     {
