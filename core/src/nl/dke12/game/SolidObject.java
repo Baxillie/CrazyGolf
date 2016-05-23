@@ -27,9 +27,25 @@ public class SolidObject
         addPoint(x+width,y+depth,z+height);
         addPoint(x+width,y-depth,z+height);
         addPoint(x+width,y-depth,z-height);
-
-
     }
+
+    public SolidObject(float x, float y, float z, float width, float depth, float height,boolean rotation, String type)
+    {
+        position = new Vector3(x,y,z);
+        this.type = type;
+        float newWidth =(float) Math.sqrt(width*width+depth*depth);
+        points=new ArrayList<Vector3>();
+        addPoint(x-newWidth,y,z-height);
+        addPoint(x-newWidth,y,z+height);
+        addPoint(x,y+newWidth,z+height);
+        addPoint(x,y+newWidth,z-height);
+        addPoint(x+newWidth,y+depth,z-height);
+        addPoint(x+newWidth,y+depth,z+height);
+        addPoint(x,y-newWidth,z+height);
+        addPoint(x,y-newWidth,z-height);
+    }
+
+
 
     public SolidObject(float x, float y, float z)
     {

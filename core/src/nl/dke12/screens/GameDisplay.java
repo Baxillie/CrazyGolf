@@ -5,9 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.IntAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.game.GameWorld;
 import nl.dke12.game.InstanceModel;
@@ -31,6 +34,10 @@ public class GameDisplay implements Screen
     private ModelInstance TWModel;
     private ModelInstance ballModel;
     private ModelInstance ball2Model;
+
+    private Model mapModel;
+    private ModelInstance map;
+    private Mesh mesh;
 
     private Environment environment;
     private Environment skyEnvironment;
@@ -58,7 +65,40 @@ public class GameDisplay implements Screen
         camera.far = 300.0f;
         cameraController = new CameraInputController(camera);
 
+        /*Plz Ignore this, just me(Tom) trying stuff out*/
+        HeightmapConverter heightmap = new HeightmapConverter(10,10,30,"Heightmap.png");
+
+
+
+        Material material = new Material(new IntAttribute(IntAttribute.CullFace), ColorAttribute.createDiffuse(Color.GRAY));
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length, new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
+        mesh.setVertices(heightmap.vertices);
+        /*mesh.setVertices(new float[] { -0.5f, -0.5f, 0,
+                0.5f, -0.5f, 0,
+                0, 0.5f, 2 });
+        mesh.setIndices(new short[] { 0, 1, 2 });*/
+        mesh.setIndices(heightmap.indices);
+        modelBuilder.begin();
+        modelBuilder.part("test", mesh, GL20.GL_LINES, material);
+        mapModel = modelBuilder.end();
+
+        map = new ModelInstance(mapModel);
+
+        if (this.mesh == null) {
+            this.mesh = new Mesh(true, 3, 3,
+                    new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"));
+
+            this.mesh.setVertices(new float[] { -0.5f, -0.5f, 0,
+                    0.5f, -0.5f, 0,
+                    0, 0.5f, 0 });
+
+            this.mesh.setIndices(new short[] { 0, 1, 2 });
+        }
+        //////
+
         this.renderer = new ModelBatch();
+
 
         // Finally we want some light, or we wont see our color.  The environment gets passed in during
         // the rendering process.  Create one, then create an Ambient ( non-positioned, non-directional ) light.
@@ -136,8 +176,46 @@ public class GameDisplay implements Screen
         renderer.render(skyboxModel, skyEnvironment);
         renderer.render(TWModel, environment);
         renderer.render(ballModel, environment);
+
         if (multiplayer)
             renderer.render(ball2Model, environment);
+
+        //Tom messing around here too, don't touch plz (unless you know what you're doing)
+        //draw using spritebatch? render using modelbatch?
+        //renderer.setShader();
+        //renderer.render(map, environment);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //
+        String vertexShader = "attribute vec4 a_position;    \n" +
+                "attribute vec4 a_color;\n" +
+                "attribute vec2 a_texCoord0;\n" +
+                "uniform mat4 u_worldView;\n" +
+                "varying vec4 v_color;" +
+                "varying vec2 v_texCoords;" +
+                "void main()                  \n" +
+                "{                            \n" +
+                "   v_color = vec4(1, 1, 1, 1); \n" +
+                "   v_texCoords = a_texCoord0; \n" +
+                "   gl_Position =  u_worldView * a_position;  \n"      +
+                "}                            \n" ;
+        String fragmentShader = "#ifdef GL_ES\n" +
+                "precision mediump float;\n" +
+                "#endif\n" +
+                "varying vec4 v_color;\n" +
+                "varying vec2 v_texCoords;\n" +
+                "uniform sampler2D u_texture;\n" +
+                "void main()                                  \n" +
+                "{                                            \n" +
+                "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" +
+                "}";
+        //
+        ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
+        //mesh.render(shader,GL20.GL_TRIANGLES);
+
+
+
+
 
         for (int i = 0; i < mapOfWorld.size(); i++)
         {

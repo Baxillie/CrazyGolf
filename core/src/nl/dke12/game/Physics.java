@@ -133,19 +133,19 @@ public class Physics
                 normalLine.scl(1/normalLine.len());
                 //perpComponent = component of direction that is perpendicular to centreLine
                 float perpComponent = (new Vector3(ball.direction).dot(centreLine));
-                System.out.println("comp"+perpComponent);
+                //System.out.println("comp"+perpComponent);
                 //paraComponent = component of direction that is parallel to centreLine
                 Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(-perpComponent));
 
                 //perpLine.scl(-1);
                 Vector3 paraLine = new Vector3(new Vector3(ball.direction).sub(perpLine));
 
-                System.out.println("perp"+perpLine);
+                //System.out.println("perp"+perpLine);
                 Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 this.bounceVector = bounce.scl(0.5f);
-                System.out.println("planedir"+normalLine);
-                System.out.println("updir"+bounceVector);
+                //System.out.println("planedir"+normalLine);
+                //System.out.println("updir"+bounceVector);
 
                 return true;
             }

@@ -140,12 +140,12 @@
 
             if (model == floorModel)
             {
-                solidObjects.add(new SolidObject(x,y,z-9.3f,4.01f,4.01f,4f, "floor"));
+                solidObjects.add(new SolidObject(x,y,z-9.3f,4f,4f,4f, "floor"));
                 mapOfWorld.add(new InstanceModel(modelInstance3, "floor"));
             }
             if (model == wallModel)
             {
-                solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "wall"));
+                solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,6f, "wall"));
 
                 modelInstance3.transform.scale(1f, 1f, 1f);
                 mapOfWorld.add(new InstanceModel(modelInstance3, "wall"));
