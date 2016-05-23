@@ -15,14 +15,14 @@ public class SimpleAI implements Runnable {
 
     public static final int WAIT_TIME = 1000; //ms
 
-    private boolean loop;
-    private boolean makingDecision;
+    protected boolean loop;
+    protected boolean makingDecision;
 
-    private AIInputProcessor processor;
-    private Vector3 ballPosition;
-    private Vector3 holePosition;
-    private Vector3 distance;
-    private GameWorld gameWorld;
+    protected AIInputProcessor processor;
+    protected Vector3 ballPosition;
+    protected Vector3 holePosition;
+    protected Vector3 distance;
+    protected GameWorld gameWorld;
 
     public SimpleAI(GameWorld world, InputProcessor processor)
     {
@@ -38,7 +38,7 @@ public class SimpleAI implements Runnable {
         loop();
     }
 
-    private void loop()
+    protected void loop()
     {
         while(loop)
         {
@@ -79,7 +79,7 @@ public class SimpleAI implements Runnable {
     }
 
     //gets called by gamecontroller when AI needs to make a move
-    private void makeDecision()
+    protected void makeDecision()
     {
 
 //        try {
@@ -94,14 +94,14 @@ public class SimpleAI implements Runnable {
     }
 
     //loads the current game wold into a format which is readable by the AI
-    private void loadGameWorld()
+    protected void loadGameWorld()
     {
         this.ballPosition = gameWorld.getBallPosition();
-        this.holePosition = new Vector3(-8,-8,4);
+        this.holePosition = new Vector3(16,12,4);
     }
 
     //decides which move the bot should make based on the current world situation
-    private void calculateBestMove()
+    protected void calculateBestMove()
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
         System.out.println("setting distance to "+ distance);
@@ -110,9 +110,10 @@ public class SimpleAI implements Runnable {
     }
 
     //gives the move the ai wants to make to the inputprocessor
-    private void makeMove()
+    protected void makeMove()
     {
         //set direction vector
+        distance = distance.nor();
         processor.setDirectionVector(distance);
         processor.setMove(true);
         //set move in ai intput processor to true
