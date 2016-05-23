@@ -100,7 +100,7 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
 
-        if(ball.direction.isZero())
+       // if(ball.direction.isZero(0.001f))
             gameController.move();
 
         if(player1Turn)

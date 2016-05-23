@@ -71,8 +71,8 @@ public class MenuScreen implements Screen {
 				//System.out.println("single player button gets clicked");
 
 
-				//stateController.displayGameDisplay(false);
-				stateController.displayAI();
+				stateController.displayGameDisplay(false);
+				//stateController.displayAI();
 			}
 		});
 
