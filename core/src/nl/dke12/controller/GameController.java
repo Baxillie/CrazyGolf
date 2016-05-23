@@ -18,21 +18,26 @@ public class GameController
     private InputProcessor inputProcessor;
     private AIInputProcessor aiInputProcessor;
 
-    public GameController(Physics physics)
+    public GameController(Physics physics, boolean isHumanPlayer)
     {
         this.physics = physics;
         this.shotVector = new Vector3(0,1,0.8f);
-        inputProcessor = new InputProcessor();
-        aiInputProcessor = new AIInputProcessor();
+
+        if(isHumanPlayer)
+            inputProcessor = new HumanInputProcessor();
+        else
+            inputProcessor = new AIInputProcessor();
     }
 
-    public GameController(Physics physics, Physics physics2)
+    public GameController(Physics physics, Physics physics2, boolean isHumanPlayer)
     {
-        this.physics = physics;
+        this(physics, isHumanPlayer);
         this.physics2 = physics2;
-        this.shotVector  = new Vector3(0,1,0.8f);
-        inputProcessor = new InputProcessor();
-        aiInputProcessor = new AIInputProcessor();
+    }
+
+    public void setShotVector(Vector3 vector)
+    {
+        this.shotVector = vector;
     }
 
     public void moveCamera(Camera camera)
@@ -40,41 +45,57 @@ public class GameController
         Vector3 directVector = new Vector3(camera.direction);
         Vector3 sideVector = new Vector3(directVector);
         sideVector.rotate(90,0,0,90);
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
+
+        if (inputProcessor.moveCamBack())
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
+        if (inputProcessor.moveCamForward())
         {
             camera.translate(directVector.x/2,directVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        if (inputProcessor.moveCamLeft())
         {
             camera.translate(sideVector.x/2,sideVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
+        if (inputProcessor.moveCamRight())
         {
             camera.translate(-sideVector.x/2,-sideVector.y/2,0);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Q))
+        if (inputProcessor.rotateCamAntiClock())
         {
             camera.rotate(4,0,0,4);
             shotVector.rotate(4,0,0,4);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.E))
+        if (inputProcessor.rotateCamClock())
         {
             camera.rotate(-4,0,0,4);
             shotVector.rotate(-4,0,0,4);
         }
     }
 
+    public InputProcessor getInputProcessor()
+    {
+        return inputProcessor;
+    }
+
     public void move()
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            physics.push(shotVector.x,shotVector.y,shotVector.z);
+        if (inputProcessor.moveBall()) {
+            System.out.println("move ball is true");
+            if(inputProcessor instanceof HumanInputProcessor)
+            {
+                physics.push(shotVector.x,shotVector.y,shotVector.z);
+            }else
+            {
+                Vector3 direc = new Vector3(inputProcessor.getDirectionVector());
+                System.out.println("pushing ball with vector from processor: " + direc);
+
+                physics.push(direc.x, direc.y, direc.z);
+            }
             //physics.updatePosition();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.H)) {
+        if (inputProcessor.moveBall2()) {
             physics2.push(shotVector.x,shotVector.y,shotVector.z);
             //physics2.updatePosition();
         }

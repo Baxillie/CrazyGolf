@@ -1,6 +1,7 @@
 package nl.dke12.controller;
 
 import com.badlogic.gdx.Game;
+import nl.dke12.bot.SimpleAI;
 import nl.dke12.game.GameWorld;
 import nl.dke12.screens.*;
 
@@ -45,9 +46,23 @@ public class StateController extends Game
 
     public void displayGameDisplay(boolean multiplayer)
     {
-        GameWorld gameWorld = new GameWorld(multiplayer);
+        GameWorld gameWorld = new GameWorld(multiplayer, true);
         GameDisplay gameDisplay = new GameDisplay(multiplayer, gameWorld);
         gameWorld.setDisplay(gameDisplay);
+
+        setScreen(gameDisplay);
+    }
+
+    public void displayAI()
+    {
+        GameWorld gameWorld = new GameWorld(false, false);
+        GameDisplay gameDisplay = new GameDisplay(false, gameWorld);
+        gameWorld.setDisplay(gameDisplay);
+
+        SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
+
+        new Thread(ai).start();
+
 
         setScreen(gameDisplay);
     }
