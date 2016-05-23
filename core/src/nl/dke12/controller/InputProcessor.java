@@ -1,50 +1,28 @@
 package nl.dke12.controller;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
+
 /**
- * Checks human input and feeds it to GameController
+ * Created by Ajki on 23/05/2016.
  */
-public class InputProcessor implements com.badlogic.gdx.InputProcessor
-{
-    //GameController
+public interface InputProcessor {
 
+    boolean moveCamLeft();
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
+    boolean moveCamBack();
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
+    boolean moveCamRight();
 
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
+    boolean rotateCamAntiClock();
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
+    boolean moveCamForward();
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
+    boolean rotateCamClock();
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
+    boolean moveBall();
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
+    boolean moveBall2();
 
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
+    Vector3 getDirectionVector();
 }

@@ -1,6 +1,8 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.math.Vector3;
 import nl.dke12.controller.GameController;
+import nl.dke12.controller.InputProcessor;
 import nl.dke12.screens.GameDisplay;
 import nl.dke12.util.GameWorldLoader;
 
@@ -23,8 +25,9 @@ public class GameWorld
     private Physics physics;
     private Physics physics2;
     private boolean player1Turn;
+    private Vector3 holePosition;
 
-    public GameWorld(boolean multiplayer)
+    public GameWorld(boolean multiplayer, boolean isHumanPlayer)
     {
         this.multiplayer = multiplayer;
         player1Turn = true;
@@ -39,8 +42,11 @@ public class GameWorld
 
         createBalls();
         createPhysics();
-        createController();
+        createController(isHumanPlayer);
     }
+
+    public GameController getGameController()
+    {return gameController;}
 
     public void setDisplay(GameDisplay display)
     {
@@ -48,16 +54,20 @@ public class GameWorld
         gameDisplay.setInstances(instances, mapOfWorld);
     }
 
-    private void createController()
+    private void createController(boolean isHumanPlayer)
     {
         if(multiplayer)
         {
-            this.gameController = new GameController(physics,physics2);
+            this.gameController = new GameController(physics,physics2,false);
         }
         else
         {
-            this.gameController = new GameController(physics);
+            if(isHumanPlayer)
+                this.gameController = new GameController(physics, true);
+            else
+                this.gameController = new GameController(physics, false);
         }
+
     }
 
     private void createPhysics()
@@ -89,7 +99,10 @@ public class GameWorld
     public void render()
     {
         gameController.moveCamera(gameDisplay.getCamera());
-        gameController.move();
+
+        if(ball.direction.isZero())
+            gameController.move();
+
         if(player1Turn)
         {
             updatePosition(physics,ball);
@@ -108,9 +121,9 @@ public class GameWorld
         //System.out.println(ball.direction.z);
         if (physics.collides())
         {
-            if (physics.bounceVector!=null)
+            if (physics.bounceVector != null)
             {
-                if(physics.bounceVector.z>0.08)
+                if(physics.bounceVector.z > 0.08)
                 {
                     physics.gravit = true;
                     ball.direction.set(physics.bounceVector);
@@ -137,5 +150,20 @@ public class GameWorld
 
             physics.updateVelocity(ball.direction);
         }
+    }
+
+    public Vector3 getBallPosition()
+    {
+        return ball.position;
+    }
+
+    public Vector3 getBallDirection()
+    {
+        return ball.direction;
+    }
+
+    public Vector3 getHolePosition()
+    {
+        return holePosition;
     }
 }

@@ -69,7 +69,10 @@ public class MenuScreen implements Screen {
 				//if(backButton.isPressed() == true)
 				//playgGameButton.setText("Starting new game");
 				//System.out.println("single player button gets clicked");
-				stateController.displayGameDisplay(false);
+
+
+				//stateController.displayGameDisplay(false);
+				stateController.displayAI();
 			}
 		});
 
