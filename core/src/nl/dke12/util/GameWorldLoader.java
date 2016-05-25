@@ -79,8 +79,7 @@
             slopeModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/slope.G3DB"));
             ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10,
                         new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
-            holeModel = new ModelBuilder().createSphere(0.3f, 0.3f, 0.3f, 10, 10,
-                        new Material(ColorAttribute.createDiffuse(Color.BLACK)), VertexAttributes.Usage.Position);
+            holeModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/hole.G3DB"));
 
             skybox = new ModelInstance(skyboxModel);
             TWstatue = new ModelInstance(TWstatueModel);
@@ -145,6 +144,12 @@
             ModelInstance modelInstance3 = new ModelInstance(model);
 
             if (model == slopeModel)
+            {
+                modelInstance3.transform.translate(x, y, z-4);
+                modelInstance3.transform.rotate(1, 0, 0, -90);
+                modelInstance3.transform.scale(4f, 4f, 4f);
+            }
+            else if (model == holeModel)
             {
                 modelInstance3.transform.translate(x, y, z-4);
                 modelInstance3.transform.rotate(1, 0, 0, -90);

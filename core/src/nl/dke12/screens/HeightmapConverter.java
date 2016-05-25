@@ -28,12 +28,12 @@ public class HeightmapConverter {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.vertices = new float[heightMap.length*5];
-        this.indices = new short[mapWidth * mapHeight *6];
+        this.indices = new short[mapWidth * mapHeight *8];
         this.strength = strength;
         this.heightmapFile = "core/assets/map.jpg";
 
         loadHeightmap();
-        generateIndices();
+        createIndices();
         createVertices();
 
     }
@@ -73,15 +73,16 @@ public class HeightmapConverter {
         int widthPitch = mapWidth + 1;
 
         int idx = 0;
-        int hIdx = 0;
+        int hIdx = -1;
 
         for(int z = 0; z < heightPitch; z++)
         {
             for(int x = 0; x < widthPitch; x++)
             {
                 vertices[idx+0] = x;
-                vertices[idx+1] = heightMap[hIdx++] * strength;
-                vertices[idx+2] = z;
+                vertices[idx+1] = z;
+                hIdx++;
+                vertices[idx+2] = heightMap[hIdx] * strength;
                 vertices[idx+3] = x/textureWidth;
                 vertices[idx+4] = z/textureWidth;
                 idx += 5;
@@ -104,13 +105,28 @@ public class HeightmapConverter {
         {
             for(int x = 0; x < mapWidth; x++)
             {
-                indices[idx++] = (short)(i1);
-                indices[idx++] = (short)(i2);
-                indices[idx++] = (short)(i3);
+                /*indices[idx+0] = (short)(i1);
+                indices[idx+1] = (short)(i2);
+                indices[idx+2] = (short)(i3);
 
-                indices[idx++] = (short)(i3);
-                indices[idx++] = (short)(i4);
-                indices[idx++] = (short)(i1);
+                indices[idx+3] = (short)(i3);
+                indices[idx+4] = (short)(i4);
+                indices[idx+5] = (short)(i1);*/
+
+                indices[idx+0] = (short)(i1);
+                indices[idx+1] = (short)(i2);
+
+                indices[idx+2] = (short)(i2);
+                indices[idx+3] = (short)(i3);
+
+                indices[idx+4] = (short)(i3);
+                indices[idx+5] = (short)(i1);
+
+                indices[idx+6] = (short)(i1);
+                indices[idx+7] = (short)(i4);
+
+
+                idx+=8;
 
                 i1++;
                 i2++;
@@ -154,8 +170,8 @@ public class HeightmapConverter {
         int index=0;
         while(index<(map[0].length-1)*(map.length-1))
         {
-            if((y%2)!=0)
-            {
+//            if((y%2)!=0)
+//            {
                 //link first vertex to the one next to it
                 if(x+1<=map.length-1)
                 {
@@ -198,7 +214,7 @@ public class HeightmapConverter {
                     indices[index++]=(short)(vertIndex+map.length);
                     indices[index++]=(short)(vertIndex-1);
                 }*/
-            }
+            /*}
             else
             {
                 //link first vertex to the one next to it
@@ -224,15 +240,17 @@ public class HeightmapConverter {
                     y++;
                     x=0;
                 }
-            }
+            }*/
         }
     }
 
     public void generateIndices()
     {
-        DelaunayTriangulator triangulator = new DelaunayTriangulator();
-        /*indices= new short[triangulator.computeTriangles(vertices,true).toArray().length];
+        /*DelaunayTriangulator triangulator = new DelaunayTriangulator();
+        indices= new short[triangulator.computeTriangles(vertices,true).toArray().length];
         indices=triangulator.computeTriangles(vertices,true).toArray();*/
+
+
     }
 
 

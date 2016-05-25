@@ -66,18 +66,20 @@ public class GameDisplay implements Screen
         cameraController = new CameraInputController(camera);
 
         /*Plz Ignore this, just me(Tom) trying stuff out*/
-        HeightmapConverter heightmap = new HeightmapConverter(30,30,30,"Heightmap.png");
+        HeightmapConverter heightmap = new HeightmapConverter(30,30,500,"Heightmap.png");
 
 
 
         Material material = new Material(new IntAttribute(IntAttribute.CullFace), ColorAttribute.createDiffuse(Color.GRAY));
         ModelBuilder modelBuilder = new ModelBuilder();
-        Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length, new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
+        Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length,
+                new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
+              //  new VertexAttribute(VertexAttributes.Usage.Position, 2, "text"));
 
         /*Mesh mesh = new Mesh(true, 20, 20, new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
         mesh.setVertices(new float[] { -0.5f, -0.5f, 0,
                 0.5f, -0.5f, 0,
-                0, 0.5f, 0,
+                0, 3f, 0,
                 0, 0, 1});
 
         mesh.setIndices(new short[] {0, 3, 0, 2, 0, 1, 1, 3, 1, 2, 2, 3});*/
@@ -86,15 +88,16 @@ public class GameDisplay implements Screen
         //System.out.println("vert"+heightmap.vertices);
 
         modelBuilder.begin();
-        modelBuilder.part("test", mesh, GL20.GL_LINE_STRIP, material);
+        modelBuilder.part("test", mesh, GL20.GL_LINES, material);
         mapModel = modelBuilder.end();
 
         map = new ModelInstance(mapModel);
+        map.transform.scale(0.050f,0.050f,0.050f);
 
-        for(int i=0;i<heightmap.vertices.length;i++)
+        /*for(int i=0;i<heightmap.vertices.length;i++)
         {
             System.out.println("vert"+heightmap.vertices[i]);
-        }
+        }*/
 
         /*if (this.mesh == null) {
             this.mesh = new Mesh(true, 3, 4,
