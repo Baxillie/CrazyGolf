@@ -12,10 +12,12 @@ import nl.dke12.util.GameWorldSaver;
 public class EditorController
 {
     private String whatToPlace;
+    private StateController stateController;
 
-    public EditorController()
+    public EditorController(StateController stateController)
     {
         whatToPlace = "floor";
+        this.stateController = stateController;
     }
 
     public void whatToPlace()
@@ -109,6 +111,10 @@ public class EditorController
         if (Gdx.input.isKeyPressed(Input.Keys.E))
         {
             camera.rotate(-4,0,0,4);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE))
+        {
+            stateController.displayMenuScreen();
         }
     }
 }
