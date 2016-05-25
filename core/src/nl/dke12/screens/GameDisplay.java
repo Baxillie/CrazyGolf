@@ -69,12 +69,11 @@ public class GameDisplay implements Screen
         HeightmapConverter heightmap = new HeightmapConverter(30,30,500,"Heightmap.png");
 
 
-
         Material material = new Material(new IntAttribute(IntAttribute.CullFace), ColorAttribute.createDiffuse(Color.GRAY));
         ModelBuilder modelBuilder = new ModelBuilder();
         Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
-              //  new VertexAttribute(VertexAttributes.Usage.Position, 2, "text"));
+                new VertexAttribute(VertexAttributes.Usage.Position, 3, "heightmap"),
+                new VertexAttribute(VertexAttributes.Usage.Position, 2, "text"));
 
         /*Mesh mesh = new Mesh(true, 20, 20, new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
         mesh.setVertices(new float[] { -0.5f, -0.5f, 0,
@@ -92,7 +91,7 @@ public class GameDisplay implements Screen
         mapModel = modelBuilder.end();
 
         map = new ModelInstance(mapModel);
-        map.transform.scale(0.050f,0.050f,0.050f);
+        map.transform.scale(20f,20f,20f);
 
         /*for(int i=0;i<heightmap.vertices.length;i++)
         {
