@@ -47,9 +47,11 @@ public class SolidObject
 
 
 
-    public SolidObject(float x, float y, float z)
+    public SolidObject(float x, float y, float z,String type)
     {
-        position.set(x,y,z);
+        this.type=type;
+        position = new Vector3(x,y,z);
+        points=new ArrayList<Vector3>();
     }
 
     public void addPoint(float x, float y, float z)

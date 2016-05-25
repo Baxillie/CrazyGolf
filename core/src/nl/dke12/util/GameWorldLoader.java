@@ -37,6 +37,7 @@
         private ModelInstance hole;
         private ModelInstance golfBall;
         private ModelInstance golfBall2;
+        private ModelInstance slope;
 
         private Model skyboxModel;
         private Model TWstatueModel;
@@ -46,6 +47,7 @@
         private Model millModel;
         private Model ballModel;
         private Model holeModel;
+        private Model slopeModel;
 
         public GameWorldLoader(String name)
         {
@@ -74,6 +76,7 @@
             wallModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/wall.G3DB"));
             selecterModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/select.G3DB"));
             millModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/windmill.G3DB"));
+            slopeModel = modelLoader.loadModel(Gdx.files.internal("core/assets/data/slope.G3DB"));
             ballModel = new ModelBuilder().createSphere(0.25f,0.25f,0.25f, 10, 10,
                         new Material(ColorAttribute.createDiffuse(Color.WHITE)), VertexAttributes.Usage.Position);
             holeModel = new ModelBuilder().createSphere(0.3f, 0.3f, 0.3f, 10, 10,
@@ -89,6 +92,7 @@
             golfBall = new ModelInstance(ballModel);
             golfBall2 = new ModelInstance(ballModel);
             golfBall2.materials.get(0).set(ColorAttribute.createDiffuse(Color.RED));
+            slope= new ModelInstance(slopeModel);
 
             transformInstances();
             fillInstances();
@@ -98,6 +102,7 @@
         {
             TWstatue.transform.rotate(1, 0, 0, 90);
             windmill.transform.rotate(1, 0, 0, 180);
+            //slope.transform.rotate(0,1,0,180);
 
             // Move the model down a bit on the screen ( in a z-up world, down is -z ).
             skybox.transform.translate(0, 0, 0);
@@ -107,6 +112,8 @@
             wall.transform.translate(0, 0, 0);
             windmill.transform.translate(0, 0, -2);
             select.transform.translate(0, 0, 0);
+            slope.transform.translate(0, 0, 0.8f);
+
 
             // Scale the model down
             skybox.transform.scale(10f, 10f, 10f);
@@ -114,7 +121,8 @@
             floor.transform.scale(4f, 4f, 4f);
             hole.transform.scale(4f,4f,4f);
             wall.transform.scale(4f, 4f, 4f);
-            select.transform.scale(4.3f, 4.3f, 4.3f);
+            select.transform.scale(4f, 4f, 4f);
+            slope.transform.scale(4f, 4f, 4f);
 
         }
 
@@ -129,14 +137,25 @@
             instances.add(new InstanceModel(hole, "hole"));
             instances.add(new InstanceModel(golfBall, "ball"));
             instances.add(new InstanceModel(golfBall2, "ball2"));
+            instances.add(new InstanceModel(slope, "slope"));
         }
 
         public void addObject(float x, float y, float z, Model model)
         {
             ModelInstance modelInstance3 = new ModelInstance(model);
-            modelInstance3.transform.translate(x, y, z-5);
-            modelInstance3.transform.rotate(1, 0, 0, -90);
-            modelInstance3.transform.scale(4f, 4f, 4f);
+
+            if (model == slopeModel)
+            {
+                modelInstance3.transform.translate(x, y, z-4);
+                modelInstance3.transform.rotate(1, 0, 0, -90);
+                modelInstance3.transform.scale(4f, 4f, 4f);
+            }
+            else
+            {
+                modelInstance3.transform.translate(x, y, z-5);
+                modelInstance3.transform.rotate(1, 0, 0, -90);
+                modelInstance3.transform.scale(4f, 4f, 4f);
+            }
 
             if (model == floorModel)
             {
@@ -160,6 +179,19 @@
             {
                 solidObjects.add(new SolidObject(x,y,z-9.3f, 4f,4f,4f, "hole"));
                 mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
+            }
+            if (model == slopeModel)
+            {
+                SolidObject sloper = new SolidObject(x,y,z-9.3f, "slope");
+                solidObjects.add(sloper);
+                sloper.addPoint(x-4,y-4,z-3.7f);
+                sloper.addPoint(x-4,y+4,z-5.7f);
+                sloper.addPoint(x+4,y-4,z-3.7f);
+                sloper.addPoint(x+4,y+4,z-5.7f);
+
+
+                //modelInstance3.transform.translate(x, y, z);
+                mapOfWorld.add(new InstanceModel(modelInstance3, "slope"));
             }
         }
 
@@ -191,6 +223,10 @@
                         }
                         if (s.charAt(i) == '4') {
                             addObject((xPos-10)*8, (yPos-10)*8, 4, holeModel);
+                            yPos += 1;
+                        }
+                        if (s.charAt(i) == '5') {
+                            addObject((xPos-10)*8, (yPos-10)*8, 4, slopeModel);
                             yPos += 1;
                         }
                         if (s.charAt(i) == '0') {

@@ -25,7 +25,7 @@ public class RandomAI extends SimpleAI {
         Vector3 hole = this.holePosition;
         Vector3 ball = new Vector3(this.ballPosition);
 
-        ArrayList<Vector3> randomVectors = new ArrayList<>(10);
+        ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
 
         //create 10 random vectors between the possible
         for (int i = 0; i < 10; i++) {

@@ -553,12 +553,12 @@ public class ModelTest implements Screen {
         }
         if (model == mill) {
             addToLevel(x, y, z, (char) 3);
-            SolidObject object = new SolidObject(x,y,z-5);
+            /*SolidObject object = new SolidObject(x,y,z-5);
             this.physObjects.add(object);
             object.addPoint(x-4,y,z+4);
             object.addPoint(x+4,y,z+4);
             object.addPoint(x,y-4,z+4);
-            object.addPoint(x,y+4,z+4);
+            object.addPoint(x,y+4,z+4);*/
         }
 		/*if (model==model2)
 		{

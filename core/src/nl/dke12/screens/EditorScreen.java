@@ -33,6 +33,7 @@ public class EditorScreen implements Screen
     private ModelInstance TWmodel;
     private ModelInstance select;
     private ModelInstance holeModel;
+    private ModelInstance slopeModel;
 
     private ArrayList<InstanceModel> mapOfWorld;
     private StateController stateController;
@@ -101,6 +102,8 @@ public class EditorScreen implements Screen
                 select = instance.modelInstance;
             else if (type == "hole")
                 holeModel = instance.modelInstance;
+            else if (type == "slope")
+                slopeModel = instance.modelInstance;
         }
     }
 
@@ -126,6 +129,10 @@ public class EditorScreen implements Screen
             addToLevel(x, y, z, (char) 4);
             System.out.println("add hole");
             mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
+        }
+        if (model == slopeModel) {
+            addToLevel(x, y, z, (char) 5);
+            mapOfWorld.add(new InstanceModel(modelInstance3, "slope"));
         }
     }
 
@@ -168,6 +175,10 @@ public class EditorScreen implements Screen
             if (whatToPlace.equals("hole"))
             {
                 placeTile(placementX, placementY, placementZ, holeModel);
+            }
+            if (whatToPlace.equals("slope"))
+            {
+                placeTile(placementX, placementY, placementZ, slopeModel);
             }
         }
 

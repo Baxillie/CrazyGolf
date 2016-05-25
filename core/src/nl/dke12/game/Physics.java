@@ -114,7 +114,16 @@ public class Physics
             Vector3 nextPosPlane = new Vector3(plane.closestPoint(nextPosition));
             Vector3 currPosPlane = new Vector3(plane.closestPoint(ball.position));
 
+
             //todo: ADD MORE STUFF
+            // it does not detect a collision with vertically sloped planes
+            if(closest.getType().equals("slope"))
+            {
+                System.out.println("dist=  "+new Vector3(nextPosPlane).sub(nextPosition).len());
+                System.out.println("pointPlane= "+plane.closestPoint(ball.position));
+                System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
+                System.out.println("ball=  "+ball.position);
+            }
             if(new Vector3(nextPosPlane).sub(nextPosition).len()<1)
             {
                 //centreline = inward facing normal of collision plane
@@ -144,8 +153,13 @@ public class Physics
                 Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 this.bounceVector = bounce.scl(0.5f);
-                //System.out.println("planedir"+normalLine);
-                //System.out.println("updir"+bounceVector);
+                //FUUUUUCCKK todo: go over physics again, because it's not bouncing of the wrong plane (in other words, calculations are still fucked somehow)
+                //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
+                if(closest.getType().equals("slope"))
+                {
+                    System.out.println("ZLOP");
+                }
+                System.out.println("updir"+bounceVector);
 
                 return true;
             }

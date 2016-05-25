@@ -36,6 +36,10 @@ public class EditorController
         {
             whatToPlace = "hole";
         }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_5))
+        {
+            whatToPlace = "slope";
+        }
     }
 
     public String getWhatToPlace()
