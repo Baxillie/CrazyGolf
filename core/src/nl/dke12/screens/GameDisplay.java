@@ -186,7 +186,7 @@ public class GameDisplay implements Screen
 
         //amount of height
         Label.LabelStyle heightLabelStyle = new Label.LabelStyle(font, Color.BROWN);
-        Label heightLabel = new Label("hit the bal heigh of low: 1", heightLabelStyle);
+        Label heightLabel = new Label("hit the bal heigh or low: 1", heightLabelStyle);
         heightLabel.setX(forceLabel.getX() + forceLabel.getWidth() + 20);
         heightLabel.setY(forceLabel.getY());
 

@@ -57,7 +57,7 @@ public class GameController
 
     public void setForceMultiplier(float multiplier)
     {
-        if(multiplier < 0)
+        if(multiplier < 0.1f)
         {
             forceMultiplier = 0;
         }
@@ -78,7 +78,7 @@ public class GameController
 
     public void setHeightMultiplier(float multiplier)
     {
-        if(multiplier < 0)
+        if(multiplier < 0.1f)
         {
             heightMultiplier = 0;
         }
@@ -90,7 +90,7 @@ public class GameController
         {
             heightMultiplier= multiplier;
         }
-        String newLabelText = String.format("hit the bal heigh of low: %.1f", heightMultiplier);
+        String newLabelText = String.format("hit the bal heigh or low: %.1f", heightMultiplier);
         if(heightLabel != null)
         {
             heightLabel.setText(newLabelText);
