@@ -3,20 +3,15 @@ package nl.dke12.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import nl.dke12.controller.EditorController;
 import nl.dke12.controller.StateController;
 import nl.dke12.game.InstanceModel;
 import nl.dke12.util.GameWorldLoader;
+import nl.dke12.util.ModelSelectButton;
 
 import java.util.ArrayList;
 
@@ -59,6 +54,13 @@ public class EditorScreen implements Screen
 
     private EditorController controller;
 
+    private ModelSelectButton grassButton;
+    private ModelSelectButton wallButton;
+    private ModelSelectButton holeButton;
+    private ModelSelectButton slopeButton;
+
+    private SpriteBatch spriteBatch;
+
     public EditorScreen(StateController stateController)
     {
         instances = new ArrayList<InstanceModel>();
@@ -90,6 +92,32 @@ public class EditorScreen implements Screen
         skyEnvironment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+
+        float textureWidth = 130;
+        float textureHeight = 100;
+        float startingX = Gdx.graphics.getWidth() - textureWidth;
+        float startingY = Gdx.graphics.getHeight() - textureHeight;
+
+        Texture grassTexture = new Texture(Gdx.files.internal("core/assets/Grass.png"));
+        grassButton = new ModelSelectButton(grassTexture, startingX , startingY, textureWidth, textureHeight,
+                controller, EditorController.FLOOR);
+
+        Texture wallTexture = new Texture(Gdx.files.internal("core/assets/Wall.png"));
+        wallButton = new ModelSelectButton(wallTexture,startingX,startingY - 100,textureWidth,textureHeight,
+                controller, EditorController.WALL);
+
+        Texture holeTexture = new Texture(Gdx.files.internal("core/assets/Hole.png"));
+        holeButton = new ModelSelectButton(holeTexture,startingX,startingY - 200,textureWidth,textureHeight,
+                controller, EditorController.HOLE);
+
+        Texture slopeTexture = new Texture(Gdx.files.internal("core/assets/Slope.png"));
+        slopeButton = new ModelSelectButton(slopeTexture,startingX,startingY - 300,textureWidth,textureHeight,
+                controller, EditorController.SLOPE);
+
+        spriteBatch = new SpriteBatch();
+
+
 
     }
 
@@ -203,28 +231,28 @@ public class EditorScreen implements Screen
             renderer.render(mapOfWorld.get(i).modelInstance, environment);
         }
 
-        controller.whatToPlace();
+        //controller.whatToPlace();
         String whatToPlace = controller.getWhatToPlace();
         if (controller.spaceBar())
         {
             System.out.println(whatToPlace + " " +  placementX + " " + placementY + " " + placementZ);
-            if (whatToPlace.equals("floor"))
+            if (whatToPlace.equals(EditorController.FLOOR))
             {
                 placeTile(placementX, placementY, placementZ, floorModel);
             }
-            if (whatToPlace.equals("wall"))
+            if (whatToPlace.equals(EditorController.WALL))
             {
                 placeTile(placementX, placementY, 8, wallModel);
             }
-            if (whatToPlace.equals("windmill"))
+            /*if (whatToPlace.equals("windmill"))
             {
                 placeTile(placementX, placementY, placementZ, millModel);
-            }
-            if (whatToPlace.equals("hole"))
+            }*/
+            if (whatToPlace.equals(EditorController.HOLE))
             {
                 placeTile(placementX, placementY, placementZ, holeModel);
             }
-            if (whatToPlace.equals("slope"))
+            if (whatToPlace.equals(EditorController.SLOPE))
             {
                 placeTile(placementX, placementY, placementZ, slopeModel);
             }
@@ -268,6 +296,15 @@ public class EditorScreen implements Screen
 
         renderer.render(select, environment);
         renderer.end();
+
+        spriteBatch.begin();
+        float x = Gdx.input.getX();
+        float y = Math.abs((Gdx.graphics.getHeight() - Gdx.input.getY()));
+        grassButton.update(spriteBatch,x,y);
+        wallButton.update(spriteBatch,x,y);
+        holeButton.update(spriteBatch,x,y);
+        slopeButton.update(spriteBatch,x,y);
+        spriteBatch.end();
     }
 
     public void addToLevel(int x, int y, int z, char type)

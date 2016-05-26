@@ -5,12 +5,19 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.util.GameWorldSaver;
+import nl.dke12.util.ModelSelectButton;
 
 /**
  * Created by Ajki on 12/05/2016.
  */
 public class EditorController
 {
+    public static final String FLOOR = "floor";
+    public static final String WALL = "wall";
+    public static final String HOLE = "hole";
+    public static final String SLOPE = "slope";
+
+
     private String whatToPlace;
     private StateController stateController;
 
@@ -20,7 +27,7 @@ public class EditorController
         this.stateController = stateController;
     }
 
-    public void whatToPlace()
+    /*public void whatToPlace()
     {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1))
         {
@@ -42,19 +49,8 @@ public class EditorController
         {
             whatToPlace = "slope";
         }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_7))
-        {
-            whatToPlace = "slopeL";
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_8))
-        {
-            whatToPlace = "slopeU";
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_9))
-        {
-            whatToPlace = "slopeR";
-        }
-    }
+        return whatToPlace;
+    }*/
 
     public String getWhatToPlace()
     {
@@ -88,8 +84,7 @@ public class EditorController
 
     public void save(int[][][] level)
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.S) &&
-                ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
         {
             GameWorldSaver saver = new GameWorldSaver();
             saver.fileWriter("core/assets/level1.txt",level);
@@ -101,7 +96,7 @@ public class EditorController
         Vector3 directVector = new Vector3(camera.direction);
         Vector3 sideVector = new Vector3(directVector);
         sideVector.rotate(90,0,0,90);
-        if (Gdx.input.isKeyPressed(Input.Keys.S)&& !(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
+        if (Gdx.input.isKeyPressed(Input.Keys.S))
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
         }
@@ -130,4 +125,11 @@ public class EditorController
             stateController.displayMenuScreen();
         }
     }
+
+    public void changeWhatToPlace(String model)
+    {
+        whatToPlace = model;
+    }
+
+
 }
