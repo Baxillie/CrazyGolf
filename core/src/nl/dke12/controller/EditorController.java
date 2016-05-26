@@ -88,7 +88,8 @@ public class EditorController
 
     public void save(int[][][] level)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S) &&
+                (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)))
         {
             GameWorldSaver saver = new GameWorldSaver();
             saver.fileWriter("core/assets/level1.txt",level);

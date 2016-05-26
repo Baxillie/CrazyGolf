@@ -105,13 +105,15 @@ public class HeightmapConverter {
         {
             for(int x = 0; x < mapWidth; x++)
             {
-                /*indices[idx+0] = (short)(i1);
-                indices[idx+1] = (short)(i2);
-                indices[idx+2] = (short)(i3);
-
-                indices[idx+3] = (short)(i3);
-                indices[idx+4] = (short)(i4);
-                indices[idx+5] = (short)(i1);*/
+                indices[idx+0] = (short)(i1);
+//                indices[idx+1] = (short)(i2);
+//                indices[idx+2] = (short)(i3);
+//
+//                indices[idx+3] = (short)(i3);
+//                indices[idx+4] = (short)(i4);
+//                indices[idx+5] = (short)(i1);
+//
+//                idx += 6;
 
                 indices[idx+0] = (short)(i1);
                 indices[idx+1] = (short)(i2);
