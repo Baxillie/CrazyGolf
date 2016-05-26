@@ -23,6 +23,7 @@ public class Instructions implements Screen
     private SpriteBatch batch;
     private Stage stage;
     private Skin skin;
+    private TextButton backButton;
 
     private StateController stateController;
 
@@ -58,7 +59,7 @@ public class Instructions implements Screen
         textButtonStyle.font = skin.getFont("default");
         skin.add("default", textButtonStyle);
 
-        final TextButton backButton=new TextButton("BACK",textButtonStyle);
+        backButton = new TextButton("BACK",textButtonStyle);
         backButton.setPosition(50, 125);
         stage.addActor(backButton);
 
@@ -109,5 +110,6 @@ public class Instructions implements Screen
     public void dispose() {
         batch.dispose();
         texture.dispose();
+        stage.dispose();
     }
 }

@@ -59,8 +59,12 @@ public class MenuScreen implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
+		int buttonX = 150;
+		int buttonY = 350;
+		int increment = -50;
+
 		final TextButton playgGameButton=new TextButton("SINGLE PLAYER",textButtonStyle);
-		playgGameButton.setPosition(150, 350);
+		playgGameButton.setPosition(buttonX, buttonY);
 		stage.addActor(playgGameButton);
 
 		playgGameButton.addListener(new ChangeListener() {
@@ -74,8 +78,10 @@ public class MenuScreen implements Screen {
 			}
 		});
 
+		buttonY += increment;
+
 		final TextButton playMultiPlayer=new TextButton("MULTIPLAYER",textButtonStyle);
-		playMultiPlayer.setPosition(150, 300);
+		playMultiPlayer.setPosition(buttonX, buttonY);
 		stage.addActor(playMultiPlayer);
 
 		playMultiPlayer.addListener(new ChangeListener() {
@@ -88,8 +94,23 @@ public class MenuScreen implements Screen {
 			}
 		});
 
+		buttonY += increment;
+
+		final TextButton aiButton = new TextButton("AI GAME", textButtonStyle);
+		aiButton.setPosition(buttonX, buttonY);
+		stage.addActor(aiButton);
+
+		aiButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				stateController.displayAI();
+			}
+		});
+
+		buttonY += increment;
+
 		final TextButton editorButton=new TextButton("EDITOR",textButtonStyle);
-		editorButton.setPosition(150, 250);
+		editorButton.setPosition(buttonX, buttonY);
 		stage.addActor(editorButton);
 
 		editorButton.addListener(new ChangeListener() {
@@ -101,8 +122,10 @@ public class MenuScreen implements Screen {
 			}
 		});
 
+		buttonY += increment;
+
 		final TextButton controlButton = new TextButton("CONTROLS",textButtonStyle);
-		controlButton.setPosition(150, 200);
+		controlButton.setPosition(buttonX, buttonY);
 		stage.addActor(controlButton);
 		controlButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
