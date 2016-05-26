@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.IntAttribute;
@@ -13,6 +15,9 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import nl.dke12.controller.StateController;
 import nl.dke12.game.GameWorld;
 import nl.dke12.game.InstanceModel;
@@ -50,6 +55,10 @@ public class GameDisplay implements Screen
 
     private GameWorld gameWorld;
 
+    //userinterface elements
+    private Stage stage;
+    private SpriteBatch spriteBatch;
+
     public GameDisplay(boolean multiplayer, GameWorld gameWorld, StateController stateController)
             //todo: add multiplayer to the constructor
     {
@@ -60,6 +69,8 @@ public class GameDisplay implements Screen
         this.gameWorld = gameWorld;
 
         this.stateController = stateController;
+
+        setUpUserInteface();
     }
 
     public void create()
@@ -77,9 +88,9 @@ public class GameDisplay implements Screen
 
         Material material = new Material(new IntAttribute(IntAttribute.CullFace), ColorAttribute.createDiffuse(Color.GRAY));
         ModelBuilder modelBuilder = new ModelBuilder();
-        Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length,
-                new VertexAttribute(VertexAttributes.Usage.Position, 3, "heightmap"),
-                new VertexAttribute(VertexAttributes.Usage.Position, 2, "text"));
+//        Mesh mesh = new Mesh(true, heightmap.vertices.length, heightmap.indices.length,
+//                new VertexAttribute(VertexAttributes.Usage.Position, 3, "heightmap"),
+//                new VertexAttribute(VertexAttributes.Usage.Position, 2, "text"));
 
         /*Mesh mesh = new Mesh(true, 20, 20, new VertexAttribute(VertexAttributes.Usage.Position, 3, "test"));
         mesh.setVertices(new float[] { -0.5f, -0.5f, 0,
@@ -88,12 +99,12 @@ public class GameDisplay implements Screen
                 0, 0, 1});
 
         mesh.setIndices(new short[] {0, 3, 0, 2, 0, 1, 1, 3, 1, 2, 2, 3});*/
-        mesh.setVertices(heightmap.vertices);
-        mesh.setIndices(heightmap.indices);
+//        mesh.setVertices(heightmap.vertices);
+//        mesh.setIndices(heightmap.indices);
         //System.out.println("vert"+heightmap.vertices);
 
         modelBuilder.begin();
-        modelBuilder.part("test", mesh, GL20.GL_LINES, material);
+//        modelBuilder.part("test", mesh, GL20.GL_LINES, material);
         mapModel = modelBuilder.end();
 
         map = new ModelInstance(mapModel);
@@ -160,6 +171,32 @@ public class GameDisplay implements Screen
         });*/
     }
 
+    public void setUpUserInteface()
+    {
+        this.stage = new Stage();
+        this.spriteBatch = new SpriteBatch();
+
+        BitmapFont font = new BitmapFont();
+
+        //amount of force
+        Label.LabelStyle forceLabelStyle = new Label.LabelStyle(font,Color.RED);
+        Label forceLabel = new Label("force: 1", forceLabelStyle);
+        forceLabel.setX(0);
+        forceLabel.setY(Gdx.graphics.getHeight() - forceLabel.getHeight());
+
+        //amount of height
+        Label.LabelStyle heightLabelStyle = new Label.LabelStyle(font, Color.BROWN);
+        Label heightLabel = new Label("hit the bal heigh of low: 1", heightLabelStyle);
+        heightLabel.setX(forceLabel.getX() + forceLabel.getWidth() + 20);
+        heightLabel.setY(forceLabel.getY());
+
+        stage.addActor(forceLabel);
+        stage.addActor(heightLabel);
+
+        gameWorld.getGameController().giveForceLabel(forceLabel);
+        gameWorld.getGameController().giveHeightLabel(heightLabel);
+    }
+
     public void find()
     {
         String type;
@@ -194,6 +231,8 @@ public class GameDisplay implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         gameWorld.render();
+
+        //System.out.println("ball is in hole: " + gameWorld.ballIsInHole());
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE))
         {
@@ -251,6 +290,11 @@ public class GameDisplay implements Screen
         }
         renderer.end();
 
+        spriteBatch.begin();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+        spriteBatch.end();
+
         camera.update();
     }
 
@@ -273,7 +317,7 @@ public class GameDisplay implements Screen
 
     @Override
     public void resize(int width, int height){
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -294,6 +338,7 @@ public class GameDisplay implements Screen
     @Override
     public void dispose() {
         renderer.dispose();
+        stage.dispose();
     }
 
 }

@@ -9,6 +9,7 @@
     import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
     import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
     import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+    import com.badlogic.gdx.math.Vector3;
     import com.badlogic.gdx.utils.UBJsonReader;
     import nl.dke12.game.InstanceModel;
     import nl.dke12.game.SolidObject;
@@ -55,6 +56,8 @@
         private Model slopeModelU;
         private Model slopeModelR;
 
+        private Vector3 holePosition;
+
         public GameWorldLoader(String name)
         {
             this.instances = new ArrayList<InstanceModel>();
@@ -69,6 +72,11 @@
             this.mapOfWorld = new ArrayList<InstanceModel>();
             this.solidObjects = new ArrayList<SolidObject>();
             loadModels();
+        }
+
+        public Vector3 getHolePosition()
+        {
+            return holePosition;
         }
 
         public void loadModels()
@@ -196,7 +204,8 @@
                 modelInstance3.transform.translate(x, y, z-6);
                 modelInstance3.transform.rotate(1, 0, 0, 90);
                 modelInstance3.transform.scale(4f, 4f, 4f);
-                System.out.println("poop");
+                //System.out.println("hole position: " + new Vector3(x,y,z));
+                holePosition = new Vector3(x,y,z);
                 hole.transform.rotate(1,0,1,90);
             }
             else

@@ -36,6 +36,7 @@ public class GameWorld
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
+        worldLoader.getHolePosition();
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
@@ -96,9 +97,21 @@ public class GameWorld
         }
     }
 
+    public boolean ballIsInHole()
+    {
+        Vector3 ballPosition = ball.position;
+        Vector3 holePosition = getHolePosition();
+        if(ballPosition.z < -10)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void render()
     {
         gameController.moveCamera(gameDisplay.getCamera());
+
 
        // if(ball.direction.isZero(0.001f))
             gameController.move();

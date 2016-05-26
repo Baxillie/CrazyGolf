@@ -47,6 +47,26 @@ public class AIInputProcessor implements InputProcessor
         return Gdx.input.isKeyPressed(Actions.ROTATE_CAMERA_CLOCKWISE);
     }
 
+    @Override
+    public boolean decreaseForce() {
+        return false;
+    }
+
+    @Override
+    public boolean increaseForce() {
+        return false;
+    }
+
+    @Override
+    public boolean increaseHeight() {
+        return false;
+    }
+
+    @Override
+    public boolean decreaseHeight() {
+        return false;
+    }
+
     public void setMove(boolean move)
     {
         this.move = move;

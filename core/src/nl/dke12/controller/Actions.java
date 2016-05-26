@@ -24,6 +24,14 @@ public abstract class Actions {
 
     final static int MOVE_BALL_2 = Input.Keys.H;
 
+    final static int DECREASE_FORCE = Input.Keys.MINUS;
+
+    final static int INCREASE_FORCE = Input.Keys.EQUALS;
+
+    final static int INCREASE_HEIGHT = Input.Keys.RIGHT_BRACKET;
+
+    final static int DECREASE_HEIGHT = Input.Keys.LEFT_BRACKET;
+
     
 
 

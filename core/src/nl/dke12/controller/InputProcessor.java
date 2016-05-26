@@ -24,5 +24,13 @@ public interface InputProcessor {
 
     boolean moveBall2();
 
+    boolean decreaseForce();
+
+    boolean increaseForce();
+
+    boolean increaseHeight();
+
+    boolean decreaseHeight();
+
     Vector3 getDirectionVector();
 }

@@ -44,9 +44,30 @@ public class HumanInputProcessor implements InputProcessor
     {
         return Gdx.input.isKeyPressed(Actions.MOVE_BALL);
     }
+
     public boolean moveBall2()
     {
         return Gdx.input.isKeyPressed(Actions.MOVE_BALL_2);
+    }
+
+    @Override
+    public boolean decreaseForce() {
+        return Gdx.input.isKeyJustPressed(Actions.DECREASE_FORCE);
+    }
+
+    @Override
+    public boolean increaseForce() {
+        //System.out.println("checking if I should return true in increaseForce()");
+        return Gdx.input.isKeyJustPressed(Actions.INCREASE_FORCE);
+    }
+
+    @Override
+    public boolean increaseHeight() {
+        return Gdx.input.isKeyJustPressed(Actions.INCREASE_HEIGHT);
+    }
+
+    public boolean decreaseHeight() {
+        return Gdx.input.isKeyJustPressed(Actions.DECREASE_HEIGHT);
     }
 
     @Override
