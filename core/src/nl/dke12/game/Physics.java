@@ -90,6 +90,10 @@ public class Physics
 
                                 if(new Vector3(planePos).sub(ball.position).len()>new Vector3(newPlanePos).sub(ball.position).len())
                                 {
+                                    if(closest.getType().equals("slopeL")||closest.getType().equals("slope"))
+                                    {
+                                        System.out.println("pos"+closest.getPosition());
+                                    }
                                     plane = new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
                                 }
                             }
@@ -152,7 +156,7 @@ public class Physics
                 //System.out.println("perp"+perpLine);
                 Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
-                this.bounceVector = bounce.scl(0.5f);
+                this.bounceVector = bounce.scl(0.4f);
                 //FUUUUUCCKK todo: go over physics again, because it's not bouncing of the wrong plane (in other words, calculations are still fucked somehow)
                 //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
                 if(closest.getType().equals("slope"))

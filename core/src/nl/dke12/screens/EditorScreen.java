@@ -40,6 +40,10 @@ public class EditorScreen implements Screen
     private ModelInstance select;
     private ModelInstance holeModel;
     private ModelInstance slopeModel;
+    private ModelInstance slopeModelL;
+    private ModelInstance slopeModelU;
+    private ModelInstance slopeModelR;
+
 
     private ArrayList<InstanceModel> mapOfWorld;
     private StateController stateController;
@@ -111,6 +115,12 @@ public class EditorScreen implements Screen
                 holeModel = instance.modelInstance;
             else if (type == "slope")
                 slopeModel = instance.modelInstance;
+            else if (type == "slopeL")
+                slopeModelL = instance.modelInstance;
+            else if (type == "slopeU")
+                slopeModelU = instance.modelInstance;
+            else if (type == "slopeR")
+                slopeModelR = instance.modelInstance;
         }
     }
 
@@ -119,6 +129,25 @@ public class EditorScreen implements Screen
         ModelInstance modelInstance3 = model.copy();
         modelInstance3.transform.translate(x/4, y/4, z/4 -1.25f);
         modelInstance3.transform.rotate(1, 0, 0, -90);
+
+        if (model == slopeModelL)
+        {
+            modelInstance3.transform.rotate(0, 1, 0, 90);
+        }
+        else if (model == slopeModelU)
+        {
+            modelInstance3.transform.rotate(0, 1, 0, 180);
+        }
+        else if (model == slopeModelR)
+        {
+            modelInstance3.transform.rotate(0, 1, 0, -90);
+        }
+        else if (model == holeModel)
+        {
+            modelInstance3.transform.translate(0,0.375f,0);
+            modelInstance3.transform.rotate(0, 0, 1, 180);
+            modelInstance3.transform.translate(0,-3/4,0);
+        }
 
         if (model == floorModel) {
             addToLevel(x, y, z, (char) 1);
@@ -140,6 +169,18 @@ public class EditorScreen implements Screen
         if (model == slopeModel) {
             addToLevel(x, y, z, (char) 5);
             mapOfWorld.add(new InstanceModel(modelInstance3, "slope"));
+        }
+        if (model == slopeModelL) {
+            addToLevel(x, y, z, (char) 7);
+            mapOfWorld.add(new InstanceModel(modelInstance3, "slopeL"));
+        }
+        if (model == slopeModelU) {
+            addToLevel(x, y, z, (char) 8);
+            mapOfWorld.add(new InstanceModel(modelInstance3, "slopeU"));
+        }
+        if (model == slopeModelR) {
+            addToLevel(x, y, z, (char) 9);
+            mapOfWorld.add(new InstanceModel(modelInstance3, "slopeR"));
         }
     }
 
@@ -186,6 +227,18 @@ public class EditorScreen implements Screen
             if (whatToPlace.equals("slope"))
             {
                 placeTile(placementX, placementY, placementZ, slopeModel);
+            }
+            if (whatToPlace.equals("slopeL"))
+            {
+                placeTile(placementX, placementY, placementZ, slopeModelL);
+            }
+            if (whatToPlace.equals("slopeU"))
+            {
+                placeTile(placementX, placementY, placementZ, slopeModelU);
+            }
+            if (whatToPlace.equals("slopeR"))
+            {
+                placeTile(placementX, placementY, placementZ, slopeModelR);
             }
         }
 

@@ -42,6 +42,18 @@ public class EditorController
         {
             whatToPlace = "slope";
         }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_7))
+        {
+            whatToPlace = "slopeL";
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_8))
+        {
+            whatToPlace = "slopeU";
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_9))
+        {
+            whatToPlace = "slopeR";
+        }
     }
 
     public String getWhatToPlace()
