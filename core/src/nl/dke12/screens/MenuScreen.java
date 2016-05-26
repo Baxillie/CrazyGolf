@@ -68,9 +68,7 @@ public class MenuScreen implements Screen {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//if(backButton.isPressed() == true)
 				//playgGameButton.setText("Starting new game");
-				//System.out.println("single player button gets clicked");
-
-
+				System.out.println("single player was clicked");
 				stateController.displayGameDisplay(false);
 				//stateController.displayAI();
 			}
@@ -84,6 +82,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//playMultiPlayer.setText("Starting new game");
+				System.out.println("multiplayer was clicked");
 				stateController.displayGameDisplay(true);
 
 			}
@@ -97,6 +96,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//editorButton.setText("Starting new game");
+				System.out.println("editor screen was clicked");
 				stateController.displayEditorScreen();
 			}
 		});
@@ -108,6 +108,7 @@ public class MenuScreen implements Screen {
 			public void changed (ChangeEvent event, Actor actor) {
 				//System.out.println("Clicked! Is checked: " + button.isChecked());
 				//controlButton.setText("CONTROLS");
+				System.out.println("controls was clicked");
 				stateController.displayInstructions();
 			}
 		});

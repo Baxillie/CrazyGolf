@@ -88,8 +88,8 @@ public class EditorController
 
     public void save(int[][][] level)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.S) &&
-                (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)))
+        if (Gdx.input.isKeyPressed(Input.Keys.S) &&
+                ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
         {
             GameWorldSaver saver = new GameWorldSaver();
             saver.fileWriter("core/assets/level1.txt",level);
@@ -101,7 +101,7 @@ public class EditorController
         Vector3 directVector = new Vector3(camera.direction);
         Vector3 sideVector = new Vector3(directVector);
         sideVector.rotate(90,0,0,90);
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
+        if (Gdx.input.isKeyPressed(Input.Keys.S)&& !(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
         }
