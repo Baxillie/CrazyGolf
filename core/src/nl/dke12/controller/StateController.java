@@ -48,7 +48,7 @@ public class StateController extends Game
     public void displayGameDisplay(boolean multiplayer)
     {
         GameWorld gameWorld = new GameWorld(multiplayer, true);
-        GameDisplay gameDisplay = new GameDisplay(multiplayer, gameWorld);
+        GameDisplay gameDisplay = new GameDisplay(multiplayer, gameWorld,this);
         gameWorld.setDisplay(gameDisplay);
 
         setScreen(gameDisplay);
@@ -57,7 +57,7 @@ public class StateController extends Game
     public void displayAI()
     {
         GameWorld gameWorld = new GameWorld(false, false);
-        GameDisplay gameDisplay = new GameDisplay(false, gameWorld);
+        GameDisplay gameDisplay = new GameDisplay(false, gameWorld,this);
         gameWorld.setDisplay(gameDisplay);
 
         SimpleAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor());

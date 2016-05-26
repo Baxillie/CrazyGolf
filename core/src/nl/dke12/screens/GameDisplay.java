@@ -1,6 +1,7 @@
 package nl.dke12.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
+import nl.dke12.controller.StateController;
 import nl.dke12.game.GameWorld;
 import nl.dke12.game.InstanceModel;
 
@@ -44,9 +46,11 @@ public class GameDisplay implements Screen
     private AnimationController controller;
     private AnimationController spincontroller;
 
+    private StateController stateController;
+
     private GameWorld gameWorld;
 
-    public GameDisplay(boolean multiplayer, GameWorld gameWorld)
+    public GameDisplay(boolean multiplayer, GameWorld gameWorld, StateController stateController)
             //todo: add multiplayer to the constructor
     {
         create();
@@ -54,6 +58,8 @@ public class GameDisplay implements Screen
         this.instances = new ArrayList<InstanceModel>();
         this.multiplayer = multiplayer;
         this.gameWorld = gameWorld;
+
+        this.stateController = stateController;
     }
 
     public void create()
@@ -188,6 +194,11 @@ public class GameDisplay implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         gameWorld.render();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE))
+        {
+            stateController.displayMenuScreen();
+        }
 
         renderer.begin(camera);
         renderer.render(skyboxModel, skyEnvironment);
