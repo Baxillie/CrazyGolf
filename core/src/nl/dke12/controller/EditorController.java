@@ -49,9 +49,20 @@ public class EditorController
         {
             whatToPlace = "slope";
         }
-        return whatToPlace;
-    }*/
-
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_7))
+        {
+            whatToPlace = "slopeL";
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_8))
+        {
+            whatToPlace = "slopeU";
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_9))
+        {
+            whatToPlace = "slopeR";
+        }
+    }
+*/
     public String getWhatToPlace()
     {
         return whatToPlace;
@@ -84,7 +95,8 @@ public class EditorController
 
     public void save(int[][][] level)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+        if (Gdx.input.isKeyPressed(Input.Keys.S) &&
+                ((Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
         {
             GameWorldSaver saver = new GameWorldSaver();
             saver.fileWriter("core/assets/level1.txt",level);
@@ -96,7 +108,8 @@ public class EditorController
         Vector3 directVector = new Vector3(camera.direction);
         Vector3 sideVector = new Vector3(directVector);
         sideVector.rotate(90,0,0,90);
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
+        if (Gdx.input.isKeyPressed(Input.Keys.S) &&
+                !(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)||(Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))))
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
         }
