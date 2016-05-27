@@ -27,42 +27,42 @@ public class EditorController
         this.stateController = stateController;
     }
 
-    /*public void whatToPlace()
+    public void whatToPlace()
     {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1))
         {
-            whatToPlace = "floor";
+            changeWhatToPlace("floor");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2))
         {
-            whatToPlace = "wall";
+            changeWhatToPlace("wall");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3))
         {
-            whatToPlace = "windmill";
+            changeWhatToPlace("windmill");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4))
         {
-            whatToPlace = "hole";
+            changeWhatToPlace("hole");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_5))
         {
-            whatToPlace = "slope";
+            changeWhatToPlace("slope");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_7))
         {
-            whatToPlace = "slopeL";
+            changeWhatToPlace("slopeL");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_8))
         {
-            whatToPlace = "slopeU";
+            changeWhatToPlace("slopeU");
         }
         else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_9))
         {
-            whatToPlace = "slopeR";
+            changeWhatToPlace("slopeR");
         }
     }
-*/
+
     public String getWhatToPlace()
     {
         return whatToPlace;
