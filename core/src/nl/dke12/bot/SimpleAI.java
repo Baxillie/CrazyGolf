@@ -16,7 +16,7 @@ import nl.dke12.util.Logger;
  */
 public class SimpleAI implements Runnable {
 
-    public static final int WAIT_TIME = 1000; //ms
+    public static final int WAIT_TIME = 100; //ms
 
     private static Logger logger = Logger.getInstance();
 
@@ -53,7 +53,7 @@ public class SimpleAI implements Runnable {
         if (Math.abs(directionLength - lastVectorLength) < 0.1)
         {
             counter++;
-            if(counter < 2)
+            if(counter < 20)
             {
                 lastVectorLength = directionLength;
                 return false;
@@ -88,7 +88,7 @@ public class SimpleAI implements Runnable {
                 logger.log("Ball isn't moving.");
                 //sleep to make it seem it the ai thinks
                 try {
-                    Thread.sleep(4000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -131,6 +131,10 @@ public class SimpleAI implements Runnable {
 //            e.printStackTrace();
 //        }
         loadGameWorld();
+        if(ballIsInHole()) // done
+        {
+            return;
+        }
         calculateBestMove();
         makeMove();
     }
@@ -148,8 +152,24 @@ public class SimpleAI implements Runnable {
     protected void calculateBestMove()
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
-        logger.log("The calculated AI vector:" + distance);
+        distance.z += 0.1;
 
+        //if(len)
+
+        logger.log("The calculated AI vector:" + distance);
+    }
+
+    protected boolean ballIsInHole()
+    {
+        distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
+        logger.log("calculating if ball is in hole with distance to hole: " + distance.len());
+        System.out.println("Distance to hole: " + distance);
+        float distanceWithoutZ = Math.abs(distance.x + distance.y);
+        if(distanceWithoutZ < 0.5)
+        {
+            return true;
+        }
+        return false;
     }
 
     //gives the move the ai wants to make to the inputprocessor

@@ -163,7 +163,7 @@ public class Physics
                 {
                     System.out.println("ZLOP");
                 }
-                System.out.println("updir"+bounceVector);
+                //System.out.println("updir"+bounceVector);
 
                 return true;
             }
