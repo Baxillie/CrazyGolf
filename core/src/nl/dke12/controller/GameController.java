@@ -13,6 +13,8 @@ import nl.dke12.util.Logger;
  */
 public class GameController
 {
+    private static final float SCALING_SPEED_CONSTANT = 2f;
+
     private Physics physics;
     private Physics physics2;
     private Vector3 shotVector;
@@ -164,41 +166,61 @@ public class GameController
 
     public void move()
     {
-        Vector3 multiPliedVector = new Vector3(shotVector);
-        multiPliedVector.x *= forceMultiplier;
-        multiPliedVector.y *= forceMultiplier;
-        multiPliedVector.z *= heightMultiplier;
-
         if (inputProcessor.moveBall()) {
-            System.out.println("move ball is true");
+            Logger.getInstance().log("game controller decided to move the ball");
             if(inputProcessor instanceof HumanInputProcessor)
             {
-                physics.push(multiPliedVector.x,multiPliedVector.y,multiPliedVector.z);
+                pushBall(shotVector);
             }
             //it's the ai
             else
             {
-                Vector3 direc = new Vector3(inputProcessor.getDirectionVector());
-                Logger.getInstance().log("the AI pushed the ball with vector: " + direc);
-
-                physics.push(direc.x * forceMultiplier, direc.y * forceMultiplier, direc.z * heightMultiplier);
+                Vector3 aiShotVector = new Vector3(inputProcessor.getDirectionVector());
+                Logger.getInstance().log("AI has been allowed to shoot the ball with vector: " + aiShotVector.toString() +
+                " and force multiplier: " + forceMultiplier + " and height multiplier:  " + heightMultiplier);
+                pushBall(aiShotVector);
             }
             //physics.updatePosition();
         }
         if (inputProcessor.moveBall2()) {
-            physics2.push(multiPliedVector.x,multiPliedVector.y,multiPliedVector.z);
+            pushBall2(shotVector);
             //physics2.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.G)) {
-            physics.push(multiPliedVector.x,multiPliedVector.y,0);
+            pushBall(new Vector3(shotVector.x, shotVector.y, 0));
             //physics.updatePosition();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
             if (physics.getBall().getPosition().z<5)
             {
-                physics.push(0,0,10);
+                pushBall(new Vector3(0,0,10));
                 //physics.updatePosition();
             }
         }
+    }
+
+    private void pushBall(Vector3 directionVector)
+    {
+        Vector3 finalDirectionVector = new Vector3(directionVector);
+        finalDirectionVector = finalDirectionVector.nor();
+        finalDirectionVector.x *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.y *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.z *= (heightMultiplier * SCALING_SPEED_CONSTANT);
+
+        Logger.getInstance().log("Going to push the ball with vector: " + finalDirectionVector.toString());
+        physics.push(finalDirectionVector.x, finalDirectionVector.y, finalDirectionVector.z);
+
+    }
+
+    private void pushBall2(Vector3 directionVector)
+    {
+        Vector3 finalDirectionVector = new Vector3(directionVector);
+        finalDirectionVector = finalDirectionVector.nor();
+        finalDirectionVector.x *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.y *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.z *= (heightMultiplier * SCALING_SPEED_CONSTANT);
+
+        Logger.getInstance().log("Going to push the second ball with vector: " + finalDirectionVector.toString());
+        physics2.push(finalDirectionVector.x, finalDirectionVector.y, finalDirectionVector.z);
     }
 }

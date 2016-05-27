@@ -1,4 +1,0 @@
-
-########## ----AI loop begins---- ##########
-
-Ball isn't moving.

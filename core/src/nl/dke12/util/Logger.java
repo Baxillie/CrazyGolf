@@ -25,6 +25,8 @@ public class Logger
         {
             logFile.createNewFile();
             writer = new PrintWriter(new FileWriter(logFile));
+            writer.println("start of log file");
+            writer.flush();
         }
         catch (IOException e)
         {

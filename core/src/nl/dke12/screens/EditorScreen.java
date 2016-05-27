@@ -94,6 +94,7 @@ public class EditorScreen implements Screen
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 
+
         float textureWidth = 130;
         float textureHeight = 100;
         float startingX = Gdx.graphics.getWidth() - textureWidth;
@@ -220,6 +221,8 @@ public class EditorScreen implements Screen
 
         controller.moveCamera(camera);
         camera.update();
+
+        controller.whatToPlace();
 
         // Pass in the box Instance and the environment
         renderer.begin(camera);

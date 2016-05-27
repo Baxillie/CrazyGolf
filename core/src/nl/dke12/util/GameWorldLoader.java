@@ -243,9 +243,9 @@
                 SolidObject sloper = new SolidObject(x,y,z-9.3f, "slope");
                 solidObjects.add(sloper);
 
-                sloper.addPoint(x-4,y-4,z-3.7f);
+                sloper.addPoint(x-4,y-4,z-3.3f);
                 sloper.addPoint(x-4,y+4,z-5.7f);
-                sloper.addPoint(x+4,y-4,z-3.7f);
+                sloper.addPoint(x+4,y-4,z-3.3f);
                 sloper.addPoint(x+4,y+4,z-5.7f);
 
 
@@ -257,10 +257,10 @@
                 SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeL");
                 solidObjects.add(sloper);
 
-                sloper.addPoint(x-4,y-4,z-5.7f);
-                sloper.addPoint(x-4,y+4,z-5.7f);
-                sloper.addPoint(x+4,y-4,z-3.7f);
-                sloper.addPoint(x+4,y+4,z-3.7f);
+                sloper.addPoint(x-4,y-4,z-3.3f);
+                sloper.addPoint(x-4,y+4,z-3.3f);
+                sloper.addPoint(x+4,y-4,z-5.7f);
+                sloper.addPoint(x+4,y+4,z-5.7f);
 
 
                 //modelInstance3.transform.translate(x, y, z);
@@ -272,9 +272,9 @@
                 solidObjects.add(sloper);
 
                 sloper.addPoint(x-4,y-4,z-5.7f);
-                sloper.addPoint(x-4,y+4,z-3.7f);
+                sloper.addPoint(x-4,y+4,z-3.3f);
                 sloper.addPoint(x+4,y-4,z-5.7f);
-                sloper.addPoint(x+4,y+4,z-3.7f);
+                sloper.addPoint(x+4,y+4,z-3.3f);
 
 
                 //modelInstance3.transform.translate(x, y, z);
@@ -285,10 +285,10 @@
                 SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeR");
                 solidObjects.add(sloper);
 
-                sloper.addPoint(x-4,y-4,z-3.7f);
-                sloper.addPoint(x-4,y+4,z-3.7f);
-                sloper.addPoint(x+4,y-4,z-5.7f);
-                sloper.addPoint(x+4,y+4,z-5.7f);
+                sloper.addPoint(x-4,y-4,z-5.7f);
+                sloper.addPoint(x-4,y+4,z-5.7f);
+                sloper.addPoint(x+4,y-4,z-3.3f);
+                sloper.addPoint(x+4,y+4,z-3.3f);
 
 
                 //modelInstance3.transform.translate(x, y, z);
