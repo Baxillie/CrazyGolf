@@ -31,7 +31,7 @@ public class GameController
     public GameController(Physics physics, boolean isHumanPlayer)
     {
         this.physics = physics;
-        this.shotVector = new Vector3(0,1,0.8f);
+        this.shotVector = new Vector3(0,2,0f);
 
         forceMultiplier = 1f;
         heightMultiplier = 1f;
