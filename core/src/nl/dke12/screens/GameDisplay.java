@@ -81,6 +81,8 @@ public class GameDisplay implements Screen
         camera.far = 300.0f;
         cameraController = new CameraInputController(camera);
 
+        if(Gdx.input.isKeyPressed(Input.Keys.H))
+        {
         /*Plz Ignore this, just me(Tom) trying stuff out*/
         HeightmapConverter heightmap = new HeightmapConverter(30,30,500,"Heightmap.png");
 
@@ -108,7 +110,7 @@ public class GameDisplay implements Screen
 
         map = new ModelInstance(mapModel);
         map.transform.scale(20f,20f,20f);
-
+        }
         /*for(int i=0;i<heightmap.vertices.length;i++)
         {
             System.out.println("vert"+heightmap.vertices[i]);
@@ -249,7 +251,7 @@ public class GameDisplay implements Screen
         //Tom messing around here too, don't touch plz (unless you know what you're doing)
         //draw using spritebatch? render using modelbatch?
         //renderer.setShader();
-        renderer.render(map, environment);
+//        renderer.render(map, environment);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //

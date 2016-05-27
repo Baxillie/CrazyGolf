@@ -43,7 +43,7 @@ public class HeightMapTest{
         HeightMapTest heightMapTest = new HeightMapTest();
         heightMapTest.create();
         ModelBatch modelBatch = new ModelBatch();
-        ArrayList<ModelInstance> instances = new ArrayList<>();
+        ArrayList<ModelInstance> instances = new ArrayList<ModelInstance>();
         heightMapTest.render();
     }
 

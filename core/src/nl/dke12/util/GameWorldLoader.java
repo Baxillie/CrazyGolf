@@ -139,7 +139,7 @@
 
             // Scale the model down
             skybox.transform.scale(10f, 10f, 10f);
-            TWstatue.transform.scale(0.4f, 0.4f, 0.4f);
+            TWstatue.transform.scale(0.8f, 0.8f, 0.8f);
             floor.transform.scale(4f, 4f, 4f);
             hole.transform.scale(4f,4f,4f);
             wall.transform.scale(4f, 4f, 4f);
@@ -240,7 +240,7 @@
             }
             if (model == slopeModel)
             {
-                SolidObject sloper = new SolidObject(x,y,z-9.3f, "slope");
+                SolidObject sloper = new SolidObject(x,y,z-9.2f, "slope");
                 solidObjects.add(sloper);
 
                 sloper.addPoint(x-4,y-4,z-3.3f);

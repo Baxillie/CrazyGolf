@@ -88,12 +88,12 @@ public class GameWorld
     {
         if(multiplayer)
         {
-            this.ball = new Ball(0,0,0);
+            this.ball = new Ball(0,0,1f);
             this.ball2 = new Ball(0,0,0);
         }
         else
         {
-            this.ball = new Ball(0,0,0);
+            this.ball = new Ball(0,0,0f);
         }
     }
 
@@ -138,8 +138,9 @@ public class GameWorld
             {
                 if(physics.bounceVector.z > 0.08)
                 {
-                    physics.gravit = true;
+                    physics.gravit = false;
                     ball.direction.set(physics.bounceVector);
+                    System.out.println("b&ll stopped");
                 }
                 else
                 {
