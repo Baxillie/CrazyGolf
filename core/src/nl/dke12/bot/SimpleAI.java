@@ -7,6 +7,7 @@ import com.sun.org.omg.CORBA.ExcDescriptionSeqHelper;
 import nl.dke12.controller.AIInputProcessor;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.GameWorld;
+import nl.dke12.util.Logger;
 
 /**
  * Created by nik on 5/20/16.
@@ -14,6 +15,8 @@ import nl.dke12.game.GameWorld;
 public class SimpleAI implements Runnable {
 
     public static final int WAIT_TIME = 1000; //ms
+
+    private static Logger logger = Logger.getInstance();
 
     protected boolean loop;
     protected boolean makingDecision;
@@ -28,8 +31,6 @@ public class SimpleAI implements Runnable {
     {
         this.processor = (AIInputProcessor) processor;
         this.gameWorld = world;
-
-        loadGameWorld();
     }
 
     @Override
@@ -42,10 +43,12 @@ public class SimpleAI implements Runnable {
     {
         while(loop)
         {
+            logger.createBreak("----AI loop begins----");
             //check if ball is moving
             if(gameWorld.getBallDirection().isZero(0.001f) /*&& !makingDecision*/) // ball doesnt move, make a decision
             {
                 //makingDecision = true;
+                logger.log("Ball isn't moving.");
                 makeDecision();
                 try {
                     Thread.sleep(2000);
@@ -62,7 +65,7 @@ public class SimpleAI implements Runnable {
             {
                 try
                 {
-                    System.out.println("sleeping for " + WAIT_TIME + " ms in the thread.");
+                    logger.log("Ball is still moving. Sleeping for " + WAIT_TIME +" ms");
                     Thread.sleep(WAIT_TIME);
                 }
                 catch (Exception e)
@@ -88,7 +91,7 @@ public class SimpleAI implements Runnable {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
+        loadGameWorld();
         calculateBestMove();
         makeMove();
     }
@@ -96,16 +99,17 @@ public class SimpleAI implements Runnable {
     //loads the current game wold into a format which is readable by the AI
     protected void loadGameWorld()
     {
-        this.ballPosition = gameWorld.getBallPosition();
-        this.holePosition = new Vector3(16,12,4);
+        this.ballPosition = new Vector3(gameWorld.getBallPosition());
+        logger.log("ball position: " + ballPosition.toString());
+        this.holePosition = new Vector3(gameWorld.getHolePosition());
+        logger.log("hole position: " + holePosition.toString());
     }
 
     //decides which move the bot should make based on the current world situation
     protected void calculateBestMove()
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
-        System.out.println("setting distance to "+ distance);
-
+        logger.log("setting distance to " + distance);
 
     }
 
@@ -118,52 +122,6 @@ public class SimpleAI implements Runnable {
         processor.setMove(true);
         //set move in ai intput processor to true
 
-    }
-
-    public static void main(String[] args) {
-        SimpleAI ai = new SimpleAI(null, null);
-        new Thread(ai).start();
-
-        Thread otherThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                loop = true;
-                loop();
-            }
-            private boolean loop;
-            public void loop()
-            {
-                while(loop)
-                {
-                    try
-                    {
-                        Thread.sleep(1000);
-                    }
-                    catch (Exception e)
-                    {}
-                    System.out.println("this is another thread printing some bullshit");
-                }
-            }
-
-            public void kill()
-            {
-                loop = false;
-            }
-        });
-        otherThread.start();
-
-
-        try
-        {
-            Thread.sleep(15000); //15 seconds
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        ai.kill();
-        otherThread.stop();
     }
 
 }

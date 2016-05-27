@@ -36,7 +36,7 @@ public class GameWorld
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
-        worldLoader.getHolePosition();
+        holePosition = worldLoader.getHolePosition();
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);

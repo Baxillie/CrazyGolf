@@ -20,7 +20,7 @@ public class Logger
 
     private Logger()
     {
-        logFile = new File("logs\\logfile " + TimeStrings.getCurrentDateAndTimeString() + ".txt");
+        logFile = new File("logs/logfile " + TimeStrings.getCurrentDateAndTimeString() + ".txt");
         try
         {
             logFile.createNewFile();
