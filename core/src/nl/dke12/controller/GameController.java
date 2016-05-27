@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import nl.dke12.game.Physics;
+import nl.dke12.util.Logger;
 
 /**
  * Controls the flow of the game
@@ -173,10 +174,12 @@ public class GameController
             if(inputProcessor instanceof HumanInputProcessor)
             {
                 physics.push(multiPliedVector.x,multiPliedVector.y,multiPliedVector.z);
-            }else
+            }
+            //it's the ai
+            else
             {
                 Vector3 direc = new Vector3(inputProcessor.getDirectionVector());
-                System.out.println("pushing ball with vector from processor: " + direc);
+                Logger.getInstance().log("the AI pushed the ball with vector: " + direc);
 
                 physics.push(direc.x * forceMultiplier, direc.y * forceMultiplier, direc.z * heightMultiplier);
             }
