@@ -156,7 +156,7 @@ public class Physics
                 //System.out.println("perp"+perpLine);
                 Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
                 //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
-                this.bounceVector = bounce.scl(0.4f);
+                this.bounceVector = bounce.scl(0.7f);
                 //FUUUUUCCKK todo: go over physics again, because it's not bouncing of the wrong plane (in other words, calculations are still fucked somehow)
                 //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
                 if(closest.getType().equals("slope"))
@@ -180,7 +180,7 @@ public class Physics
     {
         if(direction.len() > 0.08)
         {
-            float friction = 0.97f;
+            float friction = 0.85f;
             ball.direction.x = ball.direction.x*friction;
             ball.direction.y = ball.direction.y*friction;
             if (gravit)

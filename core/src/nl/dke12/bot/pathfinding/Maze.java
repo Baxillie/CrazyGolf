@@ -1,14 +1,12 @@
-package nl.dke12.bot;
+package nl.dke12.bot.pathfinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by nik on 6/6/16.
  */
-public class Maze {
+public class Maze{
 
     private static boolean debug = false;
 
@@ -21,10 +19,10 @@ public class Maze {
 
     //maze details
     private char[][] maze; // b is beginning, e is exit, x is wall
-    public final char startChar = 'b';
-    public final char endChar   = 'e';
-    public final char wallchar  = 'x';
-    public final char openChar  = '-';
+    public static final char startChar = 'b';
+    public static final char endChar   = 'e';
+    public static final char wallchar  = 'x';
+    public static final char openChar  = '-';
     private final char pathChar = '*';
 
     //copy of maze to give when someone asks to prevent changes in actual maze

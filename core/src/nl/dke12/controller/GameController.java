@@ -31,7 +31,7 @@ public class GameController
     public GameController(Physics physics, boolean isHumanPlayer)
     {
         this.physics = physics;
-        this.shotVector = new Vector3(0,2,0f);
+        this.shotVector = new Vector3(0,2,0.2f);
 
         forceMultiplier = 1f;
         heightMultiplier = 1f;
@@ -93,7 +93,7 @@ public class GameController
         {
             heightMultiplier= multiplier;
         }
-        String newLabelText = String.format("hit the bal heigh or low: %.1f", heightMultiplier);
+        String newLabelText = String.format("hit the ball high or low: %.1f", heightMultiplier);
         if(heightLabel != null)
         {
             heightLabel.setText(newLabelText);

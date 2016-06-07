@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.GameWorld;
+import nl.dke12.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,10 +30,11 @@ public class RandomAI extends SimpleAI {
 
         //create 10 random vectors between the possible
         for (int i = 0; i < 10; i++) {
-            int x = rng.nextInt(2) - 1;
-            int y = rng.nextInt(2) - 1;
-            float z = 0f; //dont push it up or down
-            Vector3 randomVector = new Vector3(x, y, z).add(ball);
+            float x = rng.nextFloat() * 2 - 1;
+            float y = rng.nextFloat() * 2 - 1;
+            float z = 0.1f; //dont push it up or down
+            Vector3 randomVector = new Vector3(x, y, z);
+            Log.log(String.format("Random vector %d: %s", i, randomVector.toString()));
             randomVectors.add(randomVector);
         }
 
@@ -55,5 +57,6 @@ public class RandomAI extends SimpleAI {
 
         //set the vector which is going to be given to the physics
         this.distance = new Vector3(bestVector); //// TODO: 23/05/2016
+        Log.log("decided on vector: " + distance.toString());
     }
 }
