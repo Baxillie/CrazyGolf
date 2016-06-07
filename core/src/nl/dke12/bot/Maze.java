@@ -92,83 +92,76 @@ public class Maze {
                 if(currentX < endX)
                 {
                     stepsize = endX - currentX;
-                    makePathRight(currentX, currentY, stepsize);
-                    currentX += stepsize;
+                    currentX += makePathRight(currentX, currentY, stepsize);;
                 }
                 else
                 {
                     stepsize = currentX - endX;
-                    makePathLeft(currentX, currentY, stepsize);
-                    currentX -= stepsize;
+                    currentX -= makePathLeft(currentX, currentY, stepsize);;
                 }
             }
             else if(goDown) // go down
             {
-                if(currentY + stepsize >= height) // check for going down out of maze
-                {
-                    stepsize = endY - currentY;
-                }
+//                if(currentY + stepsize >= height) // check for going down out of maze
+//                {
+//                    stepsize = endY - currentY;
+//                }
                 if(debug){
                     System.out.println("deciding to make a path down with stepsize: " + stepsize);
                 }
-                makePathDown(currentX, currentY, stepsize);
-                currentY += stepsize;
+                currentY += makePathDown(currentX, currentY, stepsize);;
             }
             else // decide to go left or right
             {
                 if(currentX <= 0) //should definitely go to right
                 {
-                    if(currentX + stepsize >= width)
-                    {
-                        stepsize = width - currentX;
-                    }
+//                    if(currentX + stepsize >= width)
+//                    {
+//                        stepsize = width - currentX;
+//                    }
                     if(debug)
                     {
                         System.out.println("deciding to make a path to the right with stepsize: " + stepsize);
                     }
-                    makePathRight(currentX, currentY, stepsize);
-                    currentX += stepsize;
+                    currentX += makePathRight(currentX, currentY, stepsize);;
                 }
                 else if(currentX >= width - 1) //should definitely go left
                 {
-                    if(currentX - stepsize < 0)
-                    {
-                        stepsize = currentX;
-                    }
+//                    if(currentX - stepsize < 0)
+//                    {
+//                        stepsize = currentX;
+//                    }
                     if(debug)
                     {
                         System.out.println("deciding to make a path to the left with stepsize: " + stepsize);
                     }
-                    makePathLeft(currentX, currentY, stepsize);
-                    currentX -= stepsize;
+                    currentX -= makePathLeft(currentX, currentY, stepsize);;
                 }
                 else // randomly decide
                 {
                     if(rng.nextBoolean()) // go left
                     {
-                        if(currentX - stepsize < 0)
-                        {
-                            stepsize = currentX;
-                        }
+//                        if(currentX - stepsize < 0)
+//                        {
+//                            stepsize = currentX;
+//                        }
                         if(debug)
                         {
                             System.out.println("deciding to make a path to the left with stepsize: " + stepsize);
                         }
-                        makePathLeft(currentX, currentY, stepsize);
-                        currentX -= stepsize;
+                        currentX -= makePathLeft(currentX, currentY, stepsize);;
                     }
                     else //go right
                     {
-                        if(currentX + stepsize >= width)
-                        {
-                            stepsize = width - currentX;
-                        }
+//                        if(currentX + stepsize >= width)
+//                        {
+//                            stepsize = width - currentX;
+//                        }
                         if(debug)
                         {
                             System.out.println("deciding to make a path to the right with stepsize: " + stepsize);
                         }
-                        makePathRight(currentX, currentY, stepsize);
-                        currentX += stepsize;
+                        currentX += makePathRight(currentX, currentY, stepsize);;
                     }
                 }
             }
@@ -179,7 +172,7 @@ public class Maze {
             {
                 System.out.println("maze after placing path:");
                 printMaze();
-                System.out.println("##################################################################3");
+                System.out.println("##################################################################");
             }
         }
 
@@ -189,71 +182,180 @@ public class Maze {
 
     private void createRandomPaths(ArrayList<int[]> intersections, Random rng)
     {
-        final int minRandomPaths = 3;
-        final int maxRandomPaths = 6;
-        final int minRandomPathLength = 4;
-        final int maxRandomPathLength = 8;
+        final int minRandomPaths = 10;
+        final int maxRandomPaths = 20;
+        final int minRandomPathLength = width / 4;
+        final int maxRandomPathLength = width / 2;
         final int randomPaths = rng.nextInt(maxRandomPaths - minRandomPaths) + minRandomPaths;
-        final int intersectionSize = intersections.size();
 
-        for(int i = 0; i < randomPaths; i++)
-        {
-            //select a intersection randomly
-            int[] intersection = intersections.get(rng.nextInt(intersectionSize));
+        ArrayList<int[]> newIntersections = new ArrayList<>();
+
+        for(int i = 0; i < randomPaths; i++) {
+            //select a intersection randomly. higher change to make a new path and the end of a random path
+            int[] intersection = null;
+            if (!newIntersections.isEmpty() && rng.nextBoolean())
+            {
+                intersection = newIntersections.get(rng.nextInt(newIntersections.size()));
+            }
+            else
+            {
+                 intersection = intersections.get(rng.nextInt(intersections.size()));
+            }
+            //needed to store new intersections
             int x = intersection[0];
             int y = intersection[1];
-            //decide to make a path up, down, left or right
-            int direction = rng.nextInt(4);
-            int pathLength = rng.nextInt(maxRandomPathLength - minRandomPathLength) + minRandomPaths;
+            int endX = 0;
+            int endY = 0;
+            //decide to make a path up, down, left or right randomly or the direction with the most walls
+            int direction = 0;
+            if(rng.nextBoolean())
+            {
+                direction = whereAreMostWalls(x,y);
+            }
+            else
+            {
+                direction = rng.nextInt(4);
+            }
+
+            int pathLength = rng.nextInt(maxRandomPathLength - minRandomPathLength) + minRandomPathLength;
             if(direction == 0) // up
             {
-                makePathUp(x, y, pathLength);
+                endX = x;
+                endY = y - makePathUp(x, y, pathLength);
             }
             else if(direction == 1) // down
             {
-                makePathDown(x, y, pathLength);
+                endX = x;
+                endY = y + makePathDown(x, y, pathLength);
             }
             else if(direction == 2) // left
             {
-                makePathLeft(x,y, pathLength);
+                endX = x - makePathLeft(x,y, pathLength);;
+                endY = y;
             }
             else // right
             {
-                makePathRight(x,y, pathLength);
+                endX = x + makePathRight(x,y, pathLength);
+                endY = y;
             }
+            //add end of new random path to the list of intersections
+            intersections.add(new int[] {endX, endY});
+            if(debug)
+                System.out.println("new intersection: {" + endX + "," + endY + "}");
         }
     }
 
-    private void makePathDown(int x, int y, int stepSize)
+    private int makePathDown(int x, int y, int stepSize)
     {
+        int count = 0;
         for(int i = 1; i <= stepSize && y + i < height; i++)
         {
             maze[y + i][x] = pathChar;
+            count++;
         }
+        return count;
     }
 
-    private void makePathUp(int x, int y, int stepSize)
+    private int makePathUp(int x, int y, int stepSize)
     {
+        int count = 0;
         for(int i = 1; i <= stepSize && y - i >= 0; i++)
         {
             maze[y - i][x] = pathChar;
+            count++;
         }
+        return count;
     }
 
-    private void makePathLeft(int x, int y, int stepSize)
+    private int makePathLeft(int x, int y, int stepSize)
     {
+        int count = 0;
         for(int i = 1; i <= stepSize && x - i >= 0; i++)
         {
             maze[y][x - i] = pathChar;
+            count++;
         }
+        return count;
     }
 
-    private void makePathRight(int x, int y, int stepSize)
+    private int makePathRight(int x, int y, int stepSize)
     {
+        int count = 0;
         for(int i = 1; i <= stepSize && x + i < width; i++)
         {
             maze[y][x + i] = pathChar;
+            count++;
         }
+        return count;
+    }
+
+    public int whereAreMostWalls(int x, int y) //returns 0 for up, 1 for down, 2 for left, 3 for right
+    {
+        int xUp = 0;
+        int xDown = 0;
+        int xLeft = 0;
+        int xRight = 0;
+        //calculate all methods
+        for(int i = 0; i < 5; i++)
+        {
+            //calcuate x up
+            try
+            {
+                if(getCell(x, y - i) == openChar)
+                    xUp++;
+            }
+            catch(ArrayIndexOutOfBoundsException e) { }
+            //calcuate x down
+            try
+            {
+                if(getCell(x, y + i) == openChar)
+                    xDown++;
+            }
+            catch(ArrayIndexOutOfBoundsException e) { }
+            //calculate x left
+            try
+            {
+                if(getCell(x - i, y) == openChar)
+                    xLeft++;
+            }
+            catch(ArrayIndexOutOfBoundsException e) { }
+            //calculate x right
+            try
+            {
+                if(getCell(x + i, y) == openChar)
+                    xRight++;
+            }
+            catch(ArrayIndexOutOfBoundsException e) { }
+        }
+        //return the direction witht the highest x
+        int highestDirection = 0;
+        int highestX = xUp;
+        if(highestX <= xDown)
+        {
+            highestDirection = 1;
+            highestX =xDown;
+        }
+        if(highestX <= xLeft)
+        {
+            highestDirection = 2;
+            highestX = xLeft;
+        }
+        if(highestX < xRight)
+        {
+            highestDirection = 3;
+        }
+        if((highestDirection == 2 || highestDirection == 3) && xLeft == xRight)
+        {
+            if(rng.nextBoolean())
+            {
+                highestDirection = 2;
+            }
+            else
+            {
+                highestDirection = 3;
+            }
+        }
+        return highestDirection;
     }
 
     private void makeWalls()
@@ -341,13 +443,13 @@ public class Maze {
         }
     }
 
-    public char getCell(int x, int y) throws IndexOutOfBoundsException
+    public char getCell(int x, int y) throws ArrayIndexOutOfBoundsException
     {
         try
         {
             return maze[x][y];
         }
-        catch (IndexOutOfBoundsException e)
+        catch (ArrayIndexOutOfBoundsException e)
         {
             throw e;
         }
@@ -365,7 +467,7 @@ public class Maze {
 
     public static void main(String[] args)
     {
-        Maze maze = new Maze(10,10);
+        Maze maze = new Maze(20,20);
         maze.printMaze();
     }
 
