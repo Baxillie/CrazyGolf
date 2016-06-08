@@ -13,6 +13,8 @@ public class Node
     protected int distanceCost;
     protected boolean isEndNode;
     protected boolean isStartNode;
+    protected int x;
+    protected int y;
 
     public Node(boolean walkable)
     {
@@ -26,5 +28,13 @@ public class Node
         return this.fitness;
     }
 
+    public boolean isEndNode()
+    {
+        return isEndNode;
+    }
 
+    public boolean isStartNode()
+    {
+        return isStartNode;
+    }
 }

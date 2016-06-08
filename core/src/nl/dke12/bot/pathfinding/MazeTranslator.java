@@ -59,6 +59,9 @@ public class MazeTranslator extends GridTranslator<Maze>
                         gridNode.isStartNode = false;
                     }
                 }
+                gridNode.x = j;
+                gridNode.y = i;
+                gridNode.stepCost = 1;
                 grid[i][j] = gridNode;
             }
         }

@@ -30,8 +30,14 @@ public class Grid
     }
     public  Node getEndNode()
     {
-        return grid[]
+        return grid[endNodeX][endNodeY];
     }
+
+    public  Node getStartNode()
+    {
+        return grid[startNodeX][startNodeY];
+    }
+
     public int getWidth()
     {
         return grid.length;
