@@ -3,6 +3,7 @@ package nl.dke12.bot.pathfinding;
 /**
  * Created by Ajki on 07/06/2016.
  */
+@Deprecated
 public class Node
 {
     protected boolean walkable;

@@ -1,4 +1,6 @@
-package nl.dke12.bot.pathfinding;
+package nl.dke12.bot.maze;
+
+import nl.dke12.bot.pathfinding.AStar;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -174,7 +176,6 @@ public class Maze{
                 System.out.println("##################################################################");
             }
         }
-        maze[currentY][currentX] = endChar;
         //make random paths away from the correct path
         createRandomPaths(intersections, rng);
     }
@@ -466,37 +467,12 @@ public class Maze{
         return height;
     }
 
-    public static void main(String[] args)
+    public void printPath(ArrayList<MazeMapNode> path)
     {
-        Maze maze = new Maze(20, 20);
-        maze.printMaze();
-
-        AStar solver = new AStar(new MazeTranslator().makeGrid(maze));
-
-        try
+        for (MazeMapNode n : path)
         {
-            ArrayList<Node> path = solver.calculatePath();
-            for (Node n : path)
-            {
-                System.out.printf("Node x: %d Node y: %d\n", n.x, n.y);
-            }
-            maze.makePath(path);
-            //maze.printMaze();
-        } catch (AStar.PathNotFoundException e)
-        {
-            System.out.println("we're screwed");
-        }
-    }
-
-    public void makePath(ArrayList<Node> path)
-    {
-        for (Node n : path)
-        {
-            maze[n.y][n.x] = pathChar;
+            maze[n.getY()][n.getX()] = pathChar;
         }
 
     }
-
-
-
 }

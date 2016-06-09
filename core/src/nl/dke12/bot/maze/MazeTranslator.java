@@ -1,18 +1,23 @@
-package nl.dke12.bot.pathfinding;
+package nl.dke12.bot.maze;
+
+import nl.dke12.bot.maze.Maze;
+import nl.dke12.bot.pathfinding.MapGraph;
+import nl.dke12.bot.pathfinding.MapGraphFactory;
+import nl.dke12.bot.pathfinding.MapNode;
+import nl.dke12.bot.pathfinding.Node;
 
 /**
  * Created by Ajki on 07/06/2016.
  */
-public class MazeTranslator extends GridTranslator<Maze>
+public class MazeTranslator extends MapGraphFactory<Maze>
 {
-    private Maze maze;
     public MazeTranslator()
     {
         super();
     }
 
     @Override
-    public Grid makeGrid(Maze maze)
+    public MapGraph makeMapGraph(Maze maze)
     {
         Node[][] grid =  new Node[maze.getHeight()][maze.getWidth()];
         int endNodeX = maze.endCoords[0];
@@ -75,14 +80,10 @@ public class MazeTranslator extends GridTranslator<Maze>
             }
         }
 
-        Grid theGrid  = new Grid(grid);
-        theGrid.endNodeX = endNodeX;
-        theGrid.endNodeY = endNodeY;
-        theGrid.startNodeX = startNodeX;
-        theGrid.startNodeY = startNodeY;
+        MapGraph theMapGraph = new MapGraph(grid);
 
-        return theGrid;
+
+        return theMapGraph;
     }
-
 
 }

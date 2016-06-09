@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class AStar
 {
-    private Grid grid;
+    private MapGraph mapGraph;
     private Node startNode;
     private Node endNode;
     private PriorityQueue<Node> opened;
@@ -35,22 +35,22 @@ public class AStar
         }
     };
 
-    public AStar(Grid grid)
+    public AStar(MapGraph mapGraph)
     {
-        this.grid = grid;
-        this.endNode = grid.getEndNode();
-        this.startNode = grid.getStartNode();
+        this.mapGraph = mapGraph;
+        this.endNode = mapGraph.getEndNode();
+        this.startNode = mapGraph.getStartNode();
     }
 
     public void setFitnesses()
     {
         Node currentNode;
-        for(int i =0; i < grid.getWidth(); i++)
+        for(int i = 0; i < mapGraph.getWidth(); i++)
         {
-            for(int j = 0; j < grid.getHeight(); j++)
+            for(int j = 0; j < mapGraph.getHeight(); j++)
             {
-                currentNode = grid.getNode(i,j);
-                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j));
+                currentNode = mapGraph.getNode(i,j);
+                currentNode.distanceCost = (Math.abs(mapGraph.endNodeX - i) + Math.abs(mapGraph.endNodeY - j));
                 currentNode.stepCost = Integer.MAX_VALUE / 2; //infinite
             }
         }
@@ -170,7 +170,7 @@ public class AStar
                     {
                         continue;
                     }
-                    Node potentialNeighbour = grid.getNode(node.x + i, node.y +j);
+                    Node potentialNeighbour = mapGraph.getNode(node.x + i, node.y +j);
                     if(potentialNeighbour.walkable)
                     {
                         neighbours.add(potentialNeighbour);
