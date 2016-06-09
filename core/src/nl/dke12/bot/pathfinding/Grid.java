@@ -21,7 +21,7 @@ public class Grid
     {
         try
         {
-            return grid[x][y];
+            return grid[y][x];
         }
         catch (ArrayIndexOutOfBoundsException e)
         {

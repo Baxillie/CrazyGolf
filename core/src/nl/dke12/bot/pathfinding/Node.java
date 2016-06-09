@@ -18,9 +18,8 @@ public class Node
     protected int y;
     protected Node bestNeighbour = null;
 
-    public Node(boolean walkable)
+    public Node()
     {
-        this.walkable = walkable;
         this.explored = false;
     }
 

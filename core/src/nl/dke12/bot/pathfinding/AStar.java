@@ -67,12 +67,20 @@ public class AStar
         opened.add(startNode);
         boolean targetFound = false;
 
+//        HashMap<Node, Node> nodeCameFrom = new HashMap<>();
+//        ageDatabase.put("jenny", 2);
+//        ageDatabase.put("vinc", 3);
+//        for(String i: ageDatabase.keySet())
+//        {
+//            ageDatabase.get(i);
+//        }
+
         startNode.accumulativeStepCost = 0;
         int accumalitiveStepCost = 0;
         while(!opened.isEmpty() && !targetFound)
         {
             Node currentNode = opened.poll();
-            System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
+          //  System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
             if(currentNode.equals(endNode))
             {
                 targetFound = true;
@@ -81,23 +89,30 @@ public class AStar
             closed.add(currentNode);
 
             Stack<Node> neighbours = getNeighboursOfNode(currentNode);
-            System.out.println("Starting to look at neighbours:");
+        //    System.out.println("Starting to look at neighbours:");
             while(!neighbours.isEmpty()) {
                 Node neighbouringNode = neighbours.pop();
-                System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+                //System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
                 if (closed.contains(neighbouringNode)) {
                     continue; //already considered this neighbour
                 }
                 int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
                 if (!opened.contains(neighbouringNode)) {
                     opened.add(neighbouringNode);
-                } else if (tentiveStepCost <= neighbouringNode.stepCost) //not better than the current one
+                }
+                else if (tentiveStepCost >= neighbouringNode.stepCost) //not better than the current one
                 {
                     continue;
-                } else // found new best node
+                }
+                else // found new best node
                 {
-                    neighbouringNode.bestNeighbour = currentNode;
+
+               //     System.out.println("setting parent");
+                    currentNode.parent = neighbouringNode;
                     neighbouringNode.stepCost = tentiveStepCost;
+                    System.out.printf("node at x:%d y:%d\n", currentNode.x, currentNode.y);
+                    System.out.printf("parent at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+
                 }
             }
         }
@@ -116,11 +131,12 @@ public class AStar
     {
         ArrayList<Node> path = new ArrayList<>();
         Node currentNode = endNode;
-        path.add(0,currentNode);
-        while(currentNode.bestNeighbour != null)
+        path.add(currentNode);
+        System.out.printf("node's parent is :%s", currentNode.parent.toString());
+        while(currentNode.parent != null)
         {
-            Node nodeInPath = currentNode.bestNeighbour;
-            path.add(0,nodeInPath);
+            Node nodeInPath = currentNode.parent;
+            path.add(nodeInPath);
             currentNode = nodeInPath;
         }
         return path;
@@ -161,8 +177,8 @@ public class AStar
                     }
                     else
                     {
-                        System.out.printf("cant add node at x:%d y:%d because not walkable\n",
-                                potentialNeighbour.x, potentialNeighbour.y);;
+                       // System.out.printf("cant add node at x:%d y:%d because not walkable\n",
+                         //       potentialNeighbour.x, potentialNeighbour.y);;
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException e)

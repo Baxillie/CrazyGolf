@@ -13,8 +13,8 @@ public class Maze{
     //general information and utility
     private int width;
     private int height;
-    private int[] beginCoords;
-    private int[] endCoords;
+    protected int[] beginCoords;
+    protected int[] endCoords;
     private Random rng;
 
     //maze details
@@ -32,7 +32,8 @@ public class Maze{
     {
         this.width = width;
         this.height = height;
-        this.rng = new Random(System.currentTimeMillis());
+        //this.rng = new Random(System.currentTimeMillis());
+        this.rng = new Random(100);
         initialiseBaseMaze();
         createPaths();
         makeWalls();
@@ -358,7 +359,7 @@ public class Maze{
 
     private void makeWalls()
     {
-        printMaze();
+        //printMaze();
         // turn every open cell into a wall
         //remove e and b from the maze
         for(int i = 0; i < height; i++)
@@ -376,8 +377,8 @@ public class Maze{
                 }
                 else if(mazeChar == startChar || mazeChar == endChar)
                 {
-                    System.out.println("found " + mazeChar);
-                    //maze[i][j] = openChar;
+                    //System.out.println("found " + mazeChar);
+                    maze[i][j] = openChar;
                 }
             }
         }
@@ -467,27 +468,35 @@ public class Maze{
 
     public static void main(String[] args)
     {
-        Maze maze = new Maze(20,20);
+        Maze maze = new Maze(20, 20);
         maze.printMaze();
 
         AStar solver = new AStar(new MazeTranslator().makeGrid(maze));
 
-
         try
         {
             ArrayList<Node> path = solver.calculatePath();
-            for(Node n: path)
+            for (Node n : path)
             {
                 System.out.printf("Node x: %d Node y: %d\n", n.x, n.y);
             }
-        }
-        catch(AStar.PathNotFoundException e)
+            maze.makePath(path);
+            //maze.printMaze();
+        } catch (AStar.PathNotFoundException e)
         {
             System.out.println("we're screwed");
         }
+    }
 
-
+    public void makePath(ArrayList<Node> path)
+    {
+        for (Node n : path)
+        {
+            maze[n.y][n.x] = pathChar;
+        }
 
     }
+
+
 
 }
