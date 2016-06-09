@@ -1,9 +1,6 @@
 package nl.dke12.bot.pathfinding;
 
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by Ajki on 07/06/2016.
@@ -59,8 +56,11 @@ public class AStar
         }
     }
 
-    public Node calculatePath() throws PathNotFoundException
+    public ArrayList<Node> calculatePath() throws PathNotFoundException
     {
+        System.out.printf("Beginning is at x: %d y: %d%n", startNode.x, startNode.y);
+        System.out.printf("End is at x: %d y: %d%n", endNode.x, endNode.y);
+
         setFitnesses();
         opened = new PriorityQueue<>(COMPARATOR);
         closed = new PriorityQueue<>(COMPARATOR);
@@ -72,6 +72,7 @@ public class AStar
         while(!opened.isEmpty() && !targetFound)
         {
             Node currentNode = opened.poll();
+            System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
             if(currentNode.equals(endNode))
             {
                 targetFound = true;
@@ -80,39 +81,49 @@ public class AStar
             closed.add(currentNode);
 
             Stack<Node> neighbours = getNeighboursOfNode(currentNode);
-            while(!neighbours.isEmpty())
-            {
+            System.out.println("Starting to look at neighbours:");
+            while(!neighbours.isEmpty()) {
                 Node neighbouringNode = neighbours.pop();
-                if(closed.contains(neighbouringNode))
-                {
+                System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+                if (closed.contains(neighbouringNode)) {
                     continue; //already considered this neighbour
                 }
                 int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
-                if(!opened.contains(neighbouringNode))
-                {
+                if (!opened.contains(neighbouringNode)) {
                     opened.add(neighbouringNode);
-                }
-                else if(tentiveStepCost <= neighbouringNode.stepCost) //not better than the current one
+                } else if (tentiveStepCost <= neighbouringNode.stepCost) //not better than the current one
                 {
                     continue;
-                }
-                else // found new best node
+                } else // found new best node
                 {
                     neighbouringNode.bestNeighbour = currentNode;
                     neighbouringNode.stepCost = tentiveStepCost;
                 }
             }
-
         }
 
         if(targetFound)
         {
-            return endNode;
+            return constructPath(endNode);
         }
         else
         {
             throw new PathNotFoundException();
         }
+    }
+
+    private ArrayList<Node> constructPath(Node endNode)
+    {
+        ArrayList<Node> path = new ArrayList<>();
+        Node currentNode = endNode;
+        path.add(0,currentNode);
+        while(currentNode.bestNeighbour != null)
+        {
+            Node nodeInPath = currentNode.bestNeighbour;
+            path.add(0,nodeInPath);
+            currentNode = nodeInPath;
+        }
+        return path;
     }
 
     public class PathNotFoundException extends Exception
@@ -143,7 +154,16 @@ public class AStar
                     {
                         continue;
                     }
-                    neighbours.add(grid.getNode(i,j));
+                    Node potentialNeighbour = grid.getNode(node.x + i, node.y +j);
+                    if(potentialNeighbour.walkable)
+                    {
+                        neighbours.add(potentialNeighbour);
+                    }
+                    else
+                    {
+                        System.out.printf("cant add node at x:%d y:%d because not walkable\n",
+                                potentialNeighbour.x, potentialNeighbour.y);;
+                    }
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {}

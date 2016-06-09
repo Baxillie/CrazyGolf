@@ -58,7 +58,12 @@ public class MazeTranslator extends GridTranslator<Maze>
                         gridNode.isEndNode = false;
                         gridNode.isStartNode = false;
                     }
+                    if(mazeChar != Maze.wallchar)
+                    {
+                        gridNode.walkable = true;
+                    }
                 }
+
                 gridNode.x = j;
                 gridNode.y = i;
                 grid[i][j] = gridNode;
