@@ -16,6 +16,7 @@ public class Node
     protected boolean isStartNode;
     protected int x;
     protected int y;
+    protected Node bestNeighbour;
 
     public Node(boolean walkable)
     {

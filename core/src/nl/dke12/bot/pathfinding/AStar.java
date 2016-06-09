@@ -53,41 +53,71 @@ public class AStar
             for(int j = 0; j < grid.getHeight(); j++)
             {
                 currentNode = grid.getNode(i,j);
-                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j)) * 10;
+                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j));
+                currentNode.stepCost = Integer.MAX_VALUE / 2; //infinite
             }
         }
     }
 
-    public Node calculatePath()
+    public Node calculatePath() throws PathNotFoundException
     {
         setFitnesses();
         opened = new PriorityQueue<>(COMPARATOR);
         closed = new PriorityQueue<>(COMPARATOR);
         opened.add(startNode);
-        boolean target = false;
+        boolean targetFound = false;
 
         startNode.accumulativeStepCost = 0;
         int accumalitiveStepCost = 0;
-        while(!opened.isEmpty() && !target)
+        while(!opened.isEmpty() && !targetFound)
         {
-            Node nextNode = opened.poll();
-            if(nextNode.equals(endNode))
+            Node currentNode = opened.poll();
+            if(currentNode.equals(endNode))
             {
-                target = true;
+                targetFound = true;
                 continue;
             }
-            closed.add(nextNode);
+            closed.add(currentNode);
 
-            Stack<Node> neighbours = getNeighboursOfNode(nextNode);
+            Stack<Node> neighbours = getNeighboursOfNode(currentNode);
             while(!neighbours.isEmpty())
             {
                 Node neighbouringNode = neighbours.pop();
-                int tentiveStepCost = neighbouringNode.stepCost + accumalitiveStepCost;
-
+                if(closed.contains(neighbouringNode))
+                {
+                    continue; //already considered this neighbour
+                }
+                int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
+                if(!opened.contains(neighbouringNode))
+                {
+                    opened.add(neighbouringNode);
+                }
+                else if(tentiveStepCost <= neighbouringNode.stepCost) //not better than the current one
+                {
+                    continue;
+                }
+                else // found new best node
+                {
+                    neighbouringNode.bestNeighbour = currentNode;
+                    neighbouringNode.stepCost = tentiveStepCost;
+                }
             }
 
         }
-        return endNode;
+
+        if(targetFound)
+        {
+            return endNode;
+        }
+        else
+        {
+            throw new PathNotFoundException();
+        }
+    }
+
+    public class PathNotFoundException extends Exception
+    {
+
     }
     /*
     While there are still more possible next steps in the open list and we haven’t found the target:
