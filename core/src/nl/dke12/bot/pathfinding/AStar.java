@@ -66,6 +66,8 @@ public class AStar
         opened.add(startNode);
         boolean target = false;
 
+        startNode.accumulativeStepCost = 0;
+        int accumalitiveStepCost = 0;
         while(!opened.isEmpty() && !target)
         {
             Node nextNode = opened.poll();
@@ -80,7 +82,10 @@ public class AStar
             while(!neighbours.isEmpty())
             {
                 Node neighbouringNode = neighbours.pop();
+                int tentiveStepCost = neighbouringNode.stepCost + accumalitiveStepCost;
+
             }
+
         }
         return endNode;
     }
