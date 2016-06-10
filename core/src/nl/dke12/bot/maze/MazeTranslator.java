@@ -19,11 +19,13 @@ public class MazeTranslator implements MapGraphFactory<Maze>
     public MapGraph makeMapGraph(Maze maze)
     {
         char[][] grid =  maze.getMaze();
-        int endNodeX = maze.endCoords[0];
-        int endNodeY = maze.endCoords[1];
-        int startNodeX = maze.beginCoords[0];
-        int startNodeY = maze.beginCoords[1];
-        if(debug) {
+        int endNodeX = maze.endCoords[1];
+        int endNodeY = maze.endCoords[0];
+        int startNodeX = maze.beginCoords[1];
+        int startNodeY = maze.beginCoords[0];
+
+        if(debug)
+        {
             System.out.println("making a map graph of the following maze:");
             maze.printMaze();
             System.out.printf("Start node is at x: %d\ty: %d\nEnd node is at x: %d\ty: %d\n",
@@ -76,9 +78,9 @@ public class MazeTranslator implements MapGraphFactory<Maze>
                 else
                 {
                     try {
-                        if ( charGrid[y + j][x + i] == Maze.openChar)
+                        if ( charGrid[y + i][x + j] == Maze.openChar)
                         {
-                            MapNode neighbouringNode = getMapNode(x + i, y + j, grid);
+                            MapNode neighbouringNode = getMapNode(x + j, y + i, grid);
                             node.giveNeighbour(neighbouringNode, 1);
                         }
                     }

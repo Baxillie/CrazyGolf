@@ -15,6 +15,8 @@ public class MapGraph {
         this.startNode = startNode;
         this.goalNode = goalNode;
         this.graph = new ArrayList<>();
+        this.method = method;
+
         graph.add(startNode);
         graph.add(goalNode);
     }
@@ -24,6 +26,7 @@ public class MapGraph {
         this.startNode = startNode;
         this.goalNode  = goalNode;
         this.graph = allNodes;
+        this.method = method;
         System.out.println("length of graph:" + graph.size());
     }
 

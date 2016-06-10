@@ -6,78 +6,155 @@ import java.util.*;
  * Created by Ajki on 07/06/2016.
  */
 public class AStar
-{
-    public ArrayList<MapNode> calculatePath(MapNode beginNode, MapNode endNOde) throws PathNotFoundException
+{/*
+    // For each node, which node it can most efficiently be reached from.
+    // If a node can be reached from many nodes, cameFrom will eventually contain the
+    // most efficient previous step.
+    cameFrom := the empty map
+
+    // For each node, the cost of getting from the start node to that node.
+    gScore := map with default value of Infinity
+    // The cost of going from start to start is zero.
+    gScore[start] := 0
+    // For each node, the total cost of getting from the start node to the goal
+    // by passing by that node. That value is partly known, partly heuristic.
+    fScore := map with default value of Infinity
+    // For the first node, that value is completely heuristic.
+    fScore[start] := heuristic_cost_estimate(start, goal)
+
+    while openSet is not empty
+    current := the node in openSet having the lowest fScore[] value
+    if current = goal
+    return reconstruct_path(cameFrom, current)
+
+    openSet.Remove(current)
+        closedSet.Add(current)
+        for each neighbor of current
+    if neighbor in closedSet
+    continue		// Ignore the neighbor which is already evaluated.
+    // The distance from start to a neighbor
+    tentative_gScore := gScore[current] + dist_between(current, neighbor)
+    if neighbor not in openSet	// Discover a new node
+    openSet.Add(neighbor)
+        else if tentative_gScore >= gScore[neighbor]
+        continue		// This is not a better path.
+
+    // This path is the best until now. Record it!
+    cameFrom[neighbor] := current
+    gScore[neighbor] := tentative_gScore
+    fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
+*/
+
+    public int getScore (HashMap<MapNode, Integer> scores, MapNode node)
     {
-        //System.out.printf("Beginning is at x: %d y: %d%n", beginNode.x, startNode.y);
-        //System.out.printf("End is at x: %d y: %d%n", endNode.x, endNode.y);
+        if (!scores.containsKey(node))
+            scores.put(node, Integer.MAX_VALUE);
 
-
-
-
-        while(!opened.isEmpty() && !targetFound)
-        {
-            Node currentNode = opened.poll();
-          //  System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
-            if(currentNode.equals(endNode))
-            {
-                targetFound = true;
-                continue;
-            }
-            closed.add(currentNode);
-
-            Stack<Node> neighbours = getNeighboursOfNode(currentNode);
-        //    System.out.println("Starting to look at neighbours:");
-            while(!neighbours.isEmpty()) {
-                Node neighbouringNode = neighbours.pop();
-                //System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
-                if (closed.contains(neighbouringNode)) {
-                    continue; //already considered this neighbour
-                }
-                int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
-                if (!opened.contains(neighbouringNode)) {
-                    opened.add(neighbouringNode);
-                }
-                else if (tentiveStepCost >= neighbouringNode.stepCost) //not better than the current one
-                {
-                    continue;
-                }
-                else // found new best node
-                {
-
-               //     System.out.println("setting parent");
-                    currentNode.parent = neighbouringNode;
-                    neighbouringNode.stepCost = tentiveStepCost;
-                    System.out.printf("node at x:%d y:%d\n", currentNode.x, currentNode.y);
-                    System.out.printf("parent at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
-
-                }
-            }
-        }
-
-        if(targetFound)
-        {
-            return constructPath(endNode);
-        }
-        else
-        {
-            throw new PathNotFoundException();
-        }
+        return scores.get(node);
     }
 
-    private ArrayList<Node> constructPath(MapNode endNode)
+    public ArrayList<MapNode> calculatePath(MapGraph mapgraph) throws PathNotFoundException
     {
-        ArrayList<Node> path = new ArrayList<>();
-        MapNode currentNode = endNode;
-        path.add(currentNode);
-        System.out.printf("node's parent is :%s", currentNode.parent.toString());
-        while(currentNode.parent != null)
+        MapNode beginNode = mapgraph.getStartNode();
+        MapNode endNode = mapgraph.getGoalNode();
+        HashMap<MapNode, Integer> fScores = new HashMap<>();
+        HashMap<MapNode, MapNode> path = new HashMap<>();
+        HashMap<MapNode, Integer> gScores = new HashMap<>();
+
+        //System.out.println(beginNode);
+        //mapgraph.printFullInformation();
+
+        final Comparator<MapNode> comparator = new Comparator<MapNode>()
         {
-            Node nodeInPath = currentNode.parent;
-            path.add(nodeInPath);
-            currentNode = nodeInPath;
+            @Override
+            public int compare(MapNode o1, MapNode o2)
+            {
+                int a = getScore(fScores, o1);
+                int b = getScore(fScores, o2);
+
+                if(a < b)
+                    return 1;
+                else if (a > b)
+                    return -1;
+                else
+                    return 0;
+            }
+        };
+
+        PriorityQueue<MapNode> opened = new PriorityQueue<>(comparator);
+        opened.add(beginNode);
+        gScores.put(beginNode, 0);
+        fScores.put(beginNode, mapgraph.heuristicDistance(beginNode, endNode));
+
+        PriorityQueue<MapNode> closed = new PriorityQueue<>(comparator);
+
+        while(!opened.isEmpty())
+        {
+            //System.out.println("opened is not empty");
+            MapNode currentNode = opened.poll();
+            if(currentNode.equals(endNode))
+            {
+                //System.out.println("finished searching");
+                return constructPath(path, endNode);
+            }
+
+            closed.add(currentNode);
+
+            currentNode.fullInformation();
+
+            for(MapNode neighbour : currentNode.getNeighbours())
+            {
+                if(closed.contains(neighbour))
+                {
+                    //System.out.println("node already in closed list");
+                    continue;
+                }
+
+                int tentativeGScore = Integer.MAX_VALUE;
+
+                try
+                {
+                    tentativeGScore = getScore(gScores, currentNode) + neighbour.getTravelCostToNeighbour(currentNode);
+                }
+                catch (MapNode.NeighbourException e)
+                {
+                    System.out.println("we fucked the neighbours up");
+                    e.printStackTrace();
+                }
+
+                if(!opened.contains(neighbour)) //discover new node
+                {
+                    //System.out.println("node added to open list");
+                    opened.add(neighbour);
+                }
+                else if (tentativeGScore >= getScore(gScores, neighbour)) //not better than the current one
+                {
+                    //System.out.println("node not better than current one");
+                    continue;
+                }
+                // found new best node
+                //System.out.println("best node found");
+                path.put(neighbour, currentNode);
+                gScores.put(neighbour, tentativeGScore);
+                fScores.put(neighbour, getScore(gScores,neighbour)+ mapgraph.heuristicDistance(neighbour, endNode));
+            }
         }
-        return path;
+        System.out.println("opened is empty");
+        throw new PathNotFoundException();
+    }
+
+    private ArrayList<MapNode> constructPath(HashMap<MapNode, MapNode> path, MapNode endNode)
+    {
+        ArrayList<MapNode> thePath = new ArrayList<>();
+        MapNode node = endNode;
+
+        while(node != null)
+        {
+            thePath.add(node);
+            node = path.get(node);
+        }
+
+        return thePath;
     }
 
     public class PathNotFoundException extends Exception
@@ -95,13 +172,14 @@ public class AStar
     The loop ends when we either find a route to the destination or we run out of steps. If a route is found we back track up the records of how we reached each location to determine the path
     */
 
-    public Stack<Node> getNeighboursOfNode(MapNode node)
+    public Stack<MapNode> getNeighboursOfNode(MapNode node)
     {
         Stack<MapNode> stack = new Stack();
         for(MapNode neighbour : node.getNeighbours())
         {
             stack.add(neighbour);
         }
+        return stack;
     }
 }
 
