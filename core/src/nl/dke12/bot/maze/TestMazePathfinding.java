@@ -18,7 +18,8 @@ public class TestMazePathfinding {
 
         MazeTranslator mazeTranslator = new MazeTranslator();
         MapGraph mapGraph = mazeTranslator.makeMapGraph(maze);
-        System.out.println(mapGraph);
+        //System.out.println(mapGraph);
+        mapGraph.printFullInformation();
     }
 
 }

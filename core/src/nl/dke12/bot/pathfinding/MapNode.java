@@ -98,4 +98,19 @@ public abstract class MapNode
         return String.format("{Mapnode;id[\"%s\"]}",identifier);
     }
 
+    private String neighboursToString()
+    {
+        String toReturn = new String();
+        for(MapNode neighbour : neighbours)
+        {
+            toReturn += String.format("\t%s%n", neighbour.toString());
+        }
+        return toReturn;
+    }
+
+    public String fullInformation()
+    {
+        return toString() + "\n" + neighboursToString();
+    }
+
 }

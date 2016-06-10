@@ -45,4 +45,12 @@ public class MapGraph {
         }
         return toReturn;
     }
+
+    public void printFullInformation()
+    {
+        for(MapNode n : graph)
+        {
+            System.out.print(n.fullInformation());
+        }
+    }
 }
