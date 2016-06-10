@@ -17,7 +17,7 @@ public class TestMazePathfinding {
     {
         Maze maze = new Maze(10, 10);
         maze.printMaze();
-        char[][] grid = new char[10][10];
+        char[][] grid;
         grid = maze.getMaze();
 
         MazeTranslator mazeTranslator = new MazeTranslator();
@@ -27,7 +27,10 @@ public class TestMazePathfinding {
         try
         {
             ArrayList<MapNode> path = algorithm.calculatePath(mapGraph);
+
+            System.out.println();
             System.out.println(path);
+
             String identifier;
             int x; int y;
             for (MapNode node : path)
@@ -39,6 +42,7 @@ public class TestMazePathfinding {
 
                 grid[y][x] = '*';
             }
+            System.out.println();
             for(int i = 0; i < grid.length; i++)
             {
                 for(int j = 0; j < grid[i].length; j++)

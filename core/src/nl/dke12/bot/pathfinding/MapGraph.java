@@ -27,7 +27,7 @@ public class MapGraph {
         this.goalNode  = goalNode;
         this.graph = allNodes;
         this.method = method;
-        System.out.println("length of graph:" + graph.size());
+        //System.out.println("length of graph:" + graph.size());
     }
 
     public MapNode getStartNode() {

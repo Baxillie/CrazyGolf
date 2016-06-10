@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class MazeTranslator implements MapGraphFactory<Maze>
 {
-    private final boolean debug = true;
+    private final boolean debug = false;
 
     @Override
     public MapGraph makeMapGraph(Maze maze)

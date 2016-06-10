@@ -34,8 +34,8 @@ public class Maze{
     {
         this.width = width;
         this.height = height;
-        //this.rng = new Random(System.currentTimeMillis());
-        this.rng = new Random(100);
+        this.rng = new Random(System.currentTimeMillis());
+        //this.rng = new Random(100);
         initialiseBaseMaze();
         createPaths();
         makeWalls();
