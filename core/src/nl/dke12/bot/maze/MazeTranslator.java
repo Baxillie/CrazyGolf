@@ -38,8 +38,8 @@ public class MazeTranslator implements MapGraphFactory<Maze>
             {
                 if(grid[i][j] == Maze.openChar)
                 {
-                    mapNodeGrid[i][j] = new MazeMapNode(i,j);
-                    giveNeighbours(i,j, mapNodeGrid);
+                    getMapNode(j,i, mapNodeGrid);
+                    giveNeighbours(j,i, mapNodeGrid, grid);
                 }
             }
         }
@@ -51,16 +51,16 @@ public class MazeTranslator implements MapGraphFactory<Maze>
 
     private MapNode getMapNode(int x, int y, MapNode[][] grid) throws ArrayIndexOutOfBoundsException
     {
-        if(grid[x][y] == null)
+        if(grid[y][x] == null)
         {
-            grid[x][y] = new MazeMapNode(x,y);
+            grid[y][x] = new MazeMapNode(x,y);
         }
-        return grid[x][y];
+        return grid[y][x];
     }
 
-    private void giveNeighbours(int x, int y, MapNode[][] grid)
+    private void giveNeighbours(int x, int y, MapNode[][] grid, char[][] charGrid)
     {
-        MapNode node = grid[x][y];
+        MapNode node = grid[y][x];
         for(int i = -1; i < 2; i++)
         {
             for(int j = -1; j < 2; j++)
@@ -71,10 +71,12 @@ public class MazeTranslator implements MapGraphFactory<Maze>
                 }
                 else
                 {
-                    try
-                    {
-                        MapNode neighbouringNode = getMapNode(x + i,y + j, grid);
-                        node.giveNeighbour(neighbouringNode, 1);
+                    try {
+                        if ( charGrid[y + j][x + i] == Maze.openChar)
+                        {
+                            MapNode neighbouringNode = getMapNode(x + i, y + j, grid);
+                            node.giveNeighbour(neighbouringNode, 1);
+                        }
                     }
                     catch(ArrayIndexOutOfBoundsException e){} //handles getting nodes outside of grid, e.g a node at a wall
                     catch (MapNode.NeighbourException e)
