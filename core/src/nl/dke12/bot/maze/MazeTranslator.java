@@ -11,6 +11,8 @@ import nl.dke12.bot.pathfinding.Node;
  */
 public class MazeTranslator extends MapGraphFactory<Maze>
 {
+    private final boolean debug = true;
+
     public MazeTranslator()
     {
         super();
@@ -19,69 +21,22 @@ public class MazeTranslator extends MapGraphFactory<Maze>
     @Override
     public MapGraph makeMapGraph(Maze maze)
     {
-        Node[][] grid =  new Node[maze.getHeight()][maze.getWidth()];
+        char[][] grid =  maze.getMaze();
         int endNodeX = maze.endCoords[0];
         int endNodeY = maze.endCoords[1];
         int startNodeX = maze.beginCoords[0];
         int startNodeY = maze.beginCoords[1];
-
-        for(int i = 0; i < grid.length; i++)
-        {
-            for(int j = 0; j < grid[i].length; j++)
-            {
-                Node gridNode = null;
-                char mazeChar = '-';
-                try
-                {
-                    mazeChar = maze.getCell(i, j);
-                } catch (ArrayIndexOutOfBoundsException e)
-                {
-                    System.out.println("Creation of grid by the MazeTranslator went wrong. Error in dimensions");
-                }
-
-                if (mazeChar == Maze.openChar)
-                {
-                    gridNode = new Node();
-                    gridNode.walkable = true;
-                }
-                else
-                {
-                    gridNode = new Node();
-
-                    if(i == startNodeX && j == startNodeY)
-                    {
-                        gridNode.isStartNode = true;
-                        //startNodeX = i;
-                        //startNodeY = j;
-                        gridNode.walkable = true;
-                    }
-                    else if(i == endNodeX && j == endNodeY)
-                    {
-                        gridNode.isEndNode = true;
-                        //endNodeX = i;
-                        //endNodeY = j;
-                        gridNode.walkable = true;
-                    }
-                    else
-                    {
-                        gridNode.isEndNode = false;
-                        gridNode.isStartNode = false;
-                        gridNode.walkable = false;
-                    }
-//                    if(mazeChar != Maze.wallchar)
-//                    {
-//                        gridNode.walkable = true;
-//                    }
-                }
-
-                gridNode.x = j;
-                gridNode.y = i;
-                grid[i][j] = gridNode;
-            }
+        if(debug) {
+            System.out.println("making a map graph of the following maze:");
+            maze.printMaze();
+            System.out.printf("Start node is at x: %d\ty: %d\nEnd node is at x: %d\ty: %d\n",
+                    startNodeX, startNodeY, endNodeX, endNodeY);
         }
 
-        MapGraph theMapGraph = new MapGraph(grid);
 
+
+        MapGraph theMapGraph = new MapGraph(new MazeMapNode(startNodeX, startNodeY),
+                new MazeMapNode(endNodeX, endNodeY));
 
         return theMapGraph;
     }

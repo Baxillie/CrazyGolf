@@ -1,6 +1,7 @@
 package nl.dke12.bot.pathfinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -11,6 +12,7 @@ public abstract class MapNode
     private static int nodeCounter = 0;
     private String identifier;
     private ArrayList<MapNode> neighbours;
+    private HashMap<MapNode, Integer> costs;
 
     public MapNode()
     {
@@ -21,6 +23,8 @@ public abstract class MapNode
     public MapNode(String identifier)
     {
         this.identifier = identifier;
+        this.neighbours = new ArrayList<>();
+        this.costs = new HashMap<>();
     }
 
     public String getIdentifier()
@@ -33,18 +37,35 @@ public abstract class MapNode
         return neighbours;
     }
 
-    public void giveNeighbour(MapNode potentialNeighbour) throws CannotNeighbourItselfException
+    public void giveNeighbour(MapNode potentialNeighbour, int travelCost) throws NeighbourException
     {
         if(potentialNeighbour.equals(this))
         {
-            throw new CannotNeighbourItselfException();
+            throw new NeighbourException("Argument {MapNode} was itself. Cannot neighbour itself");
         }
         neighbours.add(potentialNeighbour);
+        costs.put(potentialNeighbour, travelCost);
     }
 
-    public class CannotNeighbourItselfException extends Exception
+    public int getTravelCostToNeighbour(MapNode neighbour) throws NeighbourException
     {
+        Integer cost = costs.get(neighbour);
+        if(cost == null)
+        {
+            throw new NeighbourException("Argument {MapNode} is not a neighbour, cannot retrieve travel cost");
+        }
+        else
+        {
+            return cost.intValue();
+        }
+    }
 
+    public class NeighbourException extends Exception
+    {
+        public NeighbourException(String errorMessage)
+        {
+            super(errorMessage);
+        }
     }
 
     @Override
@@ -69,6 +90,12 @@ public abstract class MapNode
     public int hashCode()
     {
         return Objects.hash(identifier);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("{Mapnode;id[\"%s\"]}",identifier);
     }
 
 }

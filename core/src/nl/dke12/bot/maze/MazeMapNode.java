@@ -12,7 +12,7 @@ public class MazeMapNode extends MapNode
 
     public MazeMapNode(int x, int y)
     {
-        super(String.format("%d;%d",x,y));
+        super(String.format("%2d;%2d",x,y));
         this.x = x;
         this.y = y;
     }
