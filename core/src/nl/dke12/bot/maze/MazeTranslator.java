@@ -44,8 +44,12 @@ public class MazeTranslator implements MapGraphFactory<Maze>
             }
         }
 
-        MapGraph theMapGraph = new MapGraph(getMapNode(startNodeX, startNodeY, mapNodeGrid),
-                getMapNode(endNodeX, endNodeY, mapNodeGrid), getArrayListOfAllNodes(mapNodeGrid));
+        MapGraph theMapGraph = new MapGraph(
+                getMapNode(startNodeX, startNodeY, mapNodeGrid),
+                getMapNode(endNodeX, endNodeY, mapNodeGrid),
+                getArrayListOfAllNodes(mapNodeGrid),
+                new MazeHeuristicDistance()
+                );
         return theMapGraph;
     }
 

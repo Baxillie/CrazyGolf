@@ -1,5 +1,4 @@
 package nl.dke12.bot.pathfinding;
-
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
@@ -9,9 +8,10 @@ import java.util.ArrayList;
 public class MapGraph {
     private MapNode startNode;
     private MapNode goalNode;
+    private HeuristicMethod method;
     private ArrayList<MapNode> graph;
 
-    public MapGraph(MapNode startNode, MapNode goalNode) {
+    public MapGraph(MapNode startNode, MapNode goalNode, HeuristicMethod method) {
         this.startNode = startNode;
         this.goalNode = goalNode;
         this.graph = new ArrayList<>();
@@ -19,7 +19,7 @@ public class MapGraph {
         graph.add(goalNode);
     }
 
-    public MapGraph(MapNode startNode, MapNode goalNode, ArrayList<MapNode> allNodes)
+    public MapGraph(MapNode startNode, MapNode goalNode, ArrayList<MapNode> allNodes, HeuristicMethod method)
     {
         this.startNode = startNode;
         this.goalNode  = goalNode;
@@ -52,5 +52,10 @@ public class MapGraph {
         {
             System.out.print(n.fullInformation());
         }
+    }
+
+    public int heuristicDistance(MapNode a, MapNode b)
+    {
+        return method.heuristicValue(a,b);
     }
 }
