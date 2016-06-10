@@ -13,7 +13,7 @@ public class TestMazePathfinding {
 
     public static void main(String[] args)
     {
-        Maze maze = new Maze(20, 20);
+        Maze maze = new Maze(10, 10);
         maze.printMaze();
 
         MazeTranslator mazeTranslator = new MazeTranslator();

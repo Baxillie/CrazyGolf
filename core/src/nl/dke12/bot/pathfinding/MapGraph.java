@@ -21,7 +21,10 @@ public class MapGraph {
 
     public MapGraph(MapNode startNode, MapNode goalNode, ArrayList<MapNode> allNodes)
     {
-
+        this.startNode = startNode;
+        this.goalNode  = goalNode;
+        this.graph = allNodes;
+        System.out.println("length of graph:" + graph.size());
     }
 
     public MapNode getStartNode() {
