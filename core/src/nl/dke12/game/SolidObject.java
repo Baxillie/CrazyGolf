@@ -59,56 +59,66 @@ public class SolidObject
         addPlane(points.get(1),points.get(5),points.get(6),planes);
         addPlane(points.get(4),points.get(5),points.get(6),planes);
         addPlane(points.get(4),points.get(6),points.get(7),planes);
+        /*addPlane(points.get(0),points.get(3),points.get(4),planes);
+        addPlane(points.get(0),points.get(4),points.get(7),planes);*/
 
         if(x<160&&y<160)
         {
+            addPlane(points.get(1),points.get(2),points.get(5),planes1);
+            addPlane(points.get(1),points.get(5),points.get(6),planes1);
+
             addPlane(points.get(0),points.get(1),points.get(2),planes1);
             addPlane(points.get(0),points.get(2),points.get(3),planes1);
             addPlane(points.get(0),points.get(1),points.get(6),planes1);
             addPlane(points.get(0),points.get(6),points.get(7),planes1);
             addPlane(points.get(2),points.get(3),points.get(4),planes1);
             addPlane(points.get(2),points.get(4),points.get(5),planes1);
-            addPlane(points.get(1),points.get(2),points.get(5),planes1);
-            addPlane(points.get(1),points.get(5),points.get(6),planes1);
+
             addPlane(points.get(4),points.get(5),points.get(6),planes1);
             addPlane(points.get(4),points.get(6),points.get(7),planes1);
         }
         if(x<160&&y>=160)
         {
+            addPlane(points.get(1),points.get(2),points.get(5),planes2);
+            addPlane(points.get(1),points.get(5),points.get(6),planes2);
+
             addPlane(points.get(0),points.get(1),points.get(2),planes2);
             addPlane(points.get(0),points.get(2),points.get(3),planes2);
             addPlane(points.get(0),points.get(1),points.get(6),planes2);
             addPlane(points.get(0),points.get(6),points.get(7),planes2);
             addPlane(points.get(2),points.get(3),points.get(4),planes2);
             addPlane(points.get(2),points.get(4),points.get(5),planes2);
-            addPlane(points.get(1),points.get(2),points.get(5),planes2);
-            addPlane(points.get(1),points.get(5),points.get(6),planes2);
+
             addPlane(points.get(4),points.get(5),points.get(6),planes2);
             addPlane(points.get(4),points.get(6),points.get(7),planes2);
         }
         if(x>=160&&y<160)
         {
+            addPlane(points.get(1),points.get(2),points.get(5),planes3);
+            addPlane(points.get(1),points.get(5),points.get(6),planes3);
+
             addPlane(points.get(0),points.get(1),points.get(2),planes3);
             addPlane(points.get(0),points.get(2),points.get(3),planes3);
             addPlane(points.get(0),points.get(1),points.get(6),planes3);
             addPlane(points.get(0),points.get(6),points.get(7),planes3);
             addPlane(points.get(2),points.get(3),points.get(4),planes3);
             addPlane(points.get(2),points.get(4),points.get(5),planes3);
-            addPlane(points.get(1),points.get(2),points.get(5),planes3);
-            addPlane(points.get(1),points.get(5),points.get(6),planes3);
+
             addPlane(points.get(4),points.get(5),points.get(6),planes3);
             addPlane(points.get(4),points.get(6),points.get(7),planes3);
         }
         if(x>=160&&y>=160)
         {
+            addPlane(points.get(1),points.get(2),points.get(5),planes4);
+            addPlane(points.get(1),points.get(5),points.get(6),planes4);
+
             addPlane(points.get(0),points.get(1),points.get(2),planes4);
             addPlane(points.get(0),points.get(2),points.get(3),planes4);
             addPlane(points.get(0),points.get(1),points.get(6),planes4);
             addPlane(points.get(0),points.get(6),points.get(7),planes4);
             addPlane(points.get(2),points.get(3),points.get(4),planes4);
             addPlane(points.get(2),points.get(4),points.get(5),planes4);
-            addPlane(points.get(1),points.get(2),points.get(5),planes4);
-            addPlane(points.get(1),points.get(5),points.get(6),planes4);
+
             addPlane(points.get(4),points.get(5),points.get(6),planes4);
             addPlane(points.get(4),points.get(6),points.get(7),planes4);
         }

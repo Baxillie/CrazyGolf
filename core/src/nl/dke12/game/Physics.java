@@ -1,6 +1,7 @@
 package nl.dke12.game;
 
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
@@ -74,6 +75,27 @@ public class Physics
                 }
             }
         }
+        Vector3 a1 = new Vector3(-4,-4,-0.6f);
+        Vector3 a2 = new Vector3(-4,4,-0.6f);
+        Vector3 a3 = new Vector3(4,4,-0.6f);
+        Triangle triA = new Triangle(a1,a2,a3);
+
+        Vector3 b1 = new Vector3(-4,-4,-0.6f);
+        Vector3 b2 = new Vector3(4,4,-0.6f);
+        Vector3 b3 = new Vector3(4,-4,-0.6f);
+        Triangle triB = new Triangle(b1,b2,b3);
+
+        Vector3 c1 = new Vector3(-12,4,-0.6f);
+        Vector3 c2 = new Vector3(-4,12,-0.6f);
+        Vector3 c3 = new Vector3(-4,4,-0.6f);
+        Triangle triC = new Triangle(c1,c2,c3);
+
+        Intersector inte = new Intersector();
+
+
+        System.out.println("A = "+triA.closestPoint(ball.position));
+        System.out.println("B = "+triB.closestPoint(ball.position));
+        System.out.println("C = "+triC.closestPoint(ball.position));
     }
 
     public void push(float xpush, float ypush, float zpush)
@@ -102,61 +124,7 @@ public class Physics
         nextPosition = new Vector3(new Vector3(ball.position).add(ball.direction));
         //calculate the closest plane = 3 closest points that are part of the same model/obscacle
 
-        /*
-        for(int h = 0; h < obstacles.size(); h++)
-        {
-            //obstacles = list of the solid (ie: with which the ball can interact) objects in the room,
-            //each of which contains a list of it's (outer) points
-            if(closest!=null)
-            {
-                Vector3 wallPos = new Vector3(obstacles.get(h).getPosition());
-                Vector3 closestPos = new Vector3(closest.getPosition());
-                if(new Vector3(new Vector3(wallPos).sub(ball.position)).len()<new Vector3(new Vector3(closestPos).sub(ball.position)).len())
-                {
-                    plane = null;
-                    closest = obstacles.get(h);
-                }
-            }
-            else
-            {
-                closest = obstacles.get(h);
-                plane = null;
-            }
-        }
-
-        if(closest!=null)
-        {
-            for(int i=0; i<closest.getPoints().size();i++)
-            {
-                for(int k=0;k<closest.getPoints().size();k++)
-                {
-                    for(int l=0;l<closest.getPoints().size();l++)
-                    {
-                        if(i!=k && i!=l && k!=l)
-                        {
-                            Triangle newPlane = new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
-                            if (plane!=null)
-                            {
-                                Vector3 planePos= new Vector3(plane.closestPoint(ball.position));
-                                Vector3 newPlanePos = new Vector3(newPlane.closestPoint(ball.position));
-
-                                if(new Vector3(planePos).sub(ball.position).len()>new Vector3(newPlanePos).sub(ball.position).len())
-                                {
-
-                                    plane = new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
-                                }
-                            }
-                            else
-                            {
-                                plane= new Triangle(closest.getPoints().get(i),closest.getPoints().get(k),closest.getPoints().get(l));
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-
-
+        boolean planeFound=false;
 
         //triangles = obstacles.get(0).getPlanes();
         /*planes1 = obstacles.get(0).planes1;
@@ -185,6 +153,8 @@ public class Physics
         }
             if(triangles!=null)
             {
+                int counter=0;
+                planeFound=false;
 
                 for(int m = 0; m < triangles.size(); m++)
                 {
@@ -206,12 +176,26 @@ public class Physics
                         if(new Vector3(planePos).sub(ball.position).len()>new Vector3(newPlanePos).sub(ball.position).len())
                         {
                             plane = newPlane;
+                            counter=0;
+                            planeFound=false;
                             /*System.out.println("checkplane "+newPlane.getPoints().get(0)+" "+newPlane.getPoints().get(1)+" "+newPlane.getPoints().get(2));
                             System.out.println("check dist "+new Vector3(newPlanePos).sub(ball.position).len());
                             System.out.println("plane pos "+planePos);
                             System.out.println("ew nplane pos "+newPlanePos);
-                            System.out.println("new plane");
-                            System.out.println(plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));*/
+                            System.out.println("new plane");*/
+                            System.out.println("new"+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
+                            System.out.println("dist"+new Vector3(newPlanePos).sub(ball.position).len());
+                        }
+                        else
+                        {
+                            if(counter<triangles.size())
+                            {
+                                counter+=1;
+                            }
+                            else
+                            {
+                                planeFound=true;
+                            }
                         }
                     }
                     if (plane==null)
@@ -250,76 +234,111 @@ public class Physics
             float inFront = nom.dot(point);
             */
             Intersector intersector=new Intersector();
+
             Ray ray = new Ray(ball.position,ball.direction);
             Vector3 intersect = new Vector3();
-            intersector.intersectRayTriangle(ray,plane.getPoints().get(0),plane.getPoints().get(0),plane.getPoints().get(0),intersect);
-
+            boolean hit=intersector.intersectRayTriangle(ray,plane.getPoints().get(0),plane.getPoints().get(1),plane.getPoints().get(2),intersect);
+            /*System.out.println("intersect "+intersect);
+            System.out.println("nextPosit "+nextPosition);*/
             //if(new Vector3(nextPosPlane).sub(nextPosition).len()<=1)
-            if(new Vector3(intersect).sub(ball.position).len()<new Vector3(nextPosition).sub(ball.position).len())
+
+
+            Vector3 colliPoint = new Vector3();
+            Plane surface= new Plane(plane.getPoints().get(0),plane.getPoints().get(1),plane.getPoints().get(2));
+            boolean collis=intersector.intersectSegmentPlane(ball.position,nextPosition,surface,colliPoint);
+            boolean colliding = intersector.isPointInTriangle(colliPoint,plane.getPoints().get(0),plane.getPoints().get(1),plane.getPoints().get(2));
+
+            if(!(collis&&colliding))
             {
-                //centreline = inward facing normal of collision plane
-                //Vector3 centreLine = new Vector3(plane.getNormal());
-                Vector3 centreLine = new Vector3(currPosPlane).sub(ball.position);
-                centreLine.scl(1/centreLine.len());
+                System.out.println("no hit "+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
+                System.out.println("direct "+ball.direction);
+                System.out.println("positi "+ball.position);
+            }
+            if(collis&&colliding)
+            {
+                System.out.println("hit "+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
+                System.out.println("direct "+ball.direction);
+                System.out.println("positi "+ball.position);
+            }
 
-                //check if normal is outward facing
-                /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
+            if(ball.position.z<-0.6)
+            {
+                System.out.println("LOOK HERE");
+            }
+
+            //if(new Vector3(intersect).sub(ball.position).len()<new Vector3(nextPosition).sub(ball.position).len()&&hit&&planeFound)
+            if(collis&&colliding)
+            {
+                System.out.println("intersect "+new Vector3(intersect).sub(ball.position).len());
+                System.out.println("nextPosition "+new Vector3(nextPosition).sub(ball.position).len());
+                //if(new Vector3(intersect).sub(ball.position).len()!=0)
                 {
-                    centreLine.scl(-1);
-                }*/
+                    //centreline = inward facing normal of collision plane
+                    //Vector3 centreLine = new Vector3(plane.getNormal());
+                    Vector3 centreLine = new Vector3(currPosPlane).sub(ball.position);
+                    centreLine.scl(1/centreLine.len());
 
-                //normalLine = perpendicular to centreLine parallel to the direction
-                Vector3 normalLine = new Vector3(new Vector3(nextPosPlane).sub(currPosPlane));
-                normalLine.scl(1/normalLine.len());
-                //perpComponent = component of direction that is perpendicular to centreLine
-                float perpComponent = (new Vector3(ball.direction).dot(centreLine));
-                //System.out.println("comp"+perpComponent);
-                //paraComponent = component of direction that is parallel to centreLine
-                Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(-perpComponent));
-
-                //perpLine.scl(-1);
-                Vector3 paraLine = new Vector3(new Vector3(ball.direction).sub(perpLine));
-
-                //System.out.println("perp"+perpLine);
-                Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
-                //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
-                this.bounceVector = bounce.scl(0.4f);
-                System.out.println("dir "+ball.direction);
-                System.out.println("pos "+ball.position);
-                System.out.println("closePoint "+plane.closestPoint(ball.position));
-                System.out.println("bounce "+bounceVector);
-                System.out.println(plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
-
-                //this.bounceVector = bounce;
-                //FUUUUUCCKK todo: go over physics again, because it's not bouncing off the wrong plane (in other words, calculations are still fucked somehow)
-                //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
-                //if(closest.getType().equals("slope"))
-                {
-                    /*System.out.println("bounce"+this.bounceVector);
-                    System.out.println("planeNormal"+perpLine);
-                    System.out.println("planeDirection"+normalLine);
-                    System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));*/
-                }
-                //System.out.println("updir"+bounceVector);
-
-                if (lastPos!=null)
-                {
-                    if(ball.position.dst(lastPos)<0.05)
+                    //check if normal is outward facing
+                    /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
                     {
-                        //System.out.println("Ball has STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP");
-                    }
-                    lastPos= new Vector3(ball.position);
-                }
-                else
-                {
-                    lastPos= new Vector3(ball.position);
-                }
+                        centreLine.scl(-1);
+                    }*/
 
-                return true;
+                    //normalLine = perpendicular to centreLine parallel to the direction
+                    Vector3 normalLine = new Vector3(new Vector3(nextPosPlane).sub(currPosPlane));
+                    normalLine.scl(1/normalLine.len());
+                    //perpComponent = component of direction that is perpendicular to centreLine
+                    float perpComponent = (new Vector3(ball.direction).dot(centreLine));
+                    //System.out.println("comp"+perpComponent);
+                    //paraComponent = component of direction that is parallel to centreLine
+                    Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(-perpComponent));
+
+                    //perpLine.scl(-1);
+                    Vector3 paraLine = new Vector3(new Vector3(ball.direction).sub(perpLine));
+
+                    //System.out.println("perp"+perpLine);
+                    Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                    //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                    this.bounceVector = bounce.scl(0.4f);
+                    //this.bounceVector.set(0,0,0);
+                    /*System.out.println("dir "+ball.direction);
+                    System.out.println("pos "+ball.position);
+                    System.out.println("closePoint "+plane.closestPoint(ball.position));
+                    System.out.println("bounce "+bounceVector);
+                    System.out.println(plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));*/
+
+                    //this.bounceVector = bounce;
+                    //FUUUUUCCKK todo: go over physics again, because it's not bouncing off the wrong plane (in other words, calculations are still fucked somehow)
+                    //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
+                    //if(closest.getType().equals("slope"))
+                    {
+                        System.out.println("bounce"+this.bounceVector);
+                        System.out.println("planeNormal"+perpLine);
+                        System.out.println("planeDirection"+normalLine);
+                        System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
+                    }
+                    //System.out.println("updir"+bounceVector);
+
+                    if (lastPos!=null)
+                    {
+                        if(ball.position.dst(lastPos)<0.05)
+                        {
+                            //System.out.println("Ball has STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP STOP");
+                        }
+                        lastPos= new Vector3(ball.position);
+                    }
+                    else
+                    {
+                        lastPos= new Vector3(ball.position);
+                    }
+
+                    return true;
+                }
             }
             else
             {
-                gravit = true;
+                //gravit = true;
+                //System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
             }
             return false;
         }

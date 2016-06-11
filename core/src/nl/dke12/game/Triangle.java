@@ -1,5 +1,7 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class Triangle {
         vector2.add(point2);
         this.normal = new Vector3(vector1);
         this.normal.crs(vector2);
+        this.normal.scl(1/normal.len());
     }
 
     public Vector3 getNormal()
@@ -53,7 +56,7 @@ public class Triangle {
 
     // Compute barycentric coordinates (u, v, w) for
     // point p with respect to triangle (a, b, c)
-    public Vector3 Barycentric(Vector3 p, Vector3 a, Vector3 b, Vector3 c, float u, float v, float w)
+    public Vector3 baryCentric(Vector3 p, Vector3 a, Vector3 b, Vector3 c, float u, float v, float w)
     {
         Vector3 v0 = new Vector3(new Vector3(b).sub(a));
         Vector3 v1 = new Vector3(new Vector3(c).sub(a));
@@ -73,6 +76,51 @@ public class Triangle {
 
     public static float clamp(float val, float min, float max) {
         return Math.max(min, Math.min(max, val));
+    }
+
+    public Vector3 getClosestPoint(Vector3 point)
+    {
+        Intersector intersector = new Intersector();
+        Vector3 projection = new Vector3(point).sub(new Vector3(normal).scl((new Vector3(point).sub(point1)).dot(normal)));
+        if(intersector.isPointInTriangle(projection,point1,point2,point3))
+        {
+            return projection;
+        }
+        else
+        {
+            /*Vector3 edge0 = new Vector3(new Vector3(point2).sub(point1));
+            Vector3 edge1 = new Vector3(new Vector3(point3).sub(point1));
+            Vector3 edge2 = new Vector3(new Vector3(point3).sub(point2));*/
+
+            /*Vector2 side1=new Vector2(getClosestPointOnSegment(point2.x,point2.y,point1.x,point1.y,projection.x,projection.y));
+            Vector2 side2=new Vector2(getClosestPointOnSegment(point3.x,point3.y,point1.x,point1.y,projection.x,projection.y));
+            Vector2 side3=new Vector2(getClosestPointOnSegment(point3.x,point3.y,point2.x,point2.y,projection.x,projection.y));*/
+
+            Vector3 edge0 = new Vector3(getPointonSegment(projection,point1,point3));
+            Vector3 edge1 = new Vector3(getPointonSegment(projection,point2,point1));
+            Vector3 edge2 = new Vector3(getPointonSegment(projection,point3,point2));
+
+            if((new Vector3(edge0).sub(point)).len()<=(new Vector3(edge1).sub(point)).len()&&
+            (new Vector3(edge0).sub(point)).len()<=(new Vector3(edge2).sub(point)).len())
+            {
+                return edge0;
+            }
+            else if((new Vector3(edge1).sub(point)).len()<(new Vector3(edge0).sub(point)).len()&&
+                    (new Vector3(edge1).sub(point)).len()<=(new Vector3(edge2).sub(point)).len())
+            {
+                return edge1;
+            }
+            else if((new Vector3(edge2).sub(point)).len()<(new Vector3(edge1).sub(point)).len()&&
+                    (new Vector3(edge2).sub(point)).len()<(new Vector3(edge0).sub(point)).len())
+            {
+                return edge2;
+            }
+            else
+            {
+                return edge2;
+            }
+
+        }
     }
 
     public Vector3 closestPoint(Vector3 point )
@@ -180,5 +228,73 @@ public class Triangle {
         points.add(point3);
 
         return points;
+    }
+
+    /**
+     * Returns closest point on segment to point
+     *
+     * @param sx1
+     *            segment x coord 1
+     * @param sy1
+     *            segment y coord 1
+     * @param sx2
+     *            segment x coord 2
+     * @param sy2
+     *            segment y coord 2
+     * @param px
+     *            point x coord
+     * @param py
+     *            point y coord
+     * @return closets point on segment to point
+     */
+    public static Vector2 getClosestPointOnSegment(float sx1, float sy1, float sx2, float sy2, float px, float py)
+    {
+        float xDelta = sx2 - sx1;
+        float yDelta = sy2 - sy1;
+
+        if ((xDelta == 0) && (yDelta == 0))
+        {
+            throw new IllegalArgumentException("Segment start equals segment end");
+        }
+
+        float u = ((px - sx1) * xDelta + (py - sy1) * yDelta) / (xDelta * xDelta + yDelta * yDelta);
+
+        final Vector2 closestPoint;
+        if (u < 0)
+        {
+            closestPoint = new Vector2(sx1, sy1);
+        }
+        else if (u > 1)
+        {
+            closestPoint = new Vector2(sx2, sy2);
+        }
+        else
+        {
+            closestPoint = new Vector2((int) Math.round(sx1 + u * xDelta), (int) Math.round(sy1 + u * yDelta));
+        }
+
+        return closestPoint;
+    }
+
+
+    public Vector3 getPointonSegment ( Vector3 point,  Vector3 P0, Vector3 P1 )
+    {
+        Vector3 v = new Vector3(P1).sub(P0);
+        Vector3 w = new Vector3(point).sub(P0);
+
+        float c1=new Vector3(v).dot(w);
+        float c2=new Vector3(v).dot(v);
+        if(c1 <= 0 )  // before P0
+        {
+            return P0;
+        }
+        if (c2 <= c1) // after P1
+        {
+            return P1;
+        }
+
+        float b = c1 / c2;
+        Vector3 Pb = new Vector3(P0.add(v).scl(b));
+        return Pb;
     }
 }

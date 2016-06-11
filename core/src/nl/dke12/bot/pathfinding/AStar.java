@@ -62,8 +62,8 @@ public class AStar
         System.out.printf("End is at x: %d y: %d%n", endNode.x, endNode.y);
 
         setFitnesses();
-        opened = new PriorityQueue<>(COMPARATOR);
-        closed = new PriorityQueue<>(COMPARATOR);
+        /*opened = new PriorityQueue<>(COMPARATOR);
+        closed = new PriorityQueue<Node>(COMPARATOR);*/
         opened.add(startNode);
         boolean targetFound = false;
 
@@ -129,7 +129,7 @@ public class AStar
 
     private ArrayList<Node> constructPath(Node endNode)
     {
-        ArrayList<Node> path = new ArrayList<>();
+        ArrayList<Node> path = new ArrayList<Node>();
         Node currentNode = endNode;
         path.add(currentNode);
         System.out.printf("node's parent is :%s", currentNode.parent.toString());
@@ -159,7 +159,7 @@ public class AStar
 
     public Stack<Node> getNeighboursOfNode(Node node)
     {
-        Stack<Node> neighbours = new Stack<>();
+        Stack<Node> neighbours = new Stack<Node>();
         for(int i = -1 ; i <= 1; i++)
         {
             for(int j = -1; j <= 1; j++)
