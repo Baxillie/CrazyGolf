@@ -11,14 +11,15 @@ public class Node
     private int fitness;
     protected int stepCost;
     protected int distanceCost;
+    protected int accumulativeStepCost = 0;
     protected boolean isEndNode;
     protected boolean isStartNode;
     protected int x;
     protected int y;
+    protected Node bestNeighbour = null;
 
-    public Node(boolean walkable)
+    public Node()
     {
-        this.walkable = walkable;
         this.explored = false;
     }
 

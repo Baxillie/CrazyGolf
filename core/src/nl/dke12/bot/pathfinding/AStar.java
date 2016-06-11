@@ -1,9 +1,6 @@
 package nl.dke12.bot.pathfinding;
 
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by Ajki on 07/06/2016.
@@ -53,36 +50,101 @@ public class AStar
             for(int j = 0; j < grid.getHeight(); j++)
             {
                 currentNode = grid.getNode(i,j);
-                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j)) * 10;
+                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j));
+                currentNode.stepCost = Integer.MAX_VALUE / 2; //infinite
             }
         }
     }
 
-    public Node calculatePath()
+    public ArrayList<Node> calculatePath() throws PathNotFoundException
     {
+        System.out.printf("Beginning is at x: %d y: %d%n", startNode.x, startNode.y);
+        System.out.printf("End is at x: %d y: %d%n", endNode.x, endNode.y);
+
         setFitnesses();
         opened = new PriorityQueue<>(COMPARATOR);
         closed = new PriorityQueue<>(COMPARATOR);
         opened.add(startNode);
-        boolean target = false;
+        boolean targetFound = false;
 
-        while(!opened.isEmpty() && !target)
+//        HashMap<Node, Node> nodeCameFrom = new HashMap<>();
+//        ageDatabase.put("jenny", 2);
+//        ageDatabase.put("vinc", 3);
+//        for(String i: ageDatabase.keySet())
+//        {
+//            ageDatabase.get(i);
+//        }
+
+        startNode.accumulativeStepCost = 0;
+        int accumalitiveStepCost = 0;
+        while(!opened.isEmpty() && !targetFound)
         {
-            Node nextNode = opened.poll();
-            if(nextNode.equals(endNode))
+            Node currentNode = opened.poll();
+          //  System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
+            if(currentNode.equals(endNode))
             {
-                target = true;
+                targetFound = true;
                 continue;
             }
-            closed.add(nextNode);
+            closed.add(currentNode);
 
-            Stack<Node> neighbours = getNeighboursOfNode(nextNode);
-            while(!neighbours.isEmpty())
-            {
+            Stack<Node> neighbours = getNeighboursOfNode(currentNode);
+        //    System.out.println("Starting to look at neighbours:");
+            while(!neighbours.isEmpty()) {
                 Node neighbouringNode = neighbours.pop();
+                //System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+                if (closed.contains(neighbouringNode)) {
+                    continue; //already considered this neighbour
+                }
+                int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
+                if (!opened.contains(neighbouringNode)) {
+                    opened.add(neighbouringNode);
+                }
+                else if (tentiveStepCost >= neighbouringNode.stepCost) //not better than the current one
+                {
+                    continue;
+                }
+                else // found new best node
+                {
+
+               //     System.out.println("setting parent");
+                    currentNode.parent = neighbouringNode;
+                    neighbouringNode.stepCost = tentiveStepCost;
+                    System.out.printf("node at x:%d y:%d\n", currentNode.x, currentNode.y);
+                    System.out.printf("parent at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+
+                }
             }
         }
-        return endNode;
+
+        if(targetFound)
+        {
+            return constructPath(endNode);
+        }
+        else
+        {
+            throw new PathNotFoundException();
+        }
+    }
+
+    private ArrayList<Node> constructPath(Node endNode)
+    {
+        ArrayList<Node> path = new ArrayList<>();
+        Node currentNode = endNode;
+        path.add(currentNode);
+        System.out.printf("node's parent is :%s", currentNode.parent.toString());
+        while(currentNode.parent != null)
+        {
+            Node nodeInPath = currentNode.parent;
+            path.add(nodeInPath);
+            currentNode = nodeInPath;
+        }
+        return path;
+    }
+
+    public class PathNotFoundException extends Exception
+    {
+
     }
     /*
     While there are still more possible next steps in the open list and we haven’t found the target:
@@ -108,7 +170,16 @@ public class AStar
                     {
                         continue;
                     }
-                    neighbours.add(grid.getNode(i,j));
+                    Node potentialNeighbour = grid.getNode(node.x + i, node.y +j);
+                    if(potentialNeighbour.walkable)
+                    {
+                        neighbours.add(potentialNeighbour);
+                    }
+                    else
+                    {
+                       // System.out.printf("cant add node at x:%d y:%d because not walkable\n",
+                         //       potentialNeighbour.x, potentialNeighbour.y);;
+                    }
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {}
