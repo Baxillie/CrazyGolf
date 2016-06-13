@@ -2,7 +2,7 @@ package nl.dke12.bot.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+//import java.util.Objects;
 
 /**
  * Created by nik on 09/06/16.
@@ -24,8 +24,8 @@ public abstract class MapNode
     public MapNode(String identifier)
     {
         this.identifier = identifier;
-        this.neighbours = new ArrayList<>();
-        this.costs = new HashMap<>();
+        this.neighbours = new ArrayList<MapNode>();
+        this.costs = new HashMap<MapNode, Integer>();
     }
 
     public String getIdentifier()
@@ -83,14 +83,15 @@ public abstract class MapNode
         else
         {
             MapNode mapNode = (MapNode) o;
-            return Objects.equals(identifier, mapNode.identifier);
+            //return Objects.equals(identifier, mapNode.identifier);
+            return false;
         }
     }
 
-    @Override
-    public int hashCode()
+    //@Override
+    //public int hashCode()
     {
-        return Objects.hash(identifier);
+        //return Objects.hash(identifier);
     }
 
     @Override

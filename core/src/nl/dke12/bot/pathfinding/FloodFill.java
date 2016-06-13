@@ -12,9 +12,9 @@ public class FloodFill
 {
     public void calculateCosts(MapGraph mapGraph) throws PathNotFoundException
     {
-        HashMap<MapNode, Integer> costmap = new HashMap<>();
-        Stack<MapNode> checked = new Stack<>();
-        LinkedBlockingQueue<MapNode> queue = new LinkedBlockingQueue<>();
+        HashMap<MapNode, Integer> costmap = new HashMap<MapNode, Integer>();
+        Stack<MapNode> checked = new Stack<MapNode>();
+        LinkedBlockingQueue<MapNode> queue = new LinkedBlockingQueue<MapNode>();
 
         MapNode currentNode = mapGraph.getStartNode();
 
@@ -84,7 +84,7 @@ public class FloodFill
 
         calculateCosts(mapGraph);
 
-        ArrayList<MapNode> thePath = new ArrayList<>();
+        ArrayList<MapNode> thePath = new ArrayList<MapNode>();
         MapNode currentNode = mapGraph.getGoalNode();
         thePath.add(currentNode);
 
@@ -105,8 +105,8 @@ public class FloodFill
             }
         };
 
-        PriorityQueue<MapNode> neighbours = new PriorityQueue<>(comparator);
-        ArrayList<MapNode> potentialNeighbour = new ArrayList<>();
+        PriorityQueue<MapNode> neighbours = new PriorityQueue<MapNode>();
+        ArrayList<MapNode> potentialNeighbour = new ArrayList<MapNode>();
         Random rng = new Random(System.currentTimeMillis());
 
         while(!currentNode.equals(startNode))

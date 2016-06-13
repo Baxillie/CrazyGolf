@@ -14,7 +14,7 @@ public class MapGraph {
     public MapGraph(MapNode startNode, MapNode goalNode, HeuristicMethod method) {
         this.startNode = startNode;
         this.goalNode = goalNode;
-        this.graph = new ArrayList<>();
+        this.graph = new ArrayList<MapNode>();
         this.method = method;
 
         graph.add(startNode);
