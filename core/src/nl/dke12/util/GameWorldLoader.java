@@ -385,6 +385,12 @@ public class GameWorldLoader
         return mapOfWorld;
     }
 
+    public Vector3 getStartPosition()
+    {
+        //// TODO: 13/06/16 fix hack
+        return new Vector3(0,0,0);
+    }
+
     public ArrayList<SolidObject> getSolidObjects()
     {
         return solidObjects;
