@@ -75,7 +75,7 @@ public class Maze{
         int stepsize = 0;
 
         //arraylist storing every intersection coordinate of the correct path
-        ArrayList<int[]> intersections = new ArrayList<>();
+        ArrayList<int[]> intersections = new ArrayList<int[]>();
 
         while(currentX != endX || currentY != endY)
         {
@@ -189,7 +189,7 @@ public class Maze{
         final int maxRandomPathLength = width / 2;
         final int randomPaths = rng.nextInt(maxRandomPaths - minRandomPaths) + minRandomPaths;
 
-        ArrayList<int[]> newIntersections = new ArrayList<>();
+        ArrayList<int[]> newIntersections = new ArrayList<int[]>();
 
         for(int i = 0; i < randomPaths; i++) {
             //select a intersection randomly. higher change to make a new path and the end of a random path

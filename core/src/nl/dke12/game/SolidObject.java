@@ -10,6 +10,11 @@ import java.util.ArrayList;
 public class SolidObject
 {
     private ArrayList<Vector3> points;
+    private ArrayList<Triangle> planes;
+    public ArrayList<Triangle> planes1;
+    public ArrayList<Triangle> planes2;
+    public ArrayList<Triangle> planes3;
+    public ArrayList<Triangle> planes4;
     private Vector3 position;
     private String type;
 
@@ -19,6 +24,23 @@ public class SolidObject
         position = new Vector3(x,y,z);
         this.type = type;
         points=new ArrayList<Vector3>();
+        planes=new ArrayList<Triangle>();
+        if(planes1==null)
+        {
+            planes1=new ArrayList<Triangle>();
+        }
+        if(planes2==null)
+        {
+            planes2=new ArrayList<Triangle>();
+        }
+        if(planes3==null)
+        {
+            planes3=new ArrayList<Triangle>();
+        }
+        if(planes4==null)
+        {
+            planes4=new ArrayList<Triangle>();
+        }
         addPoint(x-width,y-depth,z-height);
         addPoint(x-width,y-depth,z+height);
         addPoint(x-width,y+depth,z+height);
@@ -27,6 +49,79 @@ public class SolidObject
         addPoint(x+width,y+depth,z+height);
         addPoint(x+width,y-depth,z+height);
         addPoint(x+width,y-depth,z-height);
+        addPlane(points.get(0),points.get(1),points.get(2),planes);
+        addPlane(points.get(0),points.get(2),points.get(3),planes);
+        addPlane(points.get(0),points.get(1),points.get(6),planes);
+        addPlane(points.get(0),points.get(6),points.get(7),planes);
+        addPlane(points.get(2),points.get(3),points.get(4),planes);
+        addPlane(points.get(2),points.get(4),points.get(5),planes);
+        addPlane(points.get(1),points.get(2),points.get(5),planes);
+        addPlane(points.get(1),points.get(5),points.get(6),planes);
+        addPlane(points.get(4),points.get(5),points.get(6),planes);
+        addPlane(points.get(4),points.get(6),points.get(7),planes);
+        /*addPlane(points.get(0),points.get(3),points.get(4),planes);
+        addPlane(points.get(0),points.get(4),points.get(7),planes);*/
+
+        if(x<160&&y<160)
+        {
+            addPlane(points.get(1),points.get(2),points.get(5),planes1);
+            addPlane(points.get(1),points.get(5),points.get(6),planes1);
+
+            addPlane(points.get(0),points.get(1),points.get(2),planes1);
+            addPlane(points.get(0),points.get(2),points.get(3),planes1);
+            addPlane(points.get(0),points.get(1),points.get(6),planes1);
+            addPlane(points.get(0),points.get(6),points.get(7),planes1);
+            addPlane(points.get(2),points.get(3),points.get(4),planes1);
+            addPlane(points.get(2),points.get(4),points.get(5),planes1);
+
+            addPlane(points.get(4),points.get(5),points.get(6),planes1);
+            addPlane(points.get(4),points.get(6),points.get(7),planes1);
+        }
+        if(x<160&&y>=160)
+        {
+            addPlane(points.get(1),points.get(2),points.get(5),planes2);
+            addPlane(points.get(1),points.get(5),points.get(6),planes2);
+
+            addPlane(points.get(0),points.get(1),points.get(2),planes2);
+            addPlane(points.get(0),points.get(2),points.get(3),planes2);
+            addPlane(points.get(0),points.get(1),points.get(6),planes2);
+            addPlane(points.get(0),points.get(6),points.get(7),planes2);
+            addPlane(points.get(2),points.get(3),points.get(4),planes2);
+            addPlane(points.get(2),points.get(4),points.get(5),planes2);
+
+            addPlane(points.get(4),points.get(5),points.get(6),planes2);
+            addPlane(points.get(4),points.get(6),points.get(7),planes2);
+        }
+        if(x>=160&&y<160)
+        {
+            addPlane(points.get(1),points.get(2),points.get(5),planes3);
+            addPlane(points.get(1),points.get(5),points.get(6),planes3);
+
+            addPlane(points.get(0),points.get(1),points.get(2),planes3);
+            addPlane(points.get(0),points.get(2),points.get(3),planes3);
+            addPlane(points.get(0),points.get(1),points.get(6),planes3);
+            addPlane(points.get(0),points.get(6),points.get(7),planes3);
+            addPlane(points.get(2),points.get(3),points.get(4),planes3);
+            addPlane(points.get(2),points.get(4),points.get(5),planes3);
+
+            addPlane(points.get(4),points.get(5),points.get(6),planes3);
+            addPlane(points.get(4),points.get(6),points.get(7),planes3);
+        }
+        if(x>=160&&y>=160)
+        {
+            addPlane(points.get(1),points.get(2),points.get(5),planes4);
+            addPlane(points.get(1),points.get(5),points.get(6),planes4);
+
+            addPlane(points.get(0),points.get(1),points.get(2),planes4);
+            addPlane(points.get(0),points.get(2),points.get(3),planes4);
+            addPlane(points.get(0),points.get(1),points.get(6),planes4);
+            addPlane(points.get(0),points.get(6),points.get(7),planes4);
+            addPlane(points.get(2),points.get(3),points.get(4),planes4);
+            addPlane(points.get(2),points.get(4),points.get(5),planes4);
+
+            addPlane(points.get(4),points.get(5),points.get(6),planes4);
+            addPlane(points.get(4),points.get(6),points.get(7),planes4);
+        }
     }
 
     public SolidObject(float x, float y, float z, float width, float depth, float height,boolean rotation, String type)
@@ -35,6 +130,7 @@ public class SolidObject
         this.type = type;
         float newWidth =(float) Math.sqrt(width*width+depth*depth);
         points=new ArrayList<Vector3>();
+        planes=new ArrayList<Triangle>();
         addPoint(x-newWidth,y,z-height);
         addPoint(x-newWidth,y,z+height);
         addPoint(x,y+newWidth,z+height);
@@ -46,12 +142,18 @@ public class SolidObject
     }
 
 
-
+//slopes
     public SolidObject(float x, float y, float z,String type)
     {
         this.type=type;
         position = new Vector3(x,y,z);
-        points=new ArrayList<Vector3>();
+        points = new ArrayList<Vector3>();
+        planes=new ArrayList<Triangle>();
+    }
+
+    public void addPlane(Vector3 point1,Vector3 point2, Vector3 point3, ArrayList<Triangle> area)
+    {
+        area.add(new Triangle(point1,point2,point3));
     }
 
     public void addPoint(float x, float y, float z)
@@ -62,6 +164,11 @@ public class SolidObject
     public ArrayList<Vector3> getPoints()
     {
         return points;
+    }
+
+    public ArrayList<Triangle> getPlanes()
+    {
+        return planes;
     }
 
     public Vector3 getPosition()

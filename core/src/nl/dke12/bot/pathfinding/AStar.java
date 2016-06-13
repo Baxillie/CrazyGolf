@@ -7,107 +7,185 @@ import java.util.*;
  */
 public class AStar
 {
-    public int getScore (HashMap<MapNode, Integer> scores, MapNode node)
+    private Grid grid;
+    private Node startNode;
+    private Node endNode;
+    private PriorityQueue<Node> opened;
+    private PriorityQueue<Node> closed;
+    private final Comparator<Node> COMPARATOR = new Comparator()
     {
-        if (!scores.containsKey(node))
-            scores.put(node, Integer.MAX_VALUE);
+        @Override
+        public int compare(Object o1, Object o2)
+        {
+            int a = ((Node) o1).getFitness();
+            int b = ((Node) o2).getFitness();
 
-        return scores.get(node);
+            if(a == b)
+            {
+                return 0;
+            }
+            else if(a > b)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    };
+
+    public AStar(Grid grid)
+    {
+        this.grid = grid;
+        this.endNode = grid.getEndNode();
+        this.startNode = grid.getStartNode();
     }
 
-    public ArrayList<MapNode> calculatePath(MapGraph mapgraph) throws PathNotFoundException
+    public void setFitnesses()
     {
-        MapNode beginNode = mapgraph.getStartNode();
-        MapNode endNode = mapgraph.getGoalNode();
-        HashMap<MapNode, Integer> fScores = new HashMap<>();
-        HashMap<MapNode, MapNode> path = new HashMap<>();
-        HashMap<MapNode, Integer> gScores = new HashMap<>();
-
-
-        final Comparator<MapNode> comparator = new Comparator<MapNode>()
+        Node currentNode;
+        for(int i =0; i < grid.getWidth(); i++)
         {
-            @Override
-            public int compare(MapNode o1, MapNode o2)
+            for(int j = 0; j < grid.getHeight(); j++)
             {
-                int a = getScore(fScores, o1);
-                int b = getScore(fScores, o2);
-
-                if(a < b)
-                    return -1;
-                else if (a > b)
-                    return 1;
-                else
-                    return 0;
+                currentNode = grid.getNode(i,j);
+                currentNode.distanceCost = (Math.abs(grid.endNodeX - i) + Math.abs(grid.endNodeY - j));
+                currentNode.stepCost = Integer.MAX_VALUE / 2; //infinite
             }
-        };
+        }
+    }
 
-        PriorityQueue<MapNode> opened = new PriorityQueue<>(comparator);
-        opened.add(beginNode);
-        gScores.put(beginNode, 0);
-        fScores.put(beginNode, mapgraph.heuristicDistance(beginNode, endNode));
+    public ArrayList<Node> calculatePath() throws PathNotFoundException
+    {
+        System.out.printf("Beginning is at x: %d y: %d%n", startNode.x, startNode.y);
+        System.out.printf("End is at x: %d y: %d%n", endNode.x, endNode.y);
 
-        PriorityQueue<MapNode> closed = new PriorityQueue<>(comparator);
+        setFitnesses();
+        /*opened = new PriorityQueue<>(COMPARATOR);
+        closed = new PriorityQueue<Node>(COMPARATOR);*/
+        opened.add(startNode);
+        boolean targetFound = false;
 
-        while(!opened.isEmpty())
+//        HashMap<Node, Node> nodeCameFrom = new HashMap<>();
+//        ageDatabase.put("jenny", 2);
+//        ageDatabase.put("vinc", 3);
+//        for(String i: ageDatabase.keySet())
+//        {
+//            ageDatabase.get(i);
+//        }
+
+        startNode.accumulativeStepCost = 0;
+        int accumalitiveStepCost = 0;
+        while(!opened.isEmpty() && !targetFound)
         {
-            MapNode currentNode = opened.poll();
+            Node currentNode = opened.poll();
+          //  System.out.printf("considering node at x:%d y:%d\n", currentNode.x, currentNode.y);
             if(currentNode.equals(endNode))
             {
-                return constructPath(path, endNode);
+                targetFound = true;
+                continue;
             }
-
             closed.add(currentNode);
 
-            currentNode.fullInformation();
-
-            for(MapNode neighbour : currentNode.getNeighbours())
-            {
-                if(closed.contains(neighbour))
+            Stack<Node> neighbours = getNeighboursOfNode(currentNode);
+        //    System.out.println("Starting to look at neighbours:");
+            while(!neighbours.isEmpty()) {
+                Node neighbouringNode = neighbours.pop();
+                //System.out.printf("considering neighbour at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
+                if (closed.contains(neighbouringNode)) {
+                    continue; //already considered this neighbour
+                }
+                int tentiveStepCost = currentNode.accumulativeStepCost + accumalitiveStepCost;
+                if (!opened.contains(neighbouringNode)) {
+                    opened.add(neighbouringNode);
+                }
+                else if (tentiveStepCost >= neighbouringNode.stepCost) //not better than the current one
                 {
                     continue;
                 }
+                else // found new best node
+                {
 
-                int tentativeGScore = Integer.MAX_VALUE;
+               //     System.out.println("setting parent");
+                    currentNode.parent = neighbouringNode;
+                    neighbouringNode.stepCost = tentiveStepCost;
+                    System.out.printf("node at x:%d y:%d\n", currentNode.x, currentNode.y);
+                    System.out.printf("parent at x:%d y:%d\n", neighbouringNode.x, neighbouringNode.y);
 
-                try
-                {
-                    tentativeGScore = getScore(gScores, currentNode) + neighbour.getTravelCostToNeighbour(currentNode);
                 }
-                catch (MapNode.NeighbourException e)
-                {
-                    System.out.println("we fucked the neighbours up");
-                    e.printStackTrace();
-                }
-
-                if(!opened.contains(neighbour)) //discover new node
-                {
-                    opened.add(neighbour);
-                }
-                if (tentativeGScore >= getScore(gScores, neighbour)) //not better than the current one
-                {
-                    continue;
-                }
-                path.put(neighbour, currentNode);
-                gScores.put(neighbour, tentativeGScore);
-                fScores.put(neighbour, getScore(gScores,neighbour)+ mapgraph.heuristicDistance(neighbour, endNode));
             }
         }
-        System.out.println("opened is empty");
-        throw new PathNotFoundException();
+
+        if(targetFound)
+        {
+            return constructPath(endNode);
+        }
+        else
+        {
+            throw new PathNotFoundException();
+        }
     }
 
-    private ArrayList<MapNode> constructPath(HashMap<MapNode, MapNode> path, MapNode endNode)
+    private ArrayList<Node> constructPath(Node endNode)
     {
-        ArrayList<MapNode> thePath = new ArrayList<>();
-        MapNode node = endNode;
-
-        while(node != null)
+        ArrayList<Node> path = new ArrayList<Node>();
+        Node currentNode = endNode;
+        path.add(currentNode);
+        System.out.printf("node's parent is :%s", currentNode.parent.toString());
+        while(currentNode.parent != null)
         {
-            thePath.add(node);
-            node = path.get(node);
+            Node nodeInPath = currentNode.parent;
+            path.add(nodeInPath);
+            currentNode = nodeInPath;
         }
+        return path;
+    }
 
-        return thePath;
+    public class PathNotFoundException extends Exception
+    {
+
+    }
+    /*
+    While there are still more possible next steps in the open list and we haven’t found the target:
+    Select the most likely next step (based on both the heuristic and path costs)
+    Remove it from the open list and add it to the closed
+    Consider each neighbor of the step. For each neighbor:
+    Calculate the path cost of reaching the neighbor
+    If the cost is less than the cost known for this location then remove it from the open or closed lists (since we’ve now found a better route)
+    If the location isn’t in either the open or closed list then record the costs for the location and add it to the open list (this means it’ll be considered in the next search). Record how we got to this location
+    The loop ends when we either find a route to the destination or we run out of steps. If a route is found we back track up the records of how we reached each location to determine the path
+    */
+
+    public Stack<Node> getNeighboursOfNode(Node node)
+    {
+        Stack<Node> neighbours = new Stack<Node>();
+        for(int i = -1 ; i <= 1; i++)
+        {
+            for(int j = -1; j <= 1; j++)
+            {
+                try
+                {
+                    if(i == 0 && j == 0)
+                    {
+                        continue;
+                    }
+                    Node potentialNeighbour = grid.getNode(node.x + i, node.y +j);
+                    if(potentialNeighbour.walkable)
+                    {
+                        neighbours.add(potentialNeighbour);
+                    }
+                    else
+                    {
+                       // System.out.printf("cant add node at x:%d y:%d because not walkable\n",
+                         //       potentialNeighbour.x, potentialNeighbour.y);;
+                    }
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {}
+            }
+        }
+        return neighbours;
     }
 }
 
