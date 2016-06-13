@@ -41,6 +41,8 @@ public class SolidObject
         {
             planes4=new ArrayList<Triangle>();
         }
+        if(type!="hole")
+        {
         addPoint(x-width,y-depth,z-height);
         addPoint(x-width,y-depth,z+height);
         addPoint(x-width,y+depth,z+height);
@@ -59,6 +61,43 @@ public class SolidObject
         addPlane(points.get(1),points.get(5),points.get(6),planes);
         addPlane(points.get(4),points.get(5),points.get(6),planes);
         addPlane(points.get(4),points.get(6),points.get(7),planes);
+        }
+        else
+        {
+            addPoint(x-width,y-depth,z-height);
+            addPoint(x-width,y-depth,z+height);
+            addPoint(x-width,y+depth,z+height);
+            addPoint(x-width,y+depth,z-height);
+            addPoint(x+width,y+depth,z-height);
+            addPoint(x+width,y+depth,z+height);
+            addPoint(x+width,y-depth,z+height);
+            addPoint(x+width,y-depth,z-height);
+
+            addPoint(x-width/3,y-depth/3,z+height);
+            addPoint(x-width/3,y+depth/3,z+height);
+            addPoint(x+width/3,y-depth/3,z+height);
+            addPoint(x+width/3,y+depth/3,z+height);
+            addPlane(points.get(0),points.get(1),points.get(2),planes);
+            addPlane(points.get(0),points.get(2),points.get(3),planes);
+            addPlane(points.get(0),points.get(1),points.get(6),planes);
+            addPlane(points.get(0),points.get(6),points.get(7),planes);
+            addPlane(points.get(2),points.get(3),points.get(4),planes);
+            addPlane(points.get(2),points.get(4),points.get(5),planes);
+            //addPlane(points.get(1),points.get(2),points.get(5),planes);
+            //addPlane(points.get(1),points.get(5),points.get(6),planes);
+            addPlane(points.get(4),points.get(5),points.get(6),planes);
+            addPlane(points.get(4),points.get(6),points.get(7),planes);
+
+            addPlane(points.get(1),points.get(8),points.get(2),planes);
+            addPlane(points.get(1),points.get(8),points.get(10),planes);
+            addPlane(points.get(1),points.get(10),points.get(6),planes);
+            addPlane(points.get(10),points.get(6),points.get(11),planes);
+            addPlane(points.get(5),points.get(6),points.get(11),planes);
+            addPlane(points.get(5),points.get(11),points.get(9),planes);
+            addPlane(points.get(5),points.get(9),points.get(2),planes);
+            addPlane(points.get(2),points.get(9),points.get(8),planes);
+
+        }
         /*addPlane(points.get(0),points.get(3),points.get(4),planes);
         addPlane(points.get(0),points.get(4),points.get(7),planes);*/
 

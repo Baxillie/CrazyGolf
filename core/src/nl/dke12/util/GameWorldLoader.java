@@ -222,7 +222,7 @@ public class GameWorldLoader
         }
         if (model == wallModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,8f, "wall"));
+            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,8.5f, "wall"));
 
             modelInstance3.transform.scale(1f, 1f, 1f);
             mapOfWorld.add(new InstanceModel(modelInstance3, "wall"));
@@ -235,7 +235,7 @@ public class GameWorldLoader
         }
         if (model == holeModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-9.3f, 4f,4f,4f, "hole"));
+            solidObjects.add(new SolidObject(x,y,z-8.1f, 4f,4f,4f, "hole"));
             mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
         }
         if (model == slopeModel)
@@ -243,13 +243,19 @@ public class GameWorldLoader
             SolidObject sloper = new SolidObject(x,y,z-9.2f, "slope");
             solidObjects.add(sloper);
 
-            sloper.addPoint(x-4,y-4,z-3.3f);
-            sloper.addPoint(x-4,y+4,z-5.3f);
-            sloper.addPoint(x+4,y-4,z-3.3f);
-            sloper.addPoint(x+4,y+4,z-5.3f);
+            sloper.addPoint(x-4,y-4,z-2.5f);
+            sloper.addPoint(x-4,y+4,z-4.1f);
+            sloper.addPoint(x+4,y-4,z-2.5f);
+            sloper.addPoint(x+4,y+4,z-4.1f);
+            sloper.addPoint(x+4,y-4,z-4.1f);
+            sloper.addPoint(x-4,y-4,z-4.1f);
 
             sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(3), sloper.getPoints().get(0),sloper.getPlanes());
             sloper.addPlane(sloper.getPoints().get(0), sloper.getPoints().get(2), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(5), sloper.getPoints().get(2),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(5), sloper.getPoints().get(5), sloper.getPoints().get(0),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(2), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(5), sloper.getPoints().get(0), sloper.getPoints().get(2),sloper.getPlanes());
 
 
 
@@ -261,13 +267,19 @@ public class GameWorldLoader
             SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeL");
             solidObjects.add(sloper);
 
-            sloper.addPoint(x-4,y-4,z-3.3f);
-            sloper.addPoint(x-4,y+4,z-3.3f);
-            sloper.addPoint(x+4,y-4,z-5.3f);
-            sloper.addPoint(x+4,y+4,z-5.3f);
+            sloper.addPoint(x-4,y-4,z-2.5f);
+            sloper.addPoint(x-4,y+4,z-2.5f);
+            sloper.addPoint(x+4,y-4,z-4.1f);
+            sloper.addPoint(x+4,y+4,z-4.1f);
+            sloper.addPoint(x-4,y-4,z-4.1f);
+            sloper.addPoint(x-4,y+4,z-4.1f);
 
             sloper.addPlane(sloper.getPoints().get(2), sloper.getPoints().get(3), sloper.getPoints().get(0),sloper.getPlanes());
             sloper.addPlane(sloper.getPoints().get(0), sloper.getPoints().get(1), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(0), sloper.getPoints().get(4), sloper.getPoints().get(5),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(0), sloper.getPoints().get(5),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(0), sloper.getPoints().get(2),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(5), sloper.getPoints().get(1), sloper.getPoints().get(3),sloper.getPlanes());
 
 
 
@@ -280,13 +292,19 @@ public class GameWorldLoader
             SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeU");
             solidObjects.add(sloper);
 
-            sloper.addPoint(x-4,y-4,z-5.3f);
-            sloper.addPoint(x-4,y+4,z-3.3f);
-            sloper.addPoint(x+4,y-4,z-5.3f);
-            sloper.addPoint(x+4,y+4,z-3.3f);
+            sloper.addPoint(x-4,y-4,z-4.1f);
+            sloper.addPoint(x-4,y+4,z-2.5f);
+            sloper.addPoint(x+4,y-4,z-4.1f);
+            sloper.addPoint(x+4,y+4,z-2.5f);
+            sloper.addPoint(x+4,y+4,z-4.1f);
+            sloper.addPoint(x-4,y+4,z-4.1f);
 
             sloper.addPlane(sloper.getPoints().get(0), sloper.getPoints().get(2), sloper.getPoints().get(1),sloper.getPlanes());
             sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(2), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(5), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(3), sloper.getPoints().get(5),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(3), sloper.getPoints().get(2),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(5), sloper.getPoints().get(1), sloper.getPoints().get(0),sloper.getPlanes());
 
 
 
@@ -298,13 +316,19 @@ public class GameWorldLoader
             SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeR");
             solidObjects.add(sloper);
 
-            sloper.addPoint(x-4,y-4,z-5.3f);
-            sloper.addPoint(x-4,y+4,z-5.3f);
-            sloper.addPoint(x+4,y-4,z-3.3f);
-            sloper.addPoint(x+4,y+4,z-3.3f);
+            sloper.addPoint(x-4,y-4,z-4.1f);
+            sloper.addPoint(x-4,y+4,z-4.1f);
+            sloper.addPoint(x+4,y-4,z-2.5f);
+            sloper.addPoint(x+4,y+4,z-2.5f);
+            sloper.addPoint(x+4,y+4,z-4.1f);
+            sloper.addPoint(x+4,y-4,z-4.1f);
 
             sloper.addPlane(sloper.getPoints().get(0), sloper.getPoints().get(1), sloper.getPoints().get(2),sloper.getPlanes());
             sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(2), sloper.getPoints().get(3),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(3), sloper.getPoints().get(4), sloper.getPoints().get(5),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(1), sloper.getPoints().get(3), sloper.getPoints().get(5),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(4), sloper.getPoints().get(3), sloper.getPoints().get(1),sloper.getPlanes());
+            sloper.addPlane(sloper.getPoints().get(5), sloper.getPoints().get(2), sloper.getPoints().get(0),sloper.getPlanes());
 
 
 

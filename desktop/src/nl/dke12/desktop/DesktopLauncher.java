@@ -8,7 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.title = "World of Woods";
-		config.foregroundFPS = 30;
+		config.foregroundFPS = 60;
 
 		StateController stateController = new StateController();
 		new LwjglApplication(stateController, config);

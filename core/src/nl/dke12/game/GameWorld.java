@@ -136,13 +136,13 @@ public class GameWorld
         {
             if (physics.bounceVector != null)
             {
-                if(physics.bounceVector.z > 0.08)
+                /*if(physics.bounceVector.z > 0.08)
                 {
                     //physics.gravit = false;
                     ball.direction.set(physics.bounceVector);
                 }
                 else
-                {
+                {*/
                     //we should not be setting the gravity here, but oh well
                     //physics.gravit = false;
                     /*ball.direction.x=physics.bounceVector.x;
@@ -151,7 +151,7 @@ public class GameWorld
 
                     ball.direction.z=0;*/
                     ball.direction.set(physics.bounceVector);
-                }
+                //}
             }
         }
         else
