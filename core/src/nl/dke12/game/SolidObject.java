@@ -18,11 +18,20 @@ public class SolidObject
     private Vector3 position;
     private String type;
 
+    //store width, depth and height (x, y and z axis, respectifly)
+    private float width;
+    private float depth;
+    private float height;
 
     public SolidObject(float x, float y, float z, float width, float depth, float height, String type)
     {
         position = new Vector3(x,y,z);
         this.type = type;
+
+        this.width = width;
+        this.depth = depth;
+        this.height = height;
+
         points=new ArrayList<Vector3>();
         planes=new ArrayList<Triangle>();
         if(planes1==null)
@@ -220,4 +229,16 @@ public class SolidObject
         return type;
     }
 
+    public float getWidth()
+    {
+        return width;
+    }
+
+    public float getDepth() {
+        return depth;
+    }
+
+    public float getHeight() {
+        return height;
+    }
 }
