@@ -12,6 +12,7 @@ public abstract class MapNode
     private static int nodeCounter = 0;
     private String identifier;
     private ArrayList<MapNode> neighbours;
+    protected int cost;
     private HashMap<MapNode, Integer> costs;
 
     public MapNode()
@@ -113,4 +114,13 @@ public abstract class MapNode
         return toString() + "\n" + neighboursToString();
     }
 
+    public int getCost()
+    {
+        return cost;
+    }
+
+    public void setCost(int cost)
+    {
+        this.cost = cost;
+    }
 }

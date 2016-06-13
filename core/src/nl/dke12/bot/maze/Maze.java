@@ -1,6 +1,7 @@
 package nl.dke12.bot.maze;
 
 import nl.dke12.bot.pathfinding.AStar;
+import nl.dke12.bot.pathfinding.MapNode;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,8 +35,8 @@ public class Maze{
     {
         this.width = width;
         this.height = height;
-        this.rng = new Random(System.currentTimeMillis());
-        //this.rng = new Random(100);
+        //this.rng = new Random(System.currentTimeMillis());
+        this.rng = new Random(100);
         initialiseBaseMaze();
         createPaths();
         makeWalls();
@@ -467,12 +468,21 @@ public class Maze{
         return height;
     }
 
-    public void printPath(ArrayList<MazeMapNode> path)
+    public void addPath(ArrayList<MapNode> path)
     {
-        for (MazeMapNode n : path)
+        for (MapNode node : path)
         {
+            MazeMapNode n = (MazeMapNode) node;
             maze[n.getY()][n.getX()] = pathChar;
         }
+    }
 
+    public void deletePath(ArrayList<MapNode> path)
+    {
+        for (MapNode node : path)
+        {
+            MazeMapNode n = (MazeMapNode) node;
+            maze[n.getY()][n.getX()] = openChar;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package nl.dke12.desktop;
+package nl.dke12.trash;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationListener;

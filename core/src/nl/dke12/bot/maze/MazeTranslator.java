@@ -1,10 +1,8 @@
 package nl.dke12.bot.maze;
 
-import nl.dke12.bot.maze.Maze;
 import nl.dke12.bot.pathfinding.MapGraph;
 import nl.dke12.bot.pathfinding.MapGraphFactory;
 import nl.dke12.bot.pathfinding.MapNode;
-import nl.dke12.bot.pathfinding.Node;
 
 import java.util.ArrayList;
 
@@ -81,7 +79,14 @@ public class MazeTranslator implements MapGraphFactory<Maze>
                         if ( charGrid[y + i][x + j] == Maze.openChar)
                         {
                             MapNode neighbouringNode = getMapNode(x + j, y + i, grid);
-                            node.giveNeighbour(neighbouringNode, 1);
+                            if(x == x+j || y == y+i) //not diagonal
+                            {
+                                node.giveNeighbour(neighbouringNode, 10);
+                            }
+                            else
+                            {
+                                node.giveNeighbour(neighbouringNode, 14);
+                            }
                         }
                     }
                     catch(ArrayIndexOutOfBoundsException e){} //handles getting nodes outside of grid, e.g a node at a wall

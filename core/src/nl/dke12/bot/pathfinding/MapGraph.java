@@ -49,6 +49,11 @@ public class MapGraph {
         return toReturn;
     }
 
+    public ArrayList<MapNode> getGraph()
+    {
+        return graph;
+    }
+
     public void printFullInformation()
     {
         for(MapNode n : graph)
