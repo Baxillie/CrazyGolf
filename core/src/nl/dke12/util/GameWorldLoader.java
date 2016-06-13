@@ -222,7 +222,7 @@ public class GameWorldLoader
         }
         if (model == wallModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,4f, "wall"));
+            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,8f, "wall"));
 
             modelInstance3.transform.scale(1f, 1f, 1f);
             mapOfWorld.add(new InstanceModel(modelInstance3, "wall"));
