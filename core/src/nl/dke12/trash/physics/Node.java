@@ -1,4 +1,4 @@
-package nl.dke12.bot.pathfinding;
+package nl.dke12.trash.physics;
 
 /**
  * Created by Ajki on 07/06/2016.
