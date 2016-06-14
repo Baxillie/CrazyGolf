@@ -24,9 +24,9 @@ public class Maze{
     private char[][] maze; // b is beginning, e is exit, x is wall
     public static final char startChar = 'b';
     public static final char endChar   = 'e';
-    public static final char wallchar  = 'x';
+    public static final char wallchar  = 'X';
     public static final char openChar  = '-';
-    private final char pathChar = '*';
+    private       final char pathChar  = '.';
 
     //copy of maze to give when someone asks to prevent changes in actual maze
     private char[][] mazeCopy;
@@ -35,8 +35,8 @@ public class Maze{
     {
         this.width = width;
         this.height = height;
-        //this.rng = new Random(System.currentTimeMillis());
-        this.rng = new Random(100);
+        this.rng = new Random(System.currentTimeMillis());
+        //this.rng = new Random(100);
         initialiseBaseMaze();
         createPaths();
         makeWalls();

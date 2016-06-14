@@ -121,7 +121,7 @@ public class FloodFill
             potentialNeighbour.clear();
             int temp = neighbours.peek().cost;
 
-            while(neighbours.peek().cost == temp)
+            while(!neighbours.isEmpty() && neighbours.peek().cost == temp)
             {
                 potentialNeighbour.add(neighbours.poll());
             }
