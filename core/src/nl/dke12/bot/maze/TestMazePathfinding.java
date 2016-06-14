@@ -39,11 +39,11 @@ public class TestMazePathfinding {
 
             System.out.println();
             System.out.println("FloodFill");
-            ArrayList<MapNode> path2 = floodFill.calculatePath(mapGraph);
+            path = floodFill.calculatePath(mapGraph);
 
             System.out.println();
-            System.out.println(path2);
-            maze.addPath(path2);
+            System.out.println(path);
+            maze.addPath(path);
             maze.printMaze();
 
         }
