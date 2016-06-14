@@ -1,5 +1,6 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
@@ -28,11 +29,13 @@ public class Physics
     private Vector3 collisionPoint;
     private Float prevDist;
     private Vector3 lastPos;
+    private Vector3 otherBall;
+    private GameWorld gameWorld;
     private SolidObject closest;
     protected boolean gravit;
     private boolean printTriangles;
 
-    public Physics(ArrayList<SolidObject> obstacles, Ball ball)
+    public Physics(ArrayList<SolidObject> obstacles, Ball ball,GameWorld gameWorld)
     {
         this.ball = ball;
         this.obstacles = obstacles;
@@ -41,6 +44,7 @@ public class Physics
         planes2=new ArrayList<Triangle>();
         planes3=new ArrayList<Triangle>();
         planes4=new ArrayList<Triangle>();
+        this.gameWorld=gameWorld;
         for(int h = 0; h < obstacles.size(); h++)
         {
             if(obstacles.get(h).getPlanes()!=null)
@@ -123,12 +127,104 @@ public class Physics
     public boolean collides()
     {
         setGravit();
-        System.out.println("Grav"+gravit);
+        //System.out.println("Grav"+gravit);
         //float j = how far in the future to predict
         nextPosition = new Vector3(new Vector3(ball.position).add(ball.direction));
         //calculate the closest plane = 3 closest points that are part of the same model/obscacle
         prevDist=500f;
         boolean planeFound=false;
+
+        for(int h=0;h<obstacles.size();h++)
+        {
+            if((obstacles.get(h).getType()=="solidBall"&&ball.type=="ball2")||
+               (obstacles.get(h).getType()=="solidBall2"&&ball.type=="ball1"))
+            {
+                otherBall=obstacles.get(h).getPosition();
+                System.out.println(obstacles.get(h).getType()+" = "+otherBall);
+            }
+        }
+        if (otherBall!=null)
+        {
+            if(new Vector3(nextPosition).sub(otherBall).len()<0.4)
+            {
+                System.out.println("pos"+ball.position);
+                System.out.println("otherBall"+otherBall);
+                System.out.println("FUCK"+new Vector3(ball.position).sub(otherBall).len());
+                Vector3 centreLine = new Vector3(otherBall).sub(ball.position);
+                centreLine.scl(1/centreLine.len());
+
+                //check if normal is outward facing
+                    /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
+                    {
+                        centreLine.scl(-1);
+                    }*/
+
+                //normalLine = perpendicular to centreLine parallel to the direction
+                Vector3 normalLine = new Vector3();
+                //perpComponent = component of direction that is perpendicular to centreLine
+                float perpComponent = (new Vector3(ball.direction).dot(centreLine));
+                //System.out.println("comp"+perpComponent);
+                //paraComponent = component of direction that is parallel to centreLine
+                Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(perpComponent));
+                normalLine=new Vector3(ball.direction).sub(perpLine);
+                perpLine.scl(-1);
+
+                System.out.println("bounce"+this.bounceVector);
+                System.out.println("planeNormal"+perpLine);
+                System.out.println("planeDirection"+normalLine);
+                System.out.println("centreLine"+centreLine);
+
+                Vector3 oppositeBounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                oppositeBounce.z=-oppositeBounce.z;
+
+                if(ball.type=="ball1")
+                {
+                    gameWorld.pushBall("ball2",oppositeBounce.scl(-1));
+                }
+                if(ball.type=="ball2")
+                {
+                    gameWorld.pushBall("ball1",oppositeBounce.scl(-1));
+                }
+
+                /*if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {
+                    if (perpLine.len()>0.05)
+                    {
+                        perpLine.scl(0.5f);
+                    }
+                    else
+                    {
+                        //perpLine.z=0;
+                        setGravit();
+                    }
+                }
+                else
+                {
+                    if (perpLine.len()>0.05)
+                    {
+                        perpLine.scl(0.6f);
+                    }
+
+                }*/
+
+
+
+                //System.out.println("perp"+perpLine);
+                Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                /*if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {*/
+                    this.bounceVector = bounce.scl(0.8f);
+                    return true;
+                /*}
+                else
+                {
+                    this.bounceVector = bounce;//.scl(0.8f);
+                }*/
+            }
+        }
 
         //triangles = obstacles.get(0).getPlanes();
         /*planes1 = obstacles.get(0).planes1;
@@ -599,6 +695,23 @@ public class Physics
                 gravit=true;
             }
 
+        }
+    }
+
+    public void addSolidObject(SolidObject solidObject){
+        obstacles.add(solidObject);
+    }
+
+    public void updateSolidObject(SolidObject solidObject){
+        for(int h = 0; h < obstacles.size(); h++){
+
+            if(obstacles.get(h).getType().equals(solidObject.getType())||obstacles.get(h).getType().equals(solidObject.getType())){
+                if(obstacles.get(h).getPosition()!=solidObject.getPosition())
+                {
+                    obstacles.remove(h);
+                    obstacles.add(solidObject);
+                }
+            }
         }
     }
 

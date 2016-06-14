@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import nl.dke12.game.GameWorld;
 import nl.dke12.game.Physics;
 import nl.dke12.util.Logger;
 
@@ -186,11 +187,29 @@ public class GameController
             pushBall2(shotVector);
             //physics2.updatePosition();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.G)) {
-            pushBall(new Vector3(shotVector.x, shotVector.y, 0));
-            //physics.updatePosition();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.G))
+        {
+            pushBall(new Vector3(shotVector));
+            GameWorld.player1Turn = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H))
+        {
+            pushBall2(new Vector3(shotVector));
+            GameWorld.player1Turn = false;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT))
+        {
+            System.out.println("should increase Height multiplier");
+            setHeightMultiplier(heightMultiplier + 0.1f);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT))
+        {
+            System.out.println("should decrease Height multiplier");
+            setHeightMultiplier(heightMultiplier - 0.1f);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.PLUS))
+        {
             if (physics.getBall().getPosition().z<5)
             {
                 pushBall(new Vector3(0,0,10));
