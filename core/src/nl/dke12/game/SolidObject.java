@@ -82,10 +82,10 @@ public class SolidObject
             addPoint(x+width,y-depth,z+height);
             addPoint(x+width,y-depth,z-height);
 
-            addPoint(x-width/3,y-depth/3,z+height);
-            addPoint(x-width/3,y+depth/3,z+height);
-            addPoint(x+width/3,y-depth/3,z+height);
-            addPoint(x+width/3,y+depth/3,z+height);
+            addPoint(x-width/2,y-depth/2,z+height);
+            addPoint(x-width/2,y+depth/2,z+height);
+            addPoint(x+width/2,y-depth/2,z+height);
+            addPoint(x+width/2,y+depth/2,z+height);
             addPlane(points.get(0),points.get(1),points.get(2),planes);
             addPlane(points.get(0),points.get(2),points.get(3),planes);
             addPlane(points.get(0),points.get(1),points.get(6),planes);

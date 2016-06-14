@@ -106,10 +106,10 @@ public class Physics
         float yvect = ball.direction.y+ypush;
         float zvect = ball.direction.z+zpush;
         Vector3 dir = new Vector3(xvect/2,yvect/2,zvect/2);
-        if (dir.z>0)
-        {
+        //if (dir.z>0)
+        //{
             gravit = true;
-        }
+        //}
         ball.direction.set(dir);
     }
 
@@ -487,22 +487,37 @@ public class Physics
        // {
         if(plane!=null)
         {
-            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<0.85)
+            Vector3 friction = new Vector3(direction);
+            friction.scl(1/direction.len());
+            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<1.1)
             {
-                Vector3 friction = new Vector3(direction);
-                friction.scl(1/direction.len());
-                friction.scl(0.05f);
+
+                friction.scl(0.005f);
                 if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
                         plane.getPoints().get(0).z==plane.getPoints().get(2).z)
                 {
                     if(ball.direction.x>0||ball.direction.x<0)
                     {
                         ball.direction.x = ball.direction.x-friction.x;
+                        System.out.println("x friction");
                     }
                     if(ball.direction.y>0||ball.direction.y<0)
                     {
                         ball.direction.y = ball.direction.y-friction.y;
+                        System.out.println("y friction");
                     }
+                }
+            }
+            else
+            {
+                friction.scl(0.00001f);
+                if(ball.direction.x>0||ball.direction.x<0)
+                {
+                    ball.direction.x = ball.direction.x-friction.x;
+                }
+                if(ball.direction.y>0||ball.direction.y<0)
+                {
+                    ball.direction.y = ball.direction.y-friction.y;
                 }
             }
         }
