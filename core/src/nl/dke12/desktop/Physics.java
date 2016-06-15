@@ -1,4 +1,4 @@
-package nl.dke12.trash;
+package nl.dke12.desktop;
 
 /**
  *  Actual physics of the game

@@ -1,4 +1,4 @@
-package nl.dke12.trash;
+package nl.dke12.desktop;
 
 /**
  * Created by Ajki on 07/06/2016.

@@ -1,4 +1,4 @@
-package nl.dke12.trash.physics;
+package nl.dke12.desktop.physics;
 
 /**
  * Created by baxie on 15-4-16.

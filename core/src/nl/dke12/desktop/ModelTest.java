@@ -1,4 +1,4 @@
-package nl.dke12.trash;
+package nl.dke12.desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
