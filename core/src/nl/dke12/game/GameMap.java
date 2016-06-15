@@ -62,7 +62,9 @@ public class GameMap
      */
     private void preMakeGrid()
     {
-        int[][] grid = determineGridDimensions(); //calculates the grid dimensions
+        //calculates the grid dimensions
+        int[][] grid = determineGridDimensions();
+
     }
 
     /**
@@ -97,7 +99,7 @@ public class GameMap
             width = object.getWidth();       //x
             depth = object.getDepth();       //y
             position = object.getPosition();
-            Log.log(String.format("current object:\nwidth: %f\tdepth: %f\n", width, depth));
+            Log.log(String.format("current object %s:\nwidth: %f\tdepth: %f\n", object.getType(), width, depth));
             //determine if this object exceeds the current dimensions
             if((temp = position.x + width) > maxX)
             {

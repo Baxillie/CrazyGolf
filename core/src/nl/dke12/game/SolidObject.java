@@ -9,6 +9,19 @@ import java.util.ArrayList;
  */
 public class SolidObject
 {
+    //all states the solidObject can present
+    public final static String ball1="solidBall";
+    public final static String ball2="solidBall2";
+    public final static String floor="floor";
+    public final static String wall="wall";
+    public final static String windmill="windmill";
+    public final static String hole="hole";
+    public final static String slope="slope";
+    public final static String slopeL="slopeL";
+    public final static String slopeR="slopeR";
+    public final static String slopeU="slopeU";
+    private final String[] objectSet = {ball1, ball2, floor, wall, windmill, hole, slope, slopeL, slopeR, slopeU};
+
     private ArrayList<Vector3> points;
     private ArrayList<Triangle> planes;
     public ArrayList<Triangle> planes1;
@@ -23,8 +36,13 @@ public class SolidObject
     private float depth;
     private float height;
 
-    public SolidObject(float x, float y, float z, float width, float depth, float height, String type)
+    public SolidObject(float x, float y, float z, float width, float depth, float height, String type) throws NoSuchSolidObjectType
     {
+        if(!typeIsInList(type))
+        {
+            throw new NoSuchSolidObjectType("String type given in the SolidObject constructor is not Correct. Use the static strings");
+        }
+
         position = new Vector3(x,y,z);
         this.type = type;
 
@@ -172,8 +190,12 @@ public class SolidObject
         }
     }
 
-    public SolidObject(float x, float y, float z, float width, float depth, float height,boolean rotation, String type)
+    public SolidObject(float x, float y, float z, float width, float depth, float height,boolean rotation, String type)  throws NoSuchSolidObjectType
     {
+        if(!typeIsInList(type))
+        {
+            throw new NoSuchSolidObjectType("String type given in the SolidObject constructor is not Correct. Use the static strings");
+        }
         position = new Vector3(x,y,z);
         this.type = type;
         float newWidth =(float) Math.sqrt(width*width+depth*depth);
@@ -191,12 +213,28 @@ public class SolidObject
 
 
 //slopes
-    public SolidObject(float x, float y, float z,String type)
+    public SolidObject(float x, float y, float z,String type) throws NoSuchSolidObjectType
     {
+        if(!typeIsInList(type))
+        {
+            throw new NoSuchSolidObjectType("String type given in the SolidObject constructor is not Correct. Use the static strings");
+        }
         this.type=type;
         position = new Vector3(x,y,z);
         points = new ArrayList<Vector3>();
         planes=new ArrayList<Triangle>();
+    }
+
+    private boolean typeIsInList(String type)
+    {
+        for(String t : objectSet)
+        {
+            if(!type.equals(t))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void addPlane(Vector3 point1,Vector3 point2, Vector3 point3, ArrayList<Triangle> area)

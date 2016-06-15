@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.UBJsonReader;
 import nl.dke12.game.InstanceModel;
+import nl.dke12.game.NoSuchSolidObjectType;
 import nl.dke12.game.SolidObject;
 
 import java.io.File;
@@ -217,12 +218,20 @@ public class GameWorldLoader
 
         if (model == floorModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,4f, "floor"));
+            try {
+                solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,4f, "floor"));
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             mapOfWorld.add(new InstanceModel(modelInstance3, "floor"));
         }
         if (model == wallModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,8.5f, "wall"));
+            try {
+                solidObjects.add(new SolidObject(x,y,z-8.1f,4f,4f,8.5f, "wall"));
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
 
             modelInstance3.transform.scale(1f, 1f, 1f);
             mapOfWorld.add(new InstanceModel(modelInstance3, "wall"));
@@ -230,17 +239,30 @@ public class GameWorldLoader
         if (model == millModel)
         {
             modelInstance3.transform.rotate(1,0,0,180);
-            solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
+            try {
+                solidObjects.add(new SolidObject(x,y,z-6.5f,4f,4f,4f, "windmill"));
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             mapOfWorld.add(new InstanceModel(modelInstance3, "windmill"));
         }
         if (model == holeModel)
         {
-            solidObjects.add(new SolidObject(x,y,z-8.1f, 4f,4f,4f, "hole"));
+            try {
+                solidObjects.add(new SolidObject(x,y,z-8.1f, 4f,4f,4f, "hole"));
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             mapOfWorld.add(new InstanceModel(modelInstance3, "hole"));
         }
         if (model == slopeModel)
         {
-            SolidObject sloper = new SolidObject(x,y,z-9.2f, "slope");
+            SolidObject sloper = null;
+            try {
+                sloper = new SolidObject(x,y,z-9.2f, "slope");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             solidObjects.add(sloper);
 
             sloper.addPoint(x-4,y-4,z-2.5f);
@@ -264,7 +286,12 @@ public class GameWorldLoader
         }
         if (model == slopeModelL)
         {
-            SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeL");
+            SolidObject sloper = null;
+            try {
+                sloper = new SolidObject(x,y,z-9.3f, "slopeL");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             solidObjects.add(sloper);
 
             sloper.addPoint(x-4,y-4,z-2.5f);
@@ -289,7 +316,12 @@ public class GameWorldLoader
         }
         if (model == slopeModelU)
         {
-            SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeU");
+            SolidObject sloper = null;
+            try {
+                sloper = new SolidObject(x,y,z-9.3f, "slopeU");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             solidObjects.add(sloper);
 
             sloper.addPoint(x-4,y-4,z-4.1f);
@@ -313,7 +345,12 @@ public class GameWorldLoader
         }
         if (model == slopeModelR)
         {
-            SolidObject sloper = new SolidObject(x,y,z-9.3f, "slopeR");
+            SolidObject sloper = null;
+            try {
+                sloper = new SolidObject(x,y,z-9.3f, "slopeR");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
             solidObjects.add(sloper);
 
             sloper.addPoint(x-4,y-4,z-4.1f);

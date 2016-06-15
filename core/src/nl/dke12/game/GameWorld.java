@@ -90,9 +90,16 @@ public class GameWorld
     {
         if(multiplayer)
         {
-
-            solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
-            solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+            try {
+                solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
+            try {
+                solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                noSuchSolidObjectType.printStackTrace();
+            }
 
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
@@ -173,7 +180,11 @@ public class GameWorld
             //}
 
             if (multiplayer){
-                solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+                try {
+                    solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+                } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                    noSuchSolidObjectType.printStackTrace();
+                }
                 physics2.updateSolidObject(solidBall);
 
             }
@@ -182,7 +193,11 @@ public class GameWorld
             if(multiplayer){
 
 
-                solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+                try {
+                    solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+                } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                    noSuchSolidObjectType.printStackTrace();
+                }
                 physics.updateSolidObject(solidBall2);
 
             }
