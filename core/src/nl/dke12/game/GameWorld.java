@@ -27,6 +27,9 @@ public class GameWorld
     private boolean player1Turn;
     private Vector3 holePosition;
 
+    private SolidObject solidBall;
+    private SolidObject solidBall2;
+
     //for the bot to be able to read the golf course
     private GameMap map;
 
@@ -41,7 +44,7 @@ public class GameWorld
         this.solidObjects = worldLoader.getSolidObjects();
         holePosition = worldLoader.getHolePosition();
 
-        this.map = new GameMap(worldLoader);
+
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);

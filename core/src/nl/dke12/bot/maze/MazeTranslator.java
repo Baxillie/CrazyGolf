@@ -101,7 +101,7 @@ public class MazeTranslator implements MapGraphFactory<Maze>
 
     private ArrayList<MapNode> getArrayListOfAllNodes(MapNode[][] grid)
     {
-        ArrayList<MapNode> arrayList = new ArrayList<>();
+        ArrayList<MapNode> arrayList = new ArrayList<MapNode>();
         for(int i = 0; i < grid.length; i++)
         {
             for(int j = 0; j < grid[i].length; j++)

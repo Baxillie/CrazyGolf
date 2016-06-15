@@ -1,5 +1,6 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
@@ -28,11 +29,13 @@ public class Physics
     private Vector3 collisionPoint;
     private Float prevDist;
     private Vector3 lastPos;
+    private Vector3 otherBall;
+    private GameWorld gameWorld;
     private SolidObject closest;
     protected boolean gravit;
     private boolean printTriangles;
 
-    public Physics(ArrayList<SolidObject> obstacles, Ball ball)
+    public Physics(ArrayList<SolidObject> obstacles, Ball ball,GameWorld gameWorld)
     {
         this.ball = ball;
         this.obstacles = obstacles;
@@ -41,6 +44,7 @@ public class Physics
         planes2=new ArrayList<Triangle>();
         planes3=new ArrayList<Triangle>();
         planes4=new ArrayList<Triangle>();
+        this.gameWorld=gameWorld;
         for(int h = 0; h < obstacles.size(); h++)
         {
             if(obstacles.get(h).getPlanes()!=null)
@@ -106,10 +110,10 @@ public class Physics
         float yvect = ball.direction.y+ypush;
         float zvect = ball.direction.z+zpush;
         Vector3 dir = new Vector3(xvect/2,yvect/2,zvect/2);
-        if (dir.z>0)
-        {
+        //if (dir.z>0)
+        //{
             gravit = true;
-        }
+        //}
         ball.direction.set(dir);
     }
 
@@ -122,11 +126,105 @@ public class Physics
 
     public boolean collides()
     {
+        setGravit();
+        //System.out.println("Grav"+gravit);
         //float j = how far in the future to predict
         nextPosition = new Vector3(new Vector3(ball.position).add(ball.direction));
         //calculate the closest plane = 3 closest points that are part of the same model/obscacle
         prevDist=500f;
         boolean planeFound=false;
+
+        for(int h=0;h<obstacles.size();h++)
+        {
+            if((obstacles.get(h).getType()=="solidBall"&&ball.type=="ball2")||
+               (obstacles.get(h).getType()=="solidBall2"&&ball.type=="ball1"))
+            {
+                otherBall=obstacles.get(h).getPosition();
+                System.out.println(obstacles.get(h).getType()+" = "+otherBall);
+            }
+        }
+        if (otherBall!=null)
+        {
+            if(new Vector3(nextPosition).sub(otherBall).len()<0.4)
+            {
+                System.out.println("pos"+ball.position);
+                System.out.println("otherBall"+otherBall);
+                System.out.println("FUCK"+new Vector3(ball.position).sub(otherBall).len());
+                Vector3 centreLine = new Vector3(otherBall).sub(ball.position);
+                centreLine.scl(1/centreLine.len());
+
+                //check if normal is outward facing
+                    /*if(new Vector3(planePos).sub(nextPosition).len()<(new Vector3(planePos).sub(new Vector3(nextPosition).add(cent)).len()))
+                    {
+                        centreLine.scl(-1);
+                    }*/
+
+                //normalLine = perpendicular to centreLine parallel to the direction
+                Vector3 normalLine = new Vector3();
+                //perpComponent = component of direction that is perpendicular to centreLine
+                float perpComponent = (new Vector3(ball.direction).dot(centreLine));
+                //System.out.println("comp"+perpComponent);
+                //paraComponent = component of direction that is parallel to centreLine
+                Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(perpComponent));
+                normalLine=new Vector3(ball.direction).sub(perpLine);
+                perpLine.scl(-1);
+
+                System.out.println("bounce"+this.bounceVector);
+                System.out.println("planeNormal"+perpLine);
+                System.out.println("planeDirection"+normalLine);
+                System.out.println("centreLine"+centreLine);
+
+                Vector3 oppositeBounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                oppositeBounce.z=-oppositeBounce.z;
+
+                if(ball.type=="ball1")
+                {
+                    gameWorld.pushBall("ball2",oppositeBounce.scl(-1));
+                }
+                if(ball.type=="ball2")
+                {
+                    gameWorld.pushBall("ball1",oppositeBounce.scl(-1));
+                }
+
+                /*if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {
+                    if (perpLine.len()>0.05)
+                    {
+                        perpLine.scl(0.5f);
+                    }
+                    else
+                    {
+                        //perpLine.z=0;
+                        setGravit();
+                    }
+                }
+                else
+                {
+                    if (perpLine.len()>0.05)
+                    {
+                        perpLine.scl(0.6f);
+                    }
+
+                }*/
+
+
+
+                //System.out.println("perp"+perpLine);
+                Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
+                /*if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {*/
+                    this.bounceVector = bounce.scl(0.8f);
+                    return true;
+                /*}
+                else
+                {
+                    this.bounceVector = bounce;//.scl(0.8f);
+                }*/
+            }
+        }
 
         //triangles = obstacles.get(0).getPlanes();
         /*planes1 = obstacles.get(0).planes1;
@@ -136,22 +234,22 @@ public class Physics
         if(ball.position.x<0&&ball.position.y<0)
         {
             triangles= planes4;
-            System.out.println("zone1");
+            //System.out.println("zone1");
         }
         if(ball.position.x<0&&ball.position.y>=0)
         {
             triangles= planes4;
-            System.out.println("zone2");
+            //System.out.println("zone2");
         }
         if(ball.position.x>=0&&ball.position.y<0)
         {
             triangles= planes4;
-            System.out.println("zone3");
+            //System.out.println("zone3");
         }
         if(ball.position.x>=0&&ball.position.y>=0)
         {
             triangles= planes4;
-            System.out.println("zone4");
+            //System.out.println("zone4");
         }
             if(triangles!=null)
             {
@@ -219,6 +317,7 @@ public class Physics
                                         planeFound=false;
                                         //prevColliPoint=colliPoint;
                                         this.collisionPoint = collPoint;
+
                                         prevDist=new Vector3(collisionPoint).sub(ball.position).len();
                                         /*System.out.println("checkplane "+newPlane.getPoints().get(0)+" "+newPlane.getPoints().get(1)+" "+newPlane.getPoints().get(2));
                                         System.out.println("check dist "+new Vector3(newPlanePos).sub(ball.position).len());
@@ -228,7 +327,17 @@ public class Physics
                                         System.out.println("new"+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
                                         System.out.println("col"+collisionPoint);
                                     }
+                                    if(new Vector3(collPoint).sub(ball.position).len() == prevDist)
+                                    {
+                                        if (newPlane.closestPoint(ball.position).sub(ball.position).len()<plane.closestPoint(ball.position).sub(ball.position).len())
+                                        {
+                                            plane = newPlane;
+                                            counter=0;
+                                            this.collisionPoint = collPoint;
 
+                                            prevDist=new Vector3(collisionPoint).sub(ball.position).len();
+                                        }
+                                    }
                                     else
                                     {
                                         if(counter<triangles.size())
@@ -239,8 +348,8 @@ public class Physics
                                         {
                                             planeFound=true;
                                         }
-                                        System.out.println("Old Dist"+prevDist);
-                                        System.out.println("Further Dist"+new Vector3(collPoint).sub(ball.position).len());
+                                        /*System.out.println("Old Dist"+prevDist);
+                                        System.out.println("Further Dist"+new Vector3(collPoint).sub(ball.position).len());*/
                                     }
                                 /*}
                                 else
@@ -326,12 +435,13 @@ public class Physics
 
             if(!(collis&&colliding))
             {
-                System.out.println("no hit "+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
+                /*System.out.println("no hit "+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
                 System.out.println("direct "+ball.direction);
                 System.out.println("positi "+ball.position);
                 System.out.println("collis"+collis);
                 System.out.println("colliding"+colliding);
                 System.out.println("collipoint"+colliPoint);
+                System.out.println("gravit"+gravit);*/
             }
             if(collis&&colliding)
             {
@@ -340,7 +450,7 @@ public class Physics
                 System.out.println("positi "+ball.position);*/
             }
 
-            if(ball.position.z<-0.1)
+            if(ball.position.z<-0.10000038)
             {
 
                 System.out.println("LOOK HERE");
@@ -375,20 +485,51 @@ public class Physics
                     //paraComponent = component of direction that is parallel to centreLine
                     Vector3 perpLine = new Vector3(new Vector3(centreLine).scl(-perpComponent));
 
+                    if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                            plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                    {
+                        if (perpLine.len()>0.05)
+                        {
+                            perpLine.scl(0.5f);
+                        }
+                        else
+                        {
+                            //perpLine.z=0;
+                            setGravit();
+                        }
+                    }
+                    else
+                    {
+                        if (perpLine.len()>0.05)
+                        {
+                            perpLine.scl(0.6f);
+                        }
+
+                    }
+
                     Plane surf = new Plane(plane.getPoints().get(0),plane.getPoints().get(1),plane.getPoints().get(2));
 
                     //perpLine.scl(-1);
                     Vector3 paraLine = new Vector3(new Vector3(ball.direction).sub(perpLine));
                     Vector3 proj = new Vector3(ball.position);
-                    proj.sub(new Vector3(surf.getNormal().scl(new Vector3(ball.position).sub(plane.getPoints().get(0)).dot(surf.getNormal()))));
+                    proj.sub(new Vector3(surf.getNormal()).scl(new Vector3(ball.position).sub(plane.getPoints().get(0)).dot(surf.getNormal())));
                     Vector3 nextProj = new Vector3(nextPosition);
-                    nextProj.sub(new Vector3(surf.getNormal().scl(new Vector3(nextPosition).sub(plane.getPoints().get(0)).dot(surf.getNormal()))));
+                    //Vector3 surfNorm = new Vector3(surf.getNormal()).scl(-1);
+                    nextProj.sub(new Vector3(surf.getNormal()).scl(new Vector3(nextPosition).sub(plane.getPoints().get(0)).dot(surf.getNormal())));
                     nextProj.sub(proj);
 
                     //System.out.println("perp"+perpLine);
                     Vector3 bounce = new Vector3(new Vector3(perpLine).add(nextProj));
                     //Vector3 bounce = new Vector3(new Vector3(perpLine).add(normalLine));
-                    this.bounceVector = bounce.scl(0.8f);
+                    if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                            plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                    {
+                        this.bounceVector = bounce;//.scl(0.8f);
+                    }
+                    else
+                    {
+                        this.bounceVector = bounce;//.scl(0.8f);
+                    }
                     //this.bounceVector.set(0,0,0);
                     /*System.out.println("dir "+ball.direction);
                     System.out.println("pos "+ball.position);
@@ -404,7 +545,9 @@ public class Physics
                         System.out.println("bounce"+this.bounceVector);
                         System.out.println("planeNormal"+perpLine);
                         System.out.println("planeDirection"+nextProj);
+                        System.out.println("proj"+proj);
                         System.out.println("plane"+plane.getPoints().get(0)+plane.getPoints().get(1)+plane.getPoints().get(2));
+                        System.out.println("");
                     }
                     //System.out.println("updir"+bounceVector);
 
@@ -436,11 +579,44 @@ public class Physics
 
     public void updateVelocity(Vector3 direction)
     {
-        if(direction.len() > 0.08)
+        //if(direction.len() > 0.08)
+       // {
+        if(plane!=null)
         {
-            float friction = 0.98f;
-            ball.direction.x = ball.direction.x*friction;
-            ball.direction.y = ball.direction.y*friction;
+            Vector3 friction = new Vector3(direction);
+            friction.scl(1/direction.len());
+            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<1.1)
+            {
+
+                friction.scl(0.005f);
+                if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {
+                    if(ball.direction.x>0||ball.direction.x<0)
+                    {
+                        ball.direction.x = ball.direction.x-friction.x;
+                        System.out.println("x friction");
+                    }
+                    if(ball.direction.y>0||ball.direction.y<0)
+                    {
+                        ball.direction.y = ball.direction.y-friction.y;
+                        System.out.println("y friction");
+                    }
+                }
+            }
+            else
+            {
+                friction.scl(0.00001f);
+                if(ball.direction.x>0||ball.direction.x<0)
+                {
+                    ball.direction.x = ball.direction.x-friction.x;
+                }
+                if(ball.direction.y>0||ball.direction.y<0)
+                {
+                    ball.direction.y = ball.direction.y-friction.y;
+                }
+            }
+        }
             if (gravit)
             {
                 if (direction.z > 0.08f)
@@ -467,25 +643,75 @@ public class Physics
             }
             else
             {
+
+                /*if (direction.z <= 0.01 && direction.z >= -0.01)
+                {
+                    direction.z = 0;
+                }*/
                 direction.z=0;
                 //todo: set gravit to true???
             }
-        }
-        else
+        if (direction.x < 0.01 && direction.x > -0.01)
         {
-            if (direction.x < 0.081 && direction.x > -0.081)
-            {
-                direction.x = 0;
-            }
-            if (direction.y < 0.081 && direction.y > -0.081)
-            {
-                direction.y = 0;
-            }
-            if (direction.z <= 0.081 && direction.z >= -0.081)
-            {
-                direction.z = 0;
-            }
+            direction.x = 0;
+        }
+        if (direction.y < 0.01 && direction.y > -0.01)
+        {
+            direction.y = 0;
+        }
+    }
+        //else
+       // {
+
             //todo: or ball.stop();
+       // }
+
+
+    public void setGravit()
+    {
+        if(plane!=null)
+        {
+            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<0.85)
+            {
+                if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
+                plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                {
+                    if (ball.direction.z <= 0.05 && ball.direction.z >= -0.05)
+                    {
+                        gravit=false;
+                    }
+                    else
+                    {
+                        gravit=true;
+                    }
+                }
+                else
+                {
+                    gravit=true;
+                }
+            }
+            else
+            {
+                gravit=true;
+            }
+
+        }
+    }
+
+    public void addSolidObject(SolidObject solidObject){
+        obstacles.add(solidObject);
+    }
+
+    public void updateSolidObject(SolidObject solidObject){
+        for(int h = 0; h < obstacles.size(); h++){
+
+            if(obstacles.get(h).getType().equals(solidObject.getType())||obstacles.get(h).getType().equals(solidObject.getType())){
+                if(obstacles.get(h).getPosition()!=solidObject.getPosition())
+                {
+                    obstacles.remove(h);
+                    obstacles.add(solidObject);
+                }
+            }
         }
     }
 

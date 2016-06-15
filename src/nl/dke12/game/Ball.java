@@ -13,14 +13,12 @@ public class Ball
     protected Vector3 position;
     protected Vector3 direction;
     protected float radius;
-    protected String type;
 
-    public Ball(float x, float y, float z,String type)
+    public Ball(float x, float y, float z)
     {
         position = new Vector3(x,y,z);
         direction = new Vector3(0,0,0);
         this.radius = 0.5f;
-        this.type = type;
     }
 
     public Vector3 getPosition()
