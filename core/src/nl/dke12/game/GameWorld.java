@@ -273,6 +273,5 @@ public class GameWorld
 
     public void setTurn(boolean turn){
         player1Turn = turn;
-
     }
 }
