@@ -17,6 +17,7 @@ public class GameWorld
     private ArrayList<InstanceModel> instances;
     private ArrayList<InstanceModel> mapOfWorld;
     private boolean multiplayer;
+    private boolean first = true;
     private Ball ball;
     private Ball ball2;
     private GameWorldLoader worldLoader;
@@ -24,14 +25,11 @@ public class GameWorld
     private GameDisplay gameDisplay;
     private Physics physics;
     private Physics physics2;
-    private boolean player1Turn;
+    public static boolean player1Turn;
     private Vector3 holePosition;
 
     private SolidObject solidBall;
     private SolidObject solidBall2;
-
-    //for the bot to be able to read the golf course
-    private GameMap map;
 
     public GameWorld(boolean multiplayer, boolean isHumanPlayer)
     {
@@ -61,6 +59,15 @@ public class GameWorld
     {
         this.gameDisplay = display;
         gameDisplay.setInstances(instances, mapOfWorld);
+        if (multiplayer)
+        {
+            gameDisplay.updateBall(ball.position);
+            gameDisplay.updateBall2(ball2.position);
+        }
+        else
+        {
+            gameDisplay.updateBall(ball.position);
+        }
     }
 
     private void createController(boolean isHumanPlayer)
@@ -83,12 +90,21 @@ public class GameWorld
     {
         if(multiplayer)
         {
-            this.physics = new Physics(solidObjects, ball);
-            this.physics2 = new Physics(solidObjects, ball2);
+
+            solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+            solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+
+            this.physics = new Physics(solidObjects, ball, this);
+            physics.addSolidObject(solidBall2);
+            //gameDisplay.updateBall(ball.position);
+
+            this.physics2 = new Physics(solidObjects, ball2, this);
+            physics2.addSolidObject(solidBall);
+            //gameDisplay.updateBall2(ball2.position);
         }
         else
         {
-            this.physics = new Physics(solidObjects, ball);
+            this.physics = new Physics(solidObjects, ball, this);
         }
     }
 
@@ -96,12 +112,12 @@ public class GameWorld
     {
         if(multiplayer)
         {
-            this.ball = new Ball(0,0,0f);
-            this.ball2 = new Ball(0,0,0);
+            this.ball = new Ball(-0.5f, 0.1f, 0,"ball1");
+            this.ball2 = new Ball(0.5f, 0.1f, 0,"ball2");
         }
         else
         {
-            this.ball = new Ball(0,0,0f);
+            this.ball = new Ball(0,0,0f,"ball1");
         }
     }
 
@@ -124,7 +140,7 @@ public class GameWorld
        // if(ball.direction.isZero(0.001f))
             gameController.move();
 
-        if(player1Turn)
+        /*if(player1Turn)
         {
             updatePosition(physics,ball);
             if(multiplayer)
@@ -134,6 +150,57 @@ public class GameWorld
         {
             updatePosition(physics2, ball2);
             player1Turn = true;
+        }*/
+        if(!multiplayer){
+            updatePosition(physics,ball);
+        }
+
+        if(multiplayer){
+            if(first){
+                updatePosition(physics,ball);
+                updatePosition(physics2,ball2);
+                first = false;
+
+            }
+
+            //if(player1Turn){
+
+                updatePosition(physics,ball);
+            /*}
+            else{*/
+                updatePosition(physics2,ball2);
+
+            //}
+
+            if (multiplayer){
+                solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+                physics2.updateSolidObject(solidBall);
+
+            }
+
+
+            if(multiplayer){
+
+
+                solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+                physics.updateSolidObject(solidBall2);
+
+            }
+
+        }
+    }
+
+    public void pushBall(String ballName, Vector3 push)
+    {
+        if(ballName=="ball1")
+        {
+            push.scl(1.6f);
+            physics.push(push.x,push.y,push.z);
+        }
+        else
+        {
+            push.scl(1.6f);
+            physics2.push(push.x,push.y,push.z);
         }
     }
 
@@ -144,13 +211,13 @@ public class GameWorld
         {
             if (physics.bounceVector != null)
             {
-                if(physics.bounceVector.z > 0.08)
+                /*if(physics.bounceVector.z > 0.08)
                 {
                     //physics.gravit = false;
                     ball.direction.set(physics.bounceVector);
                 }
                 else
-                {
+                {*/
                     //we should not be setting the gravity here, but oh well
                     //physics.gravit = false;
                     /*ball.direction.x=physics.bounceVector.x;
@@ -159,7 +226,7 @@ public class GameWorld
 
                     ball.direction.z=0;*/
                     ball.direction.set(physics.bounceVector);
-                }
+                //}
             }
         }
         else
@@ -172,6 +239,16 @@ public class GameWorld
                 gameDisplay.updateBall2(ball.direction);
 
             physics.updateVelocity(ball.direction);
+        }
+    }
+
+    public static void togglePlayerTurn()
+    {
+        if(player1Turn){
+            player1Turn = false;
+        }
+        else{
+            player1Turn = true;
         }
     }
 
@@ -189,4 +266,10 @@ public class GameWorld
     {
         return holePosition;
     }
+
+    public boolean getTurn(){
+        return player1Turn;
+    }
+
+    public void setTurn(boolean turn){player1Turn = turn;}
 }
