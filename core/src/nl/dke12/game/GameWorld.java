@@ -271,7 +271,5 @@ public class GameWorld
         return player1Turn;
     }
 
-    public void setTurn(boolean turn){
-        player1Turn = turn;
-    }
+    public void setTurn(boolean turn){player1Turn = turn;}
 }
