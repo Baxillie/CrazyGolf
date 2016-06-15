@@ -74,49 +74,64 @@ public class GameMap
         SolidObject o = gameObject.get(0); Vector3 pos = o.getPosition();
 
         //largest  x and y found
-        float maxX = o.getWidth() / 2 - pos.x;
-        float maxY = o.getWidth() / 2 + pos.x;
+        float maxX = pos.x + o.getWidth();
+        float maxY = pos.y + o.getWidth();
         //smallest x and y found
-        float minX = o.getDepth() / 2 - pos.y;
-        float minY = o.getDepth() / 2 + pos.y;
+        float minX = pos.x - o.getDepth();
+        float minY = pos.y - o.getDepth();
+
+        //debug
+        Log.log(String.format("Initial variables: \n" +
+                "max X: %f\tmin X: %f\n" +
+                "max Y: %f\tmin Y: %f\n",
+                maxX, minX, maxY, minY));
+        Log.log("Total amount of objects: " + gameObject.size());
 
         //loop
         float width, depth;         //used in loop to store dimensions of every object
-        Vector3 position;           //these dimensions have to be divided by 2 from the center to get max and min
-        float temp;                 //center of object
+        Vector3 position;           //these dimensions do not have to be divided by 2 from the center to get max and min
+        float temp;                 //because the solidObject class already does that
         for(SolidObject object : gameObject)
         {
             //get data from object
-            width = object.getWidth() / 2;       //x
-            depth = object.getDepth() / 2;       //y
+            width = object.getWidth();       //x
+            depth = object.getDepth();       //y
             position = object.getPosition();
-
+            Log.log(String.format("current object:\nwidth: %f\tdepth: %f\n", width, depth));
             //determine if this object exceeds the current dimensions
             if((temp = position.x + width) > maxX)
             {
+                Log.log("new maxX: " + temp);
                 maxX = temp;
             }
             if((temp = position.x - width) < minX)
             {
+                Log.log("new minX: " + temp);
                 minX = temp;
             }
             if((temp = position.y + depth) > maxY)
             {
+                Log.log("new maxY: " + temp);
                 maxY = temp;
             }
             if((temp = position.y - depth) < minY)
             {
+                Log.log("new minY: " + temp);
                 minY = temp;
             }
         }
-
+        Log.log(String.format("final variables: \n" +
+                        "max X: %f\tmin X: %f\n" +
+                        "max Y: %f\tmin Y: %f\n",
+                maxX, minX, maxY, minY));
         //calculate actual grid size and return it
         float absoluteX = Math.abs(maxX - minX);
         float absoluteY = Math.abs(maxY - minY);
-
+        Log.log(String.format("absoluteX: %f\tabsoluteY: %f\n", absoluteX, absoluteY));
         int gridLength = Math.round(absoluteY);
         int gridWidth  = Math.round(absoluteX);
-
+        Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n",gridLength, gridWidth,
+                UNIT_TO_CELL_RATIO));
         return new int[gridLength * UNIT_TO_CELL_RATIO][gridWidth * UNIT_TO_CELL_RATIO];
     }
 
