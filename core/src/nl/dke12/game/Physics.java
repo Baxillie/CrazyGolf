@@ -551,16 +551,6 @@ public class Physics
                 }
             }
         }
-
-        if(wind!=null)
-        {
-            if(new Vector3(closestPlane.closestPoint(ball.position)).sub(ball.position).len()>1)
-            {
-                direction.add(wind);
-                System.out.println("wind"+wind);
-            }
-
-        }
             if (gravit)
             {
                 if (direction.z > 0.08f)
@@ -602,6 +592,11 @@ public class Physics
         if (direction.y < 0.01 && direction.y > -0.01)
         {
             direction.y = 0;
+        }
+        if (wind != null)
+        {
+            ball.direction.add(wind);
+            System.out.println("Wind"+ wind);
         }
     }
         //else

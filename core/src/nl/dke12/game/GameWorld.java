@@ -133,24 +133,22 @@ public class GameWorld
         }
     }
 
-    public Vector3 wind()
+    public static Vector3 wind()
     {
-        float x = (float) Math.random()*0.03f;
-        float y = (float) (Math.random()* -1 + 2)*0.03f;
-        float z = 0;
-
-        //float wStrenght = (float) Math.random()*0.01f;
-
         Vector3 windVec = new Vector3();
 
-        windVec.set(x,y,z);
+        windVec.x = 0f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.035f;
+        windVec.y = 0.1f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.02f;
+        windVec.z = 0;
 
-        //windVec = windVec.scl(1/windVec.len());
+//        float wStrenght = (float) Math.random()*0.01f;
+//
+         windVec.scl(1/windVec.len());
 
-        //windVec.scl(wStrenght);
+//        windVec.scl(wStrenght);
 
         return windVec;
-        //return new Vector3(0.2f,0,0);
+
 
     }
 
