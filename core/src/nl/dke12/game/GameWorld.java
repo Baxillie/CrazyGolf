@@ -135,13 +135,9 @@ public class GameWorld
 
     public Vector3 wind()
     {
-        /*float x = (float) Math.random() * 0.009f;
-        float y = (float) Math.random() * 0.009f;
-        x -= 0.0045f;
-        y -= 0.0045f;*/
+        float x = (float) Math.random()*0.03f;
+        float y = (float) (Math.random()* -1 + 2)*0.03f;
         float z = 0;
-        float x = 0.01f;
-        float y = 0;
 
         //float wStrenght = (float) Math.random()*0.01f;
 
