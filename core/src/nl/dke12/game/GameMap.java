@@ -35,7 +35,7 @@ public class GameMap
     /**
      * list of all obstacles (eg walls, floor, slopes) in the game world.
      */
-    private ArrayList<SolidObject> gameObject;
+    private ArrayList<SolidObject> gameObjects;
 
     /**
      * Creates a game map object which can translate the hole to the ai
@@ -48,7 +48,7 @@ public class GameMap
         //get information from the GameWorldLoader
         this.startPosition = loader.getStartPosition(); //currently just returns a new Vector at 0,0,0
         this.holePosition = loader.getHolePosition();
-        this.gameObject = loader.getSolidObjects();
+        this.gameObjects = loader.getSolidObjects();
 
         //calculate grid-based view of the golf course
         preMakeGrid();
@@ -63,17 +63,42 @@ public class GameMap
     private void preMakeGrid()
     {
         //calculates the grid dimensions
-        int[][] grid = determineGridDimensions();
+        float[] dimensions = determineGridDimensions();
+        float minX = dimensions[0];
+        float maxX = dimensions[1];
+        float minY = dimensions[2];
+        float maxY = dimensions[4];
 
+        float absoluteX = Math.abs(maxX - minX);
+        float absoluteY = Math.abs(maxY - minY);
+        Log.log(String.format("absoluteX: %f\tabsoluteY: %f\n", absoluteX, absoluteY));
+        int gridLength = Math.round(absoluteY);
+        int gridWidth  = Math.round(absoluteX);
+        Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n",gridLength, gridWidth,
+                UNIT_TO_CELL_RATIO));
+        int[][] grid =  new int[gridLength * UNIT_TO_CELL_RATIO][gridWidth * UNIT_TO_CELL_RATIO];
+
+        int cellLengthX = grid[0].length / (int) absoluteX;
+        int cellLengthY = grid.length / (int) absoluteY;
+
+        for(SolidObject object : gameObjects)
+        {
+            Vector3 pos = object.getPosition();
+
+            int x =  (int)(pos.x - minX) / cellLengthX;
+            int y =  (int)(pos.y - minY) / cellLengthY;
+            grid[y][x] =
+        }
     }
 
     /**
      * loops over all objects in the golf course to determine how large the grid has to be
      */
-    private int[][] determineGridDimensions()
+    private float[] determineGridDimensions()
     {
         //initialise max and min values
-        SolidObject o = gameObject.get(0); Vector3 pos = o.getPosition();
+        SolidObject o = gameObjects.get(0);
+        Vector3 pos = o.getPosition();
 
         //largest  x and y found
         float maxX = pos.x + o.getWidth();
@@ -87,13 +112,13 @@ public class GameMap
                 "max X: %f\tmin X: %f\n" +
                 "max Y: %f\tmin Y: %f\n",
                 maxX, minX, maxY, minY));
-        Log.log("Total amount of objects: " + gameObject.size());
+        Log.log("Total amount of objects: " + gameObjects.size());
 
         //loop
         float width, depth;         //used in loop to store dimensions of every object
         Vector3 position;           //these dimensions do not have to be divided by 2 from the center to get max and min
         float temp;                 //because the solidObject class already does that
-        for(SolidObject object : gameObject)
+        for(SolidObject object : gameObjects)
         {
             //get data from object
             width = object.getWidth();       //x
@@ -127,14 +152,7 @@ public class GameMap
                         "max Y: %f\tmin Y: %f\n",
                 maxX, minX, maxY, minY));
         //calculate actual grid size and return it
-        float absoluteX = Math.abs(maxX - minX);
-        float absoluteY = Math.abs(maxY - minY);
-        Log.log(String.format("absoluteX: %f\tabsoluteY: %f\n", absoluteX, absoluteY));
-        int gridLength = Math.round(absoluteY);
-        int gridWidth  = Math.round(absoluteX);
-        Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n",gridLength, gridWidth,
-                UNIT_TO_CELL_RATIO));
-        return new int[gridLength * UNIT_TO_CELL_RATIO][gridWidth * UNIT_TO_CELL_RATIO];
+        return new float[] {minX, maxX, minY, maxY};
     }
 
     /**
