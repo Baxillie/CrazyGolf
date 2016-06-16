@@ -75,13 +75,21 @@ public class GameWorld
         if(multiplayer)
         {
             this.gameController = new GameController(physics,physics2,false);
+            this.gameController.multiplayer = true;
         }
         else
         {
             if(isHumanPlayer)
+            {
                 this.gameController = new GameController(physics, true);
+            }
+
             else
+            {
                 this.gameController = new GameController(physics, false);
+            }
+
+            this.gameController.multiplayer = false;
         }
 
     }

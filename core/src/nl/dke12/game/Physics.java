@@ -1,6 +1,5 @@
 package nl.dke12.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
@@ -26,12 +25,13 @@ public class Physics
     private ArrayList<Triangle> planes4;
     protected Vector3 bounceVector;
     private Triangle plane;
-    private Vector3 collisionPoint;
+    private Vector3 collisionTriangle;
     private Float prevDist;
     private Vector3 lastPos;
     private Vector3 otherBall;
     private GameWorld gameWorld;
     private SolidObject closest;
+    private Triangle closestPlane;
     protected boolean gravit;
     private boolean printTriangles;
 
@@ -296,14 +296,14 @@ public class Physics
                             Vector3 collDist = new Vector3(ball.direction).scl(1/ball.direction.len());
                             collDist.scl(distance);
                             Vector3 collPoint = new Vector3(ball.position).add(collDist);
-                            this.collisionPoint = collPoint;*/
+                            this.collisionTriangle = collPoint;*/
 
                             Vector3 collPoint = new Vector3();
 
                             //Intersector sect = new Intersector();
                             boolean coll= inter.intersectSegmentPlane(ball.position,nextPosition,surf,collPoint);
                             boolean colliding = inter.isPointInTriangle(collPoint,newPlane.getPoints().get(0),newPlane.getPoints().get(1),newPlane.getPoints().get(2));
-                            //this.collisionPoint = collPoint;
+                            //this.collisionTriangle = collPoint;
 
                             if(coll&&colliding)
                             {
@@ -316,16 +316,16 @@ public class Physics
                                         counter=0;
                                         planeFound=false;
                                         //prevColliPoint=colliPoint;
-                                        this.collisionPoint = collPoint;
+                                        this.collisionTriangle = collPoint;
 
-                                        prevDist=new Vector3(collisionPoint).sub(ball.position).len();
+                                        prevDist=new Vector3(collisionTriangle).sub(ball.position).len();
                                         /*System.out.println("checkplane "+newPlane.getPoints().get(0)+" "+newPlane.getPoints().get(1)+" "+newPlane.getPoints().get(2));
                                         System.out.println("check dist "+new Vector3(newPlanePos).sub(ball.position).len());
                                         System.out.println("plane pos "+planePos);
                                         System.out.println("ew nplane pos "+newPlanePos);
                                         System.out.println("new plane");*/
                                         System.out.println("new"+plane.getPoints().get(0)+" "+plane.getPoints().get(1)+" "+plane.getPoints().get(2));
-                                        System.out.println("col"+collisionPoint);
+                                        System.out.println("col"+ collisionTriangle);
                                     }
                                     if(new Vector3(collPoint).sub(ball.position).len() == prevDist)
                                     {
@@ -333,9 +333,9 @@ public class Physics
                                         {
                                             plane = newPlane;
                                             counter=0;
-                                            this.collisionPoint = collPoint;
+                                            this.collisionTriangle = collPoint;
 
-                                            prevDist=new Vector3(collisionPoint).sub(ball.position).len();
+                                            prevDist=new Vector3(collisionTriangle).sub(ball.position).len();
                                         }
                                     }
                                     else
@@ -397,8 +397,8 @@ public class Physics
 
 
 
-        //set collisionPoint to the point of intersection with the direction & the closest plane
-        //collisionPoint = position.add(plane.getNormal().scl(plane.distance(nextPosition)));
+        //set collisionTriangle to the point of intersection with the direction & the closest plane
+        //collisionTriangle = position.add(plane.getNormal().scl(plane.distance(nextPosition)));
         //(don't forget to account for gravity and friction)
         if (plane!=null)
         {
@@ -581,23 +581,41 @@ public class Physics
     {
         //if(direction.len() > 0.08)
        // {
-        if(plane!=null)
+        if(triangles!=null)
+        {
+            for(int m = 0; m < triangles.size(); m++)
+            {
+                Triangle newTriangle= new Triangle(triangles.get(m).getPoints().get(0),triangles.get(m).getPoints().get(1),triangles.get(m).getPoints().get(2));
+                if(closestPlane!=null)
+                {
+                    if(newTriangle.closestPoint(ball.position).sub(ball.position).len()<closestPlane.closestPoint(ball.position).sub(ball.position).len())
+                    {
+                        closestPlane = newTriangle;
+                    }
+                }
+                else
+                {
+                    closestPlane = newTriangle;
+                }
+            }
+        }
+        if(closestPlane!=null)
         {
             Vector3 friction = new Vector3(direction);
             friction.scl(1/direction.len());
-            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<1.1)
+            if(new Vector3(closestPlane.closestPoint(ball.position)).sub(ball.position).len()<2)
             {
-
-                friction.scl(0.005f);
-                if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
-                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                float noise=(float)Math.random()*0.01f;
+                friction.scl(noise);
+                if(closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(1).z&&
+                        closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(2).z)
                 {
-                    if(ball.direction.x>0||ball.direction.x<0)
+                    if(ball.direction.x!=0)
                     {
                         ball.direction.x = ball.direction.x-friction.x;
                         System.out.println("x friction");
                     }
-                    if(ball.direction.y>0||ball.direction.y<0)
+                    if(ball.direction.y!=0)
                     {
                         ball.direction.y = ball.direction.y-friction.y;
                         System.out.println("y friction");
@@ -610,10 +628,13 @@ public class Physics
                 if(ball.direction.x>0||ball.direction.x<0)
                 {
                     ball.direction.x = ball.direction.x-friction.x;
+
+                    System.out.println("dist = "+new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len());
                 }
                 if(ball.direction.y>0||ball.direction.y<0)
                 {
                     ball.direction.y = ball.direction.y-friction.y;
+                    System.out.println("dist = "+new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len());
                 }
             }
         }
