@@ -40,7 +40,8 @@ public class SolidObject
     {
         if(!typeIsInList(type))
         {
-            throw new NoSuchSolidObjectType("String type given in the SolidObject constructor is not Correct. Use the static strings");
+            throw new NoSuchSolidObjectType("String type given (\"" + type + "\") in " +
+                    "the SolidObject constructor is not Correct. Use the static strings");
         }
 
         position = new Vector3(x,y,z);
@@ -229,12 +230,12 @@ public class SolidObject
     {
         for(String t : objectSet)
         {
-            if(!type.equals(t))
+            if(type.equals(t))
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void addPlane(Vector3 point1,Vector3 point2, Vector3 point3, ArrayList<Triangle> area)

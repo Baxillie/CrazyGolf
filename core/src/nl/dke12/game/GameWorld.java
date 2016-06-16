@@ -1,5 +1,6 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
@@ -28,6 +29,8 @@ public class GameWorld
     public static boolean player1Turn;
     private Vector3 holePosition;
 
+    private GameMap gameMap;
+
     private SolidObject solidBall;
     private SolidObject solidBall2;
 
@@ -42,7 +45,7 @@ public class GameWorld
         this.solidObjects = worldLoader.getSolidObjects();
         holePosition = worldLoader.getHolePosition();
 
-
+        GameMap gameMap = new GameMap(worldLoader);
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);

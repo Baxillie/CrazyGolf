@@ -1,1 +1,1 @@
-this directory should always consist
+this directory should always exist
