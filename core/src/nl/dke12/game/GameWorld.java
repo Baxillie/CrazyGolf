@@ -27,7 +27,7 @@ public class GameWorld
     private Physics physics2;
     public static boolean player1Turn;
     private Vector3 holePosition;
-
+    private Vector3 wind;
     private SolidObject solidBall;
     private SolidObject solidBall2;
 
@@ -46,6 +46,7 @@ public class GameWorld
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
+        this.wind = new Vector3(wind());
 
         createBalls();
         createPhysics();
@@ -104,15 +105,18 @@ public class GameWorld
 
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
+            physics.wind=this.wind;
             //gameDisplay.updateBall(ball.position);
 
             this.physics2 = new Physics(solidObjects, ball2, this);
             physics2.addSolidObject(solidBall);
+            physics2.wind=this.wind;
             //gameDisplay.updateBall2(ball2.position);
         }
         else
         {
             this.physics = new Physics(solidObjects, ball, this);
+            physics.wind=this.wind;
         }
     }
 
@@ -127,6 +131,31 @@ public class GameWorld
         {
             this.ball = new Ball(0,0,0f,"ball1");
         }
+    }
+
+    public Vector3 wind()
+    {
+        /*float x = (float) Math.random() * 0.009f;
+        float y = (float) Math.random() * 0.009f;
+        x -= 0.0045f;
+        y -= 0.0045f;*/
+        float z = 0;
+        float x = 0.01f;
+        float y = 0;
+
+        //float wStrenght = (float) Math.random()*0.01f;
+
+        Vector3 windVec = new Vector3();
+
+        windVec.set(x,y,z);
+
+        //windVec = windVec.scl(1/windVec.len());
+
+        //windVec.scl(wStrenght);
+
+        return windVec;
+        //return new Vector3(0.2f,0,0);
+
     }
 
     public boolean ballIsInHole()

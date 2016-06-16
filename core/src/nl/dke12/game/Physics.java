@@ -30,8 +30,9 @@ public class Physics
     private Float prevDist;
     private Vector3 lastPos;
     private Vector3 otherBall;
+    protected Vector3 wind;
     private GameWorld gameWorld;
-    //private SolidObject closest;
+    private Triangle closestPlane;
     protected boolean gravit;
     private boolean printTriangles;
 
@@ -574,23 +575,44 @@ public class Physics
     {
         //if(direction.len() > 0.08)
        // {
-        if(plane!=null)
+
+        if(triangles!=null)
+        {
+
+            for(int m = 0; m < triangles.size(); m++)
+            {
+                Triangle newTriangle= new Triangle(triangles.get(m).getPoints().get(0),triangles.get(m).getPoints().get(1),triangles.get(m).getPoints().get(2));
+                if(closestPlane!=null)
+                {
+                    if(newTriangle.closestPoint(ball.position).sub(ball.position).len()<closestPlane.closestPoint(ball.position).sub(ball.position).len())
+                    {
+                        closestPlane = newTriangle;
+                    }
+                }
+                else
+                {
+                    closestPlane = newTriangle;
+                }
+            }
+        }
+
+        if(closestPlane!=null)
         {
             Vector3 friction = new Vector3(direction);
             friction.scl(1/direction.len());
-            if(new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len()<1.1)
+            if(new Vector3(closestPlane.closestPoint(ball.position)).sub(ball.position).len()<1)
             {
-
-                friction.scl(0.005f);
-                if(plane.getPoints().get(0).z==plane.getPoints().get(1).z&&
-                        plane.getPoints().get(0).z==plane.getPoints().get(2).z)
+                float noise=(float)Math.random()*0.01f;
+                friction.scl(noise);
+                if(closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(1).z&&
+                        closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(2).z)
                 {
-                    if(ball.direction.x>0||ball.direction.x<0)
+                    if(ball.direction.x!=0)
                     {
                         ball.direction.x = ball.direction.x-friction.x;
                         System.out.println("x friction");
                     }
-                    if(ball.direction.y>0||ball.direction.y<0)
+                    if(ball.direction.y!=0)
                     {
                         ball.direction.y = ball.direction.y-friction.y;
                         System.out.println("y friction");
@@ -603,12 +625,25 @@ public class Physics
                 if(ball.direction.x>0||ball.direction.x<0)
                 {
                     ball.direction.x = ball.direction.x-friction.x;
+
+                    System.out.println("dist = "+new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len());
                 }
                 if(ball.direction.y>0||ball.direction.y<0)
                 {
                     ball.direction.y = ball.direction.y-friction.y;
+                    System.out.println("dist = "+new Vector3(plane.closestPoint(ball.position)).sub(ball.position).len());
                 }
             }
+        }
+
+        if(wind!=null)
+        {
+            /*if(new Vector3(closestPlane.closestPoint(ball.position)).sub(ball.position).len()>1)
+            {*/
+                direction.add(wind);
+                System.out.println("wind"+wind);
+            //}
+
         }
             if (gravit)
             {
@@ -713,23 +748,5 @@ public class Physics
         return this.ball;
     }
 
-    public Vector3 wind()
-    {
-        float x = (float) Math.random() * -1 + 2;
-        float y = (float) Math.random() * -1 + 2;
-        float z = 0;
 
-        float wStrenght = (float) Math.random()*0.01f;
-
-        Vector3 windVec = new Vector3();
-
-        windVec.set(x,y,z);
-
-        windVec = windVec.scl(1/windVec.len());
-
-        windVec.scl(wStrenght);
-
-        return windVec;
-
-    }
 }
