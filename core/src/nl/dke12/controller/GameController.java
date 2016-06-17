@@ -29,6 +29,8 @@ public class GameController
     private Label forceLabel;
     private Label heightLabel;
 
+    public boolean multiplayer;
+
     public GameController(Physics physics, boolean isHumanPlayer)
     {
         this.physics = physics;
@@ -192,11 +194,15 @@ public class GameController
             pushBall(new Vector3(shotVector));
             GameWorld.player1Turn = true;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.H))
+        if(multiplayer)
         {
-            pushBall2(new Vector3(shotVector));
-            GameWorld.player1Turn = false;
+            if (Gdx.input.isKeyJustPressed(Input.Keys.H))
+            {
+                pushBall2(new Vector3(shotVector));
+                GameWorld.player1Turn = false;
+            }
         }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT))
         {
             System.out.println("should increase Height multiplier");

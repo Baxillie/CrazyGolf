@@ -30,6 +30,7 @@ public class GameWorld
     private Vector3 holePosition;
     private GameMap gameMap;
 
+    private Vector3 wind;
     private SolidObject solidBall;
     private SolidObject solidBall2;
 
@@ -48,6 +49,7 @@ public class GameWorld
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
+        this.wind = new Vector3(wind());
 
         createBalls();
         createPhysics();
@@ -84,13 +86,21 @@ public class GameWorld
         if(multiplayer)
         {
             this.gameController = new GameController(physics,physics2,false);
+            this.gameController.multiplayer = true;
         }
         else
         {
             if(isHumanPlayer)
+            {
                 this.gameController = new GameController(physics, true);
+            }
+
             else
+            {
                 this.gameController = new GameController(physics, false);
+            }
+
+            this.gameController.multiplayer = false;
         }
 
     }
@@ -112,15 +122,18 @@ public class GameWorld
 
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
+            physics.wind=this.wind;
             //gameDisplay.updateBall(ball.position);
 
             this.physics2 = new Physics(solidObjects, ball2, this);
             physics2.addSolidObject(solidBall);
+            physics2.wind=this.wind;
             //gameDisplay.updateBall2(ball2.position);
         }
         else
         {
             this.physics = new Physics(solidObjects, ball, this);
+            physics.wind=this.wind;
         }
     }
 
@@ -135,6 +148,25 @@ public class GameWorld
         {
             this.ball = new Ball(0,0,0f,"ball1");
         }
+    }
+
+    public static Vector3 wind()
+    {
+        Vector3 windVec = new Vector3();
+
+        windVec.x = 0f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.035f;
+        windVec.y = 0.1f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.02f;
+        windVec.z = 0;
+
+//        float wStrenght = (float) Math.random()*0.01f;
+//
+         windVec.scl(1/windVec.len());
+
+//        windVec.scl(wStrenght);
+
+        return windVec;
+
+
     }
 
     public boolean ballIsInHole()
