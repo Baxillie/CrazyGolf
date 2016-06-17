@@ -28,7 +28,6 @@ public class GameWorld
     private Physics physics2;
     public static boolean player1Turn;
     private Vector3 holePosition;
-
     private GameMap gameMap;
 
     private SolidObject solidBall;
@@ -45,7 +44,7 @@ public class GameWorld
         this.solidObjects = worldLoader.getSolidObjects();
         holePosition = worldLoader.getHolePosition();
 
-        GameMap gameMap = new GameMap(worldLoader);
+        gameMap = new GameMap(worldLoader);
 
         //this.gameDisplay = new GameDisplay(multiplayer, this);
         //gameDisplay.setInstances(instances);
@@ -72,6 +71,13 @@ public class GameWorld
             gameDisplay.updateBall(ball.position);
         }
     }
+
+
+    public GameMap getGameMap()
+    {
+        return gameMap;
+    }
+
 
     private void createController(boolean isHumanPlayer)
     {

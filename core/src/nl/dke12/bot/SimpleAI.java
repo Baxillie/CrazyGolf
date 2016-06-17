@@ -6,10 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.sun.org.apache.xerces.internal.parsers.CachingParserPool;
 import com.sun.org.apache.xml.internal.serializer.utils.SystemIDResolver;
 import com.sun.org.omg.CORBA.ExcDescriptionSeqHelper;
+import nl.dke12.bot.pathfinding.*;
 import nl.dke12.controller.AIInputProcessor;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.GameWorld;
+import nl.dke12.util.Log;
 import nl.dke12.util.Logger;
+
+import java.util.ArrayList;
 
 /**
  * Created by nik on 5/20/16.
@@ -49,7 +53,25 @@ public class SimpleAI implements Runnable {
             e.printStackTrace();
         }
         loop = true;
+        testPathFinding();
         loop();
+    }
+
+    private void testPathFinding()
+    {
+        FloodFill astar = new FloodFill();
+
+        MapGraph mapGraph = gameWorld.getGameMap().getGridBasedMapGraph();
+        try
+        {
+            ArrayList<MapNode> list = astar.calculatePath(mapGraph);
+            logger.log("size of path:" + list.size());
+            logger.log(list.toString());
+        }
+        catch(PathNotFoundException e)
+        {
+            System.out.println("WE fucked this .... ");
+        }
     }
 
     private boolean ballStoppedMoving(float directionLength) {

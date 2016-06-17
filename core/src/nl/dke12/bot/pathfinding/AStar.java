@@ -55,6 +55,11 @@ public class AStar
             {
                 return constructPath(path, endNode);
             }
+            if(!currentNode.isWalkable())
+            {
+                continue;
+            }
+
 
             closed.add(currentNode);
 
@@ -103,7 +108,7 @@ public class AStar
 
         while(node != null)
         {
-            thePath.add(node);
+            thePath.add(0, node);
             node = path.get(node);
         }
 

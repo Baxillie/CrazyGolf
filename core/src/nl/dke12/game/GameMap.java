@@ -10,6 +10,7 @@ import nl.dke12.bot.pathfinding.MapNode;
 import nl.dke12.util.ArrayUtil;
 import nl.dke12.util.GameWorldLoader;
 import nl.dke12.util.Log;
+import nl.dke12.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,14 +80,14 @@ public class GameMap
      * HashMap mapping the integers of the obstacles to the Strings used by SolidBodies
      */
     private final HashMap<String, Integer> stringIntegerHashMap = new HashMap<>(5);
-    {
+
+    private void fillHashMap(){
         stringIntegerHashMap.put(SolidObject.floor, floor);
         stringIntegerHashMap.put(SolidObject.wall, wall);
         stringIntegerHashMap.put(SolidObject.windmill, mill);
         stringIntegerHashMap.put(SolidObject.hole, hole);
         stringIntegerHashMap.put("empty", empty);
         stringIntegerHashMap.put("misc", misc);
-
     }
 
     /**
@@ -102,6 +103,8 @@ public class GameMap
         this.holePosition = loader.getHolePosition();
         this.gameObjects = loader.getSolidObjects();
 
+        fillHashMap();
+
         //calculate grid-based view of the golf course
         preMakeGrid();
 
@@ -111,6 +114,7 @@ public class GameMap
 
     /**
      * determines the grid of the game world so when the information is requested the computation has already been done
+     * sets the start and end nodes
      */
     private void preMakeGrid()
     {
@@ -128,10 +132,10 @@ public class GameMap
         int gridWidth  = Math.round(absoluteX);
         Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n",gridLength, gridWidth,
                 UNIT_TO_CELL_RATIO));
-        int[][] grid =  new int[gridLength][gridWidth];
+        int[][] numgrid =  new int[gridLength][gridWidth];
 
-        int cellLengthX = grid[0].length / (int) absoluteX;
-        int cellLengthY = grid.length / (int) absoluteY;
+        int cellLengthX = numgrid[0].length / (int) absoluteX;
+        int cellLengthY = numgrid.length / (int) absoluteY;
 
         for(int i = 0; i < gameObjects.size(); i++)
         {
@@ -160,12 +164,12 @@ public class GameMap
                         if(xWidth > x - HOLE_RADIUS && xWidth < x + HOLE_RADIUS &&
                                 yDepth > y - HOLE_RADIUS && yDepth < y + HOLE_RADIUS)
                         {
-                            grid[yDepth][xWidth] = toPutInArray;
+                            numgrid[yDepth][xWidth] = toPutInArray;
                             goalNode = new MazeMapNode(xWidth,yDepth);
                         }
                         else
                         {
-                            grid[yDepth][xWidth] = floor;
+                            numgrid[yDepth][xWidth] = floor;
                         }
                     }
                 }
@@ -176,25 +180,118 @@ public class GameMap
                 {
                     for (int xWidth = x - widthCells; xWidth < (x + widthCells); xWidth++)
                     {
-                        grid[yDepth][xWidth] = toPutInArray;
+                        numgrid[yDepth][xWidth] = toPutInArray;
                     }
                 }
             }
         }
 
+        Log.log(" ball position: " + (int)(startPosition.y-minY) + " " + (int)(startPosition.x - minX));
         startNode = new MazeMapNode((int)(startPosition.y-minY),(int)(startPosition.x - minX));
 
-        Log.log(ArrayUtil.arrayToString(grid));
-        generateGridMapGraph(grid);
+        Log.log(ArrayUtil.arrayToString(numgrid));
+        generateGridMapGraph(numgrid);
     }
-
 
     /**
      * Generates the grid-based MapGraph
      */
-    private void generateGridMapGraph(int[][] grid)
+    private void generateGridMapGraph(int[][] numgrid)
     {
-        MapGraph map = new MapGraph(startNode, goalNode, new MazeHeuristicDistance());
+        gridMapGraph = new MapGraph(startNode, goalNode, new MazeHeuristicDistance());
+        //Log.log(ArrayUtil.arrayToString(numgrid));
+        Log.log("created girdMapGraph");
+        MapNode[][] graph = new MazeMapNode[numgrid.length][numgrid[0].length];
+
+        graph[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()] = startNode;
+        graph[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()] = goalNode;
+
+        Log.log("startNode: " + startNode.getIdentifier() + " numValue= " + numgrid[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()]);
+        Log.log("endNode:   " + goalNode.getIdentifier()  + " numValue= " + numgrid[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()]);
+
+        for(int i = 0; i < numgrid.length; i++)
+        {
+            for (int j = 0; j < numgrid[0].length; j++)
+            {
+                //Log.log("Creating mapNode for grid at pos : " + j + " " + i );
+                if(numgrid[i][j] == 1 || numgrid[i][j] == 4)
+                {
+                    getMapNode(j, i, graph);
+                    giveNeighbours(j, i, graph, numgrid);
+                }
+                else
+                {
+                    //Log.log("Not creating neighbour because not floor at pos: " + j + " " + i );
+                }
+            }
+        }
+        Log.log(gridMapGraph.getStartNode().fullInformation() + "\n " + gridMapGraph.getGoalNode().fullInformation());
+    }
+
+    private MapNode getMapNode(int x, int y, MapNode[][] grid) throws ArrayIndexOutOfBoundsException
+    {
+        if(grid[y][x] == null)
+        {
+            grid[y][x] = new MazeMapNode(x,y);
+            //Log.log("Creating mapNode for grid at pos : " + x + " " + y );
+        }
+        return grid[y][x];
+    }
+
+    private void giveNeighbours(int x, int y, MapNode[][] grid, int[][] numgrid)
+    {
+        //Log.log("");
+        //Log.log("Checking for neighbours of: " + grid[y][x].getIdentifier());
+        MapNode node = grid[y][x];
+        for(int i = -1; i < 2; i++)
+        {
+            for(int j = -1; j < 2; j++)
+            {
+                if( i == 0 && j == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    try {
+                        //Log.log("Trying neighbour at pos    " + (j+x) + " " + (i+y));
+
+                        if (numgrid[i + y][j + x] == floor || numgrid[i + y][j + x] == hole)
+                        {
+                            MapNode neighbouringNode = getMapNode(x + j, y + i, grid);
+                            if(x == x+j || y == y+i) //not diagonal
+                            {
+                                node.giveNeighbour(neighbouringNode, 10);
+                            }
+                            else
+                            {
+                                node.giveNeighbour(neighbouringNode, 14);
+                            }
+                           // Log.log("        Added neighbour at pos     " + (j+x) + " " + (i+y));
+                        }
+//                        else if (numgrid[i + y][j + x] == wall)
+//                        {
+//                            MapNode neighbouringNode = getMapNode(x + j, y + i, grid);
+//                            neighbouringNode.setWalkable(false);
+//                            if(x == x+j || y == y+i) //not diagonal
+//                            {
+//                                node.giveNeighbour(neighbouringNode, Integer.MAX_VALUE);
+//                            }
+//                            else
+//                            {
+//                                node.giveNeighbour(neighbouringNode, Integer.MAX_VALUE);
+//                            }
+//                        }
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){} //handles getting nodes outside of grid, e.g a node at a wall
+                    catch (MapNode.NeighbourException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        //Log.log(node.fullInformation());
     }
 
     /**
@@ -273,9 +370,9 @@ public class GameMap
      * get a simple grid/tile based view of the game course for a* and floodfill algorithm
      * @return a MapGraph holding the game course
      */
-    public MapGraph getGridBasedMapGraph()
+    public synchronized MapGraph getGridBasedMapGraph()
     {
-        return null;
+        return gridMapGraph;
     }
 
     /**
@@ -284,6 +381,8 @@ public class GameMap
      */
     public MapGraph getGraphBasedMapGraph()
     {
+
+        Log.log("asking for graph based mapgraph which is null");
         return null;
     }
 

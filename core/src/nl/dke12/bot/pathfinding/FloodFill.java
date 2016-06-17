@@ -128,7 +128,7 @@ public class FloodFill
 
             temp = rng.nextInt(potentialNeighbour.size());
 
-            thePath.add(potentialNeighbour.get(temp));
+            thePath.add(0, potentialNeighbour.get(temp));
             currentNode = potentialNeighbour.get(temp);
         }
 
