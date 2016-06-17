@@ -106,17 +106,20 @@ public class GameWorld
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
             physics.wind=this.wind;
+            physics.noise=false;
             //gameDisplay.updateBall(ball.position);
 
             this.physics2 = new Physics(solidObjects, ball2, this);
             physics2.addSolidObject(solidBall);
             physics2.wind=this.wind;
+            physics2.noise=false;
             //gameDisplay.updateBall2(ball2.position);
         }
         else
         {
             this.physics = new Physics(solidObjects, ball, this);
             physics.wind=this.wind;
+            physics.noise=false;
         }
     }
 
@@ -137,13 +140,14 @@ public class GameWorld
     {
         Vector3 windVec = new Vector3();
 
-        windVec.x = 0f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.035f;
-        windVec.y = 0.1f;//(float) (Math.random() * ((1 +1) + 1) -1)*0.02f;
+        windVec.x = (float) (Math.random() * 0.02f);
+        windVec.y = (float) (Math.random() * 0.02f);
         windVec.z = 0;
-
+        windVec.x -= 0.01f;
+        windVec.y -= 0.01f;
 //        float wStrenght = (float) Math.random()*0.01f;
 //
-         windVec.scl(1/windVec.len());
+//         windVec.scl(1/windVec.len());
 
 //        windVec.scl(wStrenght);
 

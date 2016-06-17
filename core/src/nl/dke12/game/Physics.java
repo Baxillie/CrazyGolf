@@ -33,6 +33,7 @@ public class Physics
     protected Vector3 wind;
     private GameWorld gameWorld;
     private Triangle closestPlane;
+    protected boolean noise;
     protected boolean gravit;
     private boolean printTriangles;
 
@@ -111,6 +112,19 @@ public class Physics
         float yvect = ball.direction.y+ypush;
         float zvect = ball.direction.z+zpush;
         Vector3 dir = new Vector3(xvect/2,yvect/2,zvect/2);
+        float m = (float)Math.random()*0.03f;
+        float n = (float)Math.random()*0.03f;
+        float p = (float)Math.random()*0.03f;
+        m-=0.015;
+        n-=0.015;
+        p-=0.015;
+
+        Vector3 misclick = new Vector3(m,n,p);
+
+        if(this.noise)
+        {
+            dir.add(misclick);
+        }
 
             gravit = true;
 
@@ -522,7 +536,10 @@ public class Physics
             if(new Vector3(closestPlane.closestPoint(ball.position)).sub(ball.position).len()<1)
             {
                 float noise=(float)Math.random()*0.01f;
-                friction.scl(noise);
+                if (this.noise)
+                {
+                    friction.scl(noise);
+                }
                 if(closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(1).z&&
                         closestPlane.getPoints().get(0).z==closestPlane.getPoints().get(2).z)
                 {
@@ -593,10 +610,19 @@ public class Physics
         {
             direction.y = 0;
         }
+
         if (wind != null)
         {
-            ball.direction.add(wind);
-            System.out.println("Wind"+ wind);
+            if(closestPlane!=null)
+            {
+                float scale = (float)Math.random()*0.007f;
+                Vector3 newWind = new Vector3(wind).scl(scale);
+                if (this.noise=true)
+                {
+                    ball.direction.add(newWind);
+                    System.out.println("Wind"+ scale);
+                }
+            }
         }
     }
         //else
