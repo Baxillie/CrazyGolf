@@ -77,7 +77,7 @@ public class SimpleAI implements Runnable {
     private boolean ballStoppedMoving(float directionLength) {
         logger.log(String.format("deciding if ball stopped moving with current vector length: %f and" +
                 " previous vector length: %f and counter: %d", directionLength, lastVectorLength, counter));
-        if (Math.abs(directionLength - lastVectorLength) < 0.1)
+        if (Math.abs(directionLength - lastVectorLength) < 0.01)
         {
             counter++;
             if(counter < 20)
@@ -115,7 +115,7 @@ public class SimpleAI implements Runnable {
                 logger.log("Ball isn't moving.");
                 //sleep to make it seem it the ai thinks
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

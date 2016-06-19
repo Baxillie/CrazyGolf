@@ -1,5 +1,7 @@
 package nl.dke12.bot.pathfinding;
 
+import com.badlogic.gdx.math.Vector3;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -8,14 +10,11 @@ import java.util.ArrayList;
  */
 public class BotShotInterpolation
 {
-    //get path
-    //make curve out of path's x and y
-    //cubic polynomial approx
-    //represent in 3D Vector
-    //use secant / newton's method to find the actual vector / midpoint rule
-    //simulate shots along the path
     private ArrayList<MapNode> path;
     private int[][] XYValues;
+    private ArrayList<Float> xValues;
+    private ArrayList<Float> yValues;
+    private SplineInterpolator splineInterpolator;
     private double[] coeffa;
     private double[] coeffb;
 
@@ -23,6 +22,57 @@ public class BotShotInterpolation
     {
         this.path = path;
         setPath(path);
+        this.splineInterpolator = SplineInterpolator.createMonotoneCubicSpline(xValues, yValues);
+    }
+
+    public Vector3 getDirectionVector()
+    {
+        Vector3 direction = new Vector3();
+
+
+
+
+        return direction;
+    }
+
+    private void setXsYs(ArrayList<MapNode> path)
+    {
+        xValues.clear(); yValues.clear();
+
+        for(MapNode node: path)
+        {
+            String identifier = node.getIdentifier();
+            xValues.add((float) (Character.getNumericValue(identifier.charAt(1))));
+            yValues.add((float) (Character.getNumericValue(identifier.charAt(4))));
+        }
+    }
+
+    public void setPath(ArrayList<MapNode> path)
+    {
+        this.path = path;
+        setXsYs(path);
+        //setXY(path);
+    }
+
+    public ArrayList<MapNode> getPath()
+    {
+        return this.path;
+    }
+
+    public void computeDerivative()
+    {
+
+    }
+
+    private void setXY(ArrayList<MapNode> path)
+    {
+        this.XYValues = new int[path.size()][2];
+        for(int i = 0; i < XYValues.length; i++)
+        {
+            String identifier = path.get(i).getIdentifier();
+            XYValues[i][0] = Character.getNumericValue(identifier.charAt(1));
+            XYValues[i][1] = Character.getNumericValue(identifier.charAt(4));
+        }
     }
 
     public void discreteFourierTransform() throws PathNotFoundException
@@ -49,12 +99,8 @@ public class BotShotInterpolation
         }
     }
 
-    public void computeDerivative()
+    public static void computeDft(double[] inreal, double[] inimag, double[] outreal, double[] outimag)
     {
-
-    }
-
-    public static void computeDft(double[] inreal, double[] inimag, double[] outreal, double[] outimag) {
         int n = inreal.length;
         for (int k = 0; k < n; k++) {  // For each output element
             double sumreal = 0;
@@ -97,27 +143,4 @@ public class BotShotInterpolation
 
         return func;
     }
-
-    private void setXY(ArrayList<MapNode> path)
-    {
-        this.XYValues = new int[path.size()][2];
-        for(int i = 0; i < XYValues.length; i++)
-        {
-            String identifier = path.get(i).getIdentifier();
-            XYValues[i][0] = Character.getNumericValue(identifier.charAt(1));
-            XYValues[i][1] = Character.getNumericValue(identifier.charAt(4));
-        }
-    }
-
-    public void setPath(ArrayList<MapNode> path)
-    {
-        this.path = path;
-        setXY(path);
-    }
-
-    public ArrayList<MapNode> getPath()
-    {
-        return this.path;
-    }
-
 }
