@@ -123,7 +123,7 @@ public class Physics
 
         if(this.noise)
         {
-            dir.add(misclick);
+            //dir.add(misclick);
         }
 
             gravit = true;
@@ -570,7 +570,7 @@ public class Physics
         }
             if (gravit)
             {
-                if (direction.z > 0.08f)
+                /*if (direction.z > 0.08f)
                 {
                     //todo: check whether the /1.2f is correct and this breaks everything
                     ball.direction.z = ball.direction.z * 0.8f;
@@ -590,7 +590,8 @@ public class Physics
                             //ball.direction.z = ball.direction.z/0.8f;
                         //todo: possibly put an else here if it's broken
                     }
-                }
+                }*/
+                ball.direction.add(new Vector3(0,0,-0.035f));
             }
             else
             {
@@ -615,12 +616,15 @@ public class Physics
         {
             if(closestPlane!=null)
             {
-                float scale = (float)Math.random()*0.007f;
+                float scale = (float)Math.random()*0.003f;
                 Vector3 newWind = new Vector3(wind).scl(scale);
                 if (this.noise=true)
                 {
-                    ball.direction.add(newWind);
-                    System.out.println("Wind"+ scale);
+                    /*if(newWind.len()>0.0005)
+                    {*/
+                        ball.direction.add(newWind);
+                        System.out.println("Wind"+ scale);
+                    //}
                 }
             }
         }
