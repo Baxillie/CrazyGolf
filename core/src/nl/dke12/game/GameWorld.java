@@ -136,7 +136,7 @@ public class GameWorld
         {
             this.physics = new Physics(solidObjects, ball, this);
             physics.wind=this.wind;
-            physics.noise=false;
+            physics.noise=true;
         }
     }
 
