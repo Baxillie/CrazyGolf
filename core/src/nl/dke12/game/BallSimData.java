@@ -60,4 +60,10 @@ public class BallSimData
         this.forceModifier = forceModifier;
     }
 
+    @Override
+    public String toString()
+    {
+        return "dir: " + direction.toString() + "       height:" + heightModifier + "       force:" + forceModifier + "     endPos: " + endPosition.toString() + "\n" ;
+    }
+
 }

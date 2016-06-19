@@ -2,7 +2,10 @@ package nl.dke12.bot;
 
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
+import nl.dke12.game.BallSimData;
 import nl.dke12.game.GameWorld;
 import nl.dke12.util.Log;
 
@@ -12,24 +15,66 @@ import java.util.Random;
 /**
  * Created by Ajki on 23/05/2016.
  */
-public class RandomAI extends SimpleAI {
-
+public class RandomAI extends SimpleAI
+{
+    private GameController gameController;
     private Random rng;
 
-    public RandomAI(GameWorld gameWorld, InputProcessor processor){
+    public RandomAI(GameWorld gameWorld, InputProcessor processor)
+    {
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
+        this.gameController = gameWorld.getGameController();
+
     }
 
     @Override
-    protected void calculateBestMove() {
+    public void calculateBestMove()
+    {
+        ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
+        ArrayList<BallSimData> simData = new ArrayList<BallSimData>();
+
+        //create 10 random vectors between the possible
+        for (int i = 0; i < 10; i++)
+        {
+            float x = rng.nextFloat() * 2 - 1;
+            float y = rng.nextFloat() * 2 - 1;
+            Vector3 shotdir = new Vector3(x, y, 0.8f);
+            shotdir.scl(2.1540658f/shotdir.len());
+
+            //float heightmult = Math.round(rng.nextFloat() * 10) / 10;
+            float heightmult = rng.nextFloat();
+            gameController.setHeightMultiplier(heightmult);
+            //float forcemult = Math.round(rng.nextFloat() * 10) / 10;
+            float forcemult = rng.nextFloat();
+            gameController.setForceMultiplier(forcemult);
+
+            gameController.pushBallSim(shotdir);
+            gameWorld.getPhysics().push(shotdir);
+            System.out.println(gameWorld.isMoving + " is game world moving ? ");
+            while(gameWorld.isMoving)
+            {
+              //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
+
+            }
+            simData.add(new BallSimData(shotdir, heightmult, forcemult, gameWorld.getBallSimPosition()));
+            gameWorld.resetBall(gameWorld.getBallSim());
+        }
+        Log.log(simData.toString());
+
+    }
+
+
+    protected void calc()
+    {
         Vector3 hole = this.holePosition;
         Vector3 ball = new Vector3(this.ballPosition);
 
         ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
 
         //create 10 random vectors between the possible
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             float x = rng.nextFloat() * 2 - 1;
             float y = rng.nextFloat() * 2 - 1;
             float z = 0.1f; //dont push it up or down

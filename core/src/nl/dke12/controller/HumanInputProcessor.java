@@ -42,12 +42,12 @@ public class HumanInputProcessor implements InputProcessor
 
     public boolean moveBall()
     {
-        return Gdx.input.isKeyPressed(Actions.MOVE_BALL);
+        return Gdx.input.isKeyJustPressed(Actions.MOVE_BALL);
     }
 
     public boolean moveBall2()
     {
-        return Gdx.input.isKeyPressed(Actions.MOVE_BALL_2);
+        return Gdx.input.isKeyJustPressed(Actions.MOVE_BALL_2);
     }
 
     @Override

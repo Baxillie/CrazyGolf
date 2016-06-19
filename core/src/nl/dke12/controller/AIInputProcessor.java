@@ -21,6 +21,7 @@ public class AIInputProcessor implements InputProcessor
     {
         direction = new Vector3(0,0,0);
     }
+
     public boolean moveCamLeft()
     {
         return Gdx.input.isKeyPressed(Actions.MOVE_CAMERA_LEFT);

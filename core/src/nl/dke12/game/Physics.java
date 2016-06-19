@@ -81,27 +81,6 @@ public class Physics
                 }
             }
         }
-
-        Vector3 a1 = new Vector3(-4,-4,-0.6f);
-        Vector3 a2 = new Vector3(-4,4,-0.6f);
-        Vector3 a3 = new Vector3(4,4,-0.6f);
-        Triangle triA = new Triangle(a1,a2,a3);
-
-        Vector3 b1 = new Vector3(-4,-4,-0.6f);
-        Vector3 b2 = new Vector3(4,4,-0.6f);
-        Vector3 b3 = new Vector3(4,-4,-0.6f);
-        Triangle triB = new Triangle(b1,b2,b3);
-
-        Vector3 c1 = new Vector3(-12,4,-0.6f);
-        Vector3 c2 = new Vector3(-4,12,-0.6f);
-        Vector3 c3 = new Vector3(-4,4,-0.6f);
-        Triangle triC = new Triangle(c1,c2,c3);
-
-        Intersector inte = new Intersector();
-
-        System.out.println("A = " + triA.closestPoint(ball.position));
-        System.out.println("B = " + triB.closestPoint(ball.position));
-        System.out.println("C = " + triC.closestPoint(ball.position));
     }
 
     public void push(float xpush, float ypush, float zpush)
@@ -158,7 +137,7 @@ public class Physics
                (obstacles.get(h).getType().equals("solidBall2") && ball.type.equals("ball1")))
             {
                 otherBall = obstacles.get(h).getPosition();
-                System.out.println(obstacles.get(h).getType() + " = " + otherBall);
+                //System.out.println(obstacles.get(h).getType() + " = " + otherBall);
             }
         }
         if (otherBall != null)
@@ -345,10 +324,15 @@ public class Physics
 
                 if (lastPos != null)
                 {
-                    if(ball.position.dst(lastPos) < 0.005)
+                    if(ball.position.dst(lastPos) == 0)
                     {
                         //ball has stopped
+                        gameWorld.isMoving = false;
                         System.out.println("Ball has stopped");
+                    }
+                    else
+                    {
+                        gameWorld.isMoving = true;
                     }
                     lastPos = new Vector3(ball.position);
                 }
@@ -507,5 +491,8 @@ public class Physics
         return this.ball;
     }
 
-
+    public void setBall(Ball ball)
+    {
+        this.ball = ball;
+    }
 }

@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Created by Ajki on 23/05/2016.
  */
-public interface InputProcessor {
-
+public interface InputProcessor
+{
     boolean moveCamLeft();
 
     boolean moveCamBack();

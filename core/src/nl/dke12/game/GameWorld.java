@@ -1,9 +1,9 @@
 package nl.dke12.game;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.controller.GameController;
-import nl.dke12.controller.InputProcessor;
 import nl.dke12.screens.GameDisplay;
 import nl.dke12.util.GameWorldLoader;
 
@@ -20,6 +20,7 @@ public class GameWorld
     private boolean multiplayer;
     private boolean isHumanPlayer;
     private boolean first = true;
+    public boolean isMoving = true;
     private Ball ballSim;
     private Ball ball;
     private Ball ball2;
@@ -60,7 +61,9 @@ public class GameWorld
     }
 
     public GameController getGameController()
-    {return gameController;}
+    {
+        return gameController;
+    }
 
     public void setDisplay(GameDisplay display)
     {
@@ -70,6 +73,10 @@ public class GameWorld
         {
             gameDisplay.updateBall(ball.position);
             gameDisplay.updateBall2(ball2.position);
+        }
+        else if(!isHumanPlayer)
+        {
+            gameDisplay.updateBall(ballSim.position);
         }
         else
         {
@@ -118,7 +125,7 @@ public class GameWorld
         {
             try
             {
-                solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
+                solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z, "solidBall");
             }
             catch (NoSuchSolidObjectType noSuchSolidObjectType)
             {
@@ -126,7 +133,7 @@ public class GameWorld
             }
             try
             {
-                solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
+                solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z, "solidBall2");
             }
             catch (NoSuchSolidObjectType noSuchSolidObjectType)
             {
@@ -135,21 +142,55 @@ public class GameWorld
 
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
-            physics.wind=this.wind;
-            physics.noise=false;
+            physics.wind = this.wind;
+            physics.noise = false;
             //gameDisplay.updateBall(ball.position);
 
             this.physics2 = new Physics(solidObjects, ball2, this);
             physics2.addSolidObject(solidBall);
-            physics2.wind=this.wind;
-            physics2.noise=false;
+            physics2.wind = this.wind;
+            physics2.noise = false;
             //gameDisplay.updateBall2(ball2.position);
+            System.out.println("created both physics");
         }
         else
         {
             this.physics = new Physics(solidObjects, ball, this);
-            physics.wind=this.wind;
-            physics.noise=true;
+            physics.wind = this.wind;
+            physics.noise = true;
+        }
+    }
+
+    public void resetBall(Ball ball)
+    {
+        Vector3 ballpos = new Vector3(ball.position);
+
+        System.out.println("created new ball");
+        if(isHumanPlayer)
+        {
+            if(ball == this.ball)
+            {
+                ball = new Ball (0, 0, 0, ball.type);
+                this.ball = ball;
+                physics.setBall(ball);
+                gameDisplay.updateBall(ballpos.scl(-1));
+                System.out.println("ball should be reset");
+            }
+            else if (ball == ball2)
+            {
+                ball = new Ball (0, 0, 0, ball.type);
+                this.ball2 = ball;
+                physics2.setBall(ball);
+                gameDisplay.updateBall2(ballpos.scl(-1));
+
+            }
+        }
+        else
+        {
+            ball = new Ball (0, 0, 0, ball.type);
+            this.ballSim = ball;
+            gameDisplay.updateBall(ballpos.scl(-1));
+            physics.setBall(ball);
         }
     }
 
@@ -163,6 +204,7 @@ public class GameWorld
         {
             this.ball = new Ball(-0.5f, 0.1f, 0,"ball1");
             this.ball2 = new Ball(0.5f, 0.1f, 0,"ball2");
+            System.out.println("create balls ");
         }
         else
         {
@@ -173,23 +215,15 @@ public class GameWorld
     public static Vector3 wind()
     {
         Vector3 windVec = new Vector3();
-
-        windVec.x = (float) (Math.random() * 0.02f);
-        windVec.y = (float) (Math.random() * 0.02f);
+        windVec.x = (float) (Math.random() * 0.02f) - 0.01f;
+        windVec.y = (float) (Math.random() * 0.02f) - 0.01f;
         windVec.z = 0;
-        windVec.x -= 0.01f;
-        windVec.y -= 0.01f;
-//        float wStrenght = (float) Math.random()*0.01f;
-//
-//         windVec.scl(1/windVec.len());
-
-//        windVec.scl(wStrenght);
-
         return windVec;
     }
 
     public boolean ballIsInHole()
     {
+        // TODO: 19/06/2016 fix ball in hole :3 to work for ball2 and ai
         Vector3 ballPosition = ball.position;
         Vector3 holePosition = getHolePosition();
         if(ballPosition.z < -10)
@@ -201,13 +235,31 @@ public class GameWorld
 
     public void render()
     {
+        // TODO: 19/06/2016  fix this
+        if(Gdx.input.isKeyJustPressed(Input.Keys.R))
+        {
+            resetBall(ball);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.T))
+        {
+            resetBall(ball2);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Y))
+        {
+            resetBall(ballSim);
+        }
+
         gameController.moveCamera(gameDisplay.getCamera());
 
         gameController.move();
 
-        if(!multiplayer)
+        if(!multiplayer && isHumanPlayer)
         {
-            updatePosition(physics,ball);
+            updatePosition(physics, ball);
+        }
+        else if (!isHumanPlayer)
+        {
+            updatePosition(physics, ballSim);
         }
 
         if(multiplayer)
@@ -280,11 +332,11 @@ public class GameWorld
         {
             ball.position.add(ball.direction);
 
-            if(this.ball == ball)
+            if(ball == this.ball)
             {
                 gameDisplay.updateBall(ball.direction);
             }
-            else if (this.ball == ball2)
+            else if (ball == this.ball2)
             {
                 gameDisplay.updateBall2(ball.direction);
             }
@@ -315,9 +367,20 @@ public class GameWorld
         return ball.position;
     }
 
-    public Vector3 getBallDirection()
+    public Vector3 getBallSimPosition()
+    {
+        System.out.println("BALL SIM POS IS " + ballSim.position);
+        return ballSim.position;
+    }
+
+    public Vector3 getBallDirection(Ball ball)
     {
         return ball.direction;
+    }
+
+    public Ball getBallSim()
+    {
+        return ballSim;
     }
 
     public Vector3 getHolePosition()
@@ -333,5 +396,11 @@ public class GameWorld
     public void setTurn(boolean turn)
     {
         player1Turn = turn;
+    }
+
+    public Physics getPhysics ()
+    {
+        //for ai debugg purposes
+        return this.physics;
     }
 }

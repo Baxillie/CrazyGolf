@@ -35,7 +35,7 @@ public class GameController
     {
         this.physics = physics;
         this.shotVector = new Vector3(0,2,0.8f);
-
+        System.out.println("Shot vector length " + shotVector.len());
         forceMultiplier = 1f;
         heightMultiplier = 1f;
 
@@ -90,11 +90,11 @@ public class GameController
         }
         else if(multiplier > 1)
         {
-            heightMultiplier= 1;
+            heightMultiplier = 1;
         }
         else
         {
-            heightMultiplier= multiplier;
+            heightMultiplier = multiplier;
         }
         String newLabelText = String.format("hit the ball high or low: %.1f", heightMultiplier);
         if(heightLabel != null)
@@ -132,8 +132,8 @@ public class GameController
         }
         if (inputProcessor.rotateCamAntiClock())
         {
-            camera.rotate(4,0,0,4);
-            shotVector.rotate(4,0,0,4);
+            camera.rotate(1,0,0,1);
+            shotVector.rotate(1,0,0,1);
         }
         if(inputProcessor.decreaseForce())
         {
@@ -157,8 +157,8 @@ public class GameController
         }
         if (inputProcessor.rotateCamClock())
         {
-            camera.rotate(-4,0,0,4);
-            shotVector.rotate(-4,0,0,4);
+            camera.rotate(-1,0,0,1);
+            shotVector.rotate(-1,0,0,1);
         }
     }
 
@@ -183,11 +183,9 @@ public class GameController
                 " and force multiplier: " + forceMultiplier + " and height multiplier:  " + heightMultiplier);
                 pushBall(aiShotVector);
             }
-            //physics.updatePosition();
         }
         if (inputProcessor.moveBall2()) {
             pushBall2(shotVector);
-            //physics2.updatePosition();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.G))
         {
@@ -216,15 +214,14 @@ public class GameController
 
         if (Gdx.input.isKeyPressed(Input.Keys.PLUS))
         {
-            if (physics.getBall().getPosition().z<5)
+            if (physics.getBall().getPosition().z < 5)
             {
                 pushBall(new Vector3(0,0,10));
-                //physics.updatePosition();
             }
         }
     }
 
-    private void pushBall(Vector3 directionVector)
+    public void pushBall(Vector3 directionVector)
     {
         Vector3 finalDirectionVector = new Vector3(directionVector);
         finalDirectionVector = finalDirectionVector.nor();
@@ -234,7 +231,18 @@ public class GameController
 
         Logger.getInstance().log("Going to push the ball with vector: " + finalDirectionVector.toString());
         physics.push(finalDirectionVector.x, finalDirectionVector.y, finalDirectionVector.z);
+    }
 
+    public void pushBallSim(Vector3 directionVector)
+    {
+        Vector3 finalDirectionVector = new Vector3(directionVector);
+        finalDirectionVector = finalDirectionVector.nor();
+        finalDirectionVector.x *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.y *= (forceMultiplier * SCALING_SPEED_CONSTANT);
+        finalDirectionVector.z *= (heightMultiplier * SCALING_SPEED_CONSTANT);
+
+        Logger.getInstance().log("Going to push the ball with vector: " + finalDirectionVector.toString());
+        physics.push(finalDirectionVector.x, finalDirectionVector.y, finalDirectionVector.z);
     }
 
     private void pushBall2(Vector3 directionVector)

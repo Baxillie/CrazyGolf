@@ -21,12 +21,9 @@ import java.util.ArrayList;
 public class SimpleAI implements Runnable {
 
     public static final int WAIT_TIME = 100; //ms
-
     private static Logger logger = Logger.getInstance();
-
     protected boolean loop;
     protected boolean makingDecision;
-
     protected AIInputProcessor processor;
     protected Vector3 ballPosition;
     protected Vector3 holePosition;
@@ -47,9 +44,11 @@ public class SimpleAI implements Runnable {
 
     @Override
     public void run() {
-        try {
+        try
+        {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
         loop = true;
@@ -74,7 +73,8 @@ public class SimpleAI implements Runnable {
         }
     }
 
-    private boolean ballStoppedMoving(float directionLength) {
+    private boolean ballStoppedMoving(float directionLength)
+    {
         logger.log(String.format("deciding if ball stopped moving with current vector length: %f and" +
                 " previous vector length: %f and counter: %d", directionLength, lastVectorLength, counter));
         if (Math.abs(directionLength - lastVectorLength) < 0.01)
@@ -105,7 +105,7 @@ public class SimpleAI implements Runnable {
         {
             logger.createBreak("----AI loop begins----");
             //check if ball is moving
-            float directionVectorLength = gameWorld.getBallDirection().len();
+            float directionVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).len();
             //if(directionVectorLength < 0.46 /*&& !makingDecision*/) // ball doesnt move, make a decision
             //long currentTime = System.currentTimeMillis();
             //if((currentTime - 5000) > lastTimeMoved)
@@ -121,17 +121,11 @@ public class SimpleAI implements Runnable {
                 }
                 makeDecision();
             }
-            //if getMove is true, the decision is made but not yet retrieved by the gameController.
-//            if(makingDecision && processor.getMove())
-//            {
-//
-//            }
             else
             {
                 try
                 {
-                    logger.log("Ball is still moving because vector length is:" + directionVectorLength +
-                            ". Sleeping for " + WAIT_TIME +" ms");
+                    logger.log("Ball is still moving because vector length is:" + directionVectorLength + ". Sleeping for " + WAIT_TIME + " ms");
                     Thread.sleep(WAIT_TIME);
                 }
                 catch (Exception e)
@@ -150,13 +144,6 @@ public class SimpleAI implements Runnable {
     //gets called by gamecontroller when AI needs to make a move
     protected void makeDecision()
     {
-
-//        try {
-//            Thread.sleep(1000);
-//            System.out.println("Waiting in make decision");
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         loadGameWorld();
         if(ballIsInHole()) // done
         {
@@ -169,7 +156,7 @@ public class SimpleAI implements Runnable {
     //loads the current game wold into a format which is readable by the AI
     protected void loadGameWorld()
     {
-        this.ballPosition = new Vector3(gameWorld.getBallPosition());
+        this.ballPosition = new Vector3(gameWorld.getBallSimPosition());
         logger.log("ball position: " + ballPosition.toString());
         this.holePosition = new Vector3(gameWorld.getHolePosition());
         logger.log("hole position: " + holePosition.toString());
@@ -180,9 +167,6 @@ public class SimpleAI implements Runnable {
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
         distance.z += 0.1;
-
-        //if(len)
-
         logger.log("The calculated AI vector:" + distance);
     }
 
@@ -202,12 +186,8 @@ public class SimpleAI implements Runnable {
     //gives the move the ai wants to make to the inputprocessor
     protected void makeMove()
     {
-        //set direction vector
-        //distance = distance.nor();
         processor.setDirectionVector(distance);
         processor.setMove(true);
-        //set move in ai intput processor to true
-
     }
 
 }
