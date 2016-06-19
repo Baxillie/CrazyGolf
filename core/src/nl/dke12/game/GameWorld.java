@@ -18,7 +18,9 @@ public class GameWorld
     private ArrayList<InstanceModel> instances;
     private ArrayList<InstanceModel> mapOfWorld;
     private boolean multiplayer;
+    private boolean isHumanPlayer;
     private boolean first = true;
+    private Ball ballSim;
     private Ball ball;
     private Ball ball2;
     private GameWorldLoader worldLoader;
@@ -37,6 +39,7 @@ public class GameWorld
     public GameWorld(boolean multiplayer, boolean isHumanPlayer)
     {
         this.multiplayer = multiplayer;
+        this.isHumanPlayer = isHumanPlayer;
         player1Turn = true;
 
         this.worldLoader = new GameWorldLoader("core/assets/level1.txt");
@@ -74,12 +77,10 @@ public class GameWorld
         }
     }
 
-
     public GameMap getGameMap()
     {
         return gameMap;
     }
-
 
     private void createController(boolean isHumanPlayer)
     {
@@ -107,16 +108,28 @@ public class GameWorld
 
     private void createPhysics()
     {
-        if(multiplayer)
+        if(!isHumanPlayer)
         {
-            try {
+            this.physics = new Physics(solidObjects, ballSim, this);
+            physics.wind = this.wind;
+            physics.noise = true;
+        }
+        else if(multiplayer)
+        {
+            try
+            {
                 solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
-            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+            }
+            catch (NoSuchSolidObjectType noSuchSolidObjectType)
+            {
                 noSuchSolidObjectType.printStackTrace();
             }
-            try {
+            try
+            {
                 solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
-            } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+            }
+            catch (NoSuchSolidObjectType noSuchSolidObjectType)
+            {
                 noSuchSolidObjectType.printStackTrace();
             }
 
@@ -142,7 +155,11 @@ public class GameWorld
 
     private void createBalls()
     {
-        if(multiplayer)
+        if(!isHumanPlayer)
+        {
+            this.ballSim = new Ball(0, 0, 0, "ballSim");
+        }
+        else if(multiplayer)
         {
             this.ball = new Ball(-0.5f, 0.1f, 0,"ball1");
             this.ball2 = new Ball(0.5f, 0.1f, 0,"ball2");
@@ -169,8 +186,6 @@ public class GameWorld
 //        windVec.scl(wStrenght);
 
         return windVec;
-
-
     }
 
     public boolean ballIsInHole()
@@ -188,76 +203,64 @@ public class GameWorld
     {
         gameController.moveCamera(gameDisplay.getCamera());
 
+        gameController.move();
 
-       // if(ball.direction.isZero(0.001f))
-            gameController.move();
-
-        /*if(player1Turn)
+        if(!multiplayer)
         {
-            updatePosition(physics,ball);
-            if(multiplayer)
-                player1Turn = false;
-        }
-        else
-        {
-            updatePosition(physics2, ball2);
-            player1Turn = true;
-        }*/
-        if(!multiplayer){
             updatePosition(physics,ball);
         }
 
-        if(multiplayer){
-            if(first){
-                updatePosition(physics,ball);
-                updatePosition(physics2,ball2);
+        if(multiplayer)
+        {
+            // TODO: 19/06/2016 : what the fuck first ??
+            if(first)
+            {
+                updatePosition(physics, ball);
+                updatePosition(physics2, ball2);
                 first = false;
-
             }
 
-            //if(player1Turn){
+            updatePosition(physics, ball);
+            updatePosition(physics2, ball2);
 
-                updatePosition(physics,ball);
-            /*}
-            else{*/
-                updatePosition(physics2,ball2);
-
-            //}
-
-            if (multiplayer){
-                try {
+            if (multiplayer)
+            {
+                try
+                {
                     solidBall = new SolidObject(ball.position.x, ball.position.y, ball.position.z,"solidBall");
-                } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                }
+                catch (NoSuchSolidObjectType noSuchSolidObjectType)
+                {
                     noSuchSolidObjectType.printStackTrace();
                 }
                 physics2.updateSolidObject(solidBall);
-
             }
 
-
-            if(multiplayer){
-
-
-                try {
+            if(multiplayer)
+            {
+                try
+                {
                     solidBall2 = new SolidObject(ball2.position.x, ball2.position.y, ball2.position.z,"solidBall2");
-                } catch (NoSuchSolidObjectType noSuchSolidObjectType) {
+                }
+                catch (NoSuchSolidObjectType noSuchSolidObjectType)
+                {
                     noSuchSolidObjectType.printStackTrace();
                 }
                 physics.updateSolidObject(solidBall2);
-
             }
-
         }
     }
 
     public void pushBall(String ballName, Vector3 push)
     {
-        if(ballName=="ball1")
+        //for ball to ball collision so not for ai balls
+
+        if(ballName.equals("ball1"))
         {
             push.scl(1.6f);
             physics.push(push.x,push.y,push.z);
         }
-        else
+        else if(ballName.equals("ball2"))
         {
             push.scl(1.6f);
             physics2.push(push.x,push.y,push.z);
@@ -266,27 +269,11 @@ public class GameWorld
 
     public void updatePosition(Physics physics, Ball ball)
     {
-        //System.out.println(ball.direction.z);
         if (physics.collides())
         {
             if (physics.bounceVector != null)
             {
-                /*if(physics.bounceVector.z > 0.08)
-                {
-                    //physics.gravit = false;
-                    ball.direction.set(physics.bounceVector);
-                }
-                else
-                {*/
-                    //we should not be setting the gravity here, but oh well
-                    //physics.gravit = false;
-                    /*ball.direction.x=physics.bounceVector.x;
-                    ball.direction.y=physics.bounceVector.y;
-
-
-                    ball.direction.z=0;*/
-                    ball.direction.set(physics.bounceVector);
-                //}
+                ball.direction.set(physics.bounceVector);
             }
         }
         else
@@ -294,9 +281,18 @@ public class GameWorld
             ball.position.add(ball.direction);
 
             if(this.ball == ball)
+            {
                 gameDisplay.updateBall(ball.direction);
-            else
+            }
+            else if (this.ball == ball2)
+            {
                 gameDisplay.updateBall2(ball.direction);
+            }
+            // TODO: 19/06/2016 REmovelater
+            else
+            {
+                gameDisplay.updateBall(ball.direction);
+            }
 
             physics.updateVelocity(ball.direction);
         }
@@ -304,10 +300,12 @@ public class GameWorld
 
     public static void togglePlayerTurn()
     {
-        if(player1Turn){
+        if(player1Turn)
+        {
             player1Turn = false;
         }
-        else{
+        else
+        {
             player1Turn = true;
         }
     }
@@ -327,9 +325,13 @@ public class GameWorld
         return holePosition;
     }
 
-    public boolean getTurn(){
+    public boolean getTurn()
+    {
         return player1Turn;
     }
 
-    public void setTurn(boolean turn){player1Turn = turn;}
+    public void setTurn(boolean turn)
+    {
+        player1Turn = turn;
+    }
 }
