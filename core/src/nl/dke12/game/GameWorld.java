@@ -43,7 +43,7 @@ public class GameWorld
         this.isHumanPlayer = isHumanPlayer;
         player1Turn = true;
 
-        this.worldLoader = new GameWorldLoader("core/assets/Level4.txt");
+        this.worldLoader = new GameWorldLoader("core/assets/Level5.txt");
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
@@ -369,7 +369,7 @@ public class GameWorld
 
     public Vector3 getBallSimPosition()
     {
-        System.out.println("BALL SIM POS IS " + ballSim.position);
+        //System.out.println("BALL SIM POS IS " + ballSim.position);
         return ballSim.position;
     }
 

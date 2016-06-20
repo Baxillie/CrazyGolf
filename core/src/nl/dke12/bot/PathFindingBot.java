@@ -4,10 +4,12 @@ import com.badlogic.gdx.math.Vector3;
 import nl.dke12.bot.maze.MazeMapNode;
 import nl.dke12.bot.pathfinding.AStar;
 import nl.dke12.bot.pathfinding.MapNode;
+import nl.dke12.bot.pathfinding.PathNotFoundException;
 import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.GameMap;
 import nl.dke12.game.GameWorld;
+import nl.dke12.util.ArrayUtil;
 import nl.dke12.util.Log;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class PathFindingBot extends SimpleAI
     private Random rng;
     private ArrayList<MazeMapNode> path;
     private int nodeInPath;
+    private GameMap gameMap;
 
     public PathFindingBot(GameWorld gameWorld, InputProcessor processor)
     {
@@ -30,23 +33,19 @@ public class PathFindingBot extends SimpleAI
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
         this.path = new ArrayList<>();
+        this.gameMap = gameWorld.getGameMap();
 
-        GameMap gameMap = gameWorld.getGameMap();
         try
         {
             ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
             Log.log("Path of AI: ");
-            System.out.println("Path of AI: ");
             for(MapNode n : path)
             {
                 Log.log(n.getIdentifier());
-                System.out.println(n.getIdentifier());
                 this.path.add((MazeMapNode) n);
             }
-
+            Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
             Log.log("size of path:" + path.size());
-            Log.log(path.toString());
-
 
             nodeInPath = 0;
             if(path.size() <= 0)
@@ -67,6 +66,7 @@ public class PathFindingBot extends SimpleAI
         if(nodeInPath + 1 >= path.size())
         {
             super.calculateBestMove();
+            System.out.println("Calculating with simple ai");
             return;
         }
         MazeMapNode startNode = path.get(nodeInPath);   nodeInPath++;
@@ -100,7 +100,8 @@ public class PathFindingBot extends SimpleAI
                 if (x && Math.abs(absX - 0) > 0.01)
                 {
                     MazeMapNode prevNode = path.get(i - 1);
-                    shotVector = new Vector3(0, Math.abs(startNode.getY() - prevNode.getY()), 0.8f);
+                    //no abs value because we want vector with direction towards prev node
+                    shotVector = new Vector3(0, prevNode.getY() - startNode.getY(), 0.8f);
                     System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
@@ -108,7 +109,8 @@ public class PathFindingBot extends SimpleAI
                 else if(y && Math.abs(absY - 0) > 0.01)
                 {
                     MazeMapNode prevNode = path.get(i - 1);
-                    shotVector = new Vector3(Math.abs(startNode.getX() - prevNode.getX()), 0, 0.8f);
+                    //no abs value because we want vector with direction towards prev node
+                    shotVector = new Vector3(prevNode.getX() - startNode.getX(), 0, 0.8f);
                     System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
@@ -134,7 +136,7 @@ public class PathFindingBot extends SimpleAI
                 if (Math.abs(actualNextY - possibleNextY) > 0.01)
                 {
                     MazeMapNode prevNode = path.get(i - 1);
-                    shotVector = new Vector3(Math.abs(startNode.getX() - prevNode.getX()), Math.abs(startNode.getY() - prevNode.getY()), 0.8f);
+                    shotVector = new Vector3(prevNode.getX() - startNode.getX(), prevNode.getY() - startNode.getY(), 0.8f);
                     System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
@@ -142,17 +144,48 @@ public class PathFindingBot extends SimpleAI
             }
         }
 
+        /*
+        if ball position is in path
+        continue shooting from ball position node
+        else
+        create new path from current ball position
+         */
+
         if(shotVector != null)
         {
-            gameController.setForceMultiplier(count * 0.02f);
+            gameController.setForceMultiplier(count * 0.015f);
             gameController.setHeightMultiplier(count * 0.01f);
 
-            System.out.println("Pathfinding AI is shooting with vector: " + shotVector.toString() + "." +
-                    "currently located at location " + nodeInPath + " in the path.");
+            System.out.println("Pathfinding AI is shooting with vector: " + shotVector.toString() + " currently located at location " + nodeInPath + " in the path.");
             this.distance = shotVector;
         }
         else
         {
+            try
+            {
+                //trying to determine new path everytime no other shots are possible
+
+//                Vector3 ballPos = gameWorld.getBallSimPosition();
+//                gameMap.setStartNode(ballPos.x, ballPos.y);
+                ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
+//                for(MapNode n : path)
+//                {
+//                    Log.log(n.getIdentifier());
+//                    this.path.add((MazeMapNode) n);
+//                }
+//
+//                nodeInPath = 0;
+//
+//                System.out.println("New Path");
+//                Log.log("New Path ");
+//                Log.log(path.toString());
+//                Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
+            }
+            catch (PathNotFoundException e)
+            {
+                System.out.println("second path calculation not possible");
+                Log.log("second path calculation not possible");
+            }
             System.out.println("not able to calculate a shotvector in the PathFindingBot");
             Log.log("not able to calculate a shotvector in the PathFindingBot");
         }

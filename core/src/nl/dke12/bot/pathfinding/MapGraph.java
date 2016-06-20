@@ -34,6 +34,11 @@ public class MapGraph {
         return startNode;
     }
 
+    public void setStartNode(MapNode startNode)
+    {
+        this.startNode = startNode;
+    }
+
     public MapNode getGoalNode() {
         return goalNode;
     }
