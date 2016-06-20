@@ -59,7 +59,8 @@ public class RandomAI extends SimpleAI
             gameController.pushBallSim(shotdir);
             //gameWorld.getPhysics().push(shotdir);
 
-            float lastVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x + gameWorld.getBallDirection(gameWorld.getBallSim()).y;
+            float lastVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x +
+                    gameWorld.getBallDirection(gameWorld.getBallSim()).y;
             //System.out.println(gameWorld.isMoving + " is game world moving ? ");
             int counter = 0;
             flag = false;
