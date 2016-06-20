@@ -1,14 +1,9 @@
 package nl.dke12.bot;
 
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
-import com.badlogic.gdx.math.Vector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
-import nl.dke12.game.Ball;
-import nl.dke12.game.BallSimData;
+import nl.dke12.game.SimulationData;
 import nl.dke12.game.GameWorld;
 import nl.dke12.util.Log;
 
@@ -34,7 +29,7 @@ public class RandomAI extends SimpleAI
     public void calculateBestMove()
     {
         ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
-        ArrayList<BallSimData> simData = new ArrayList<BallSimData>();
+        ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
 
         super.calculateBestMove();
         Vector3 baseVector = super.distance;
@@ -61,9 +56,11 @@ public class RandomAI extends SimpleAI
 
             float lastVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x +
                     gameWorld.getBallDirection(gameWorld.getBallSim()).y;
+
             //System.out.println(gameWorld.isMoving + " is game world moving ? ");
             int counter = 0;
             flag = false;
+            System.out.println("Waiting for ball to stop moving...");
             while(true)
             {
               //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
@@ -75,14 +72,17 @@ public class RandomAI extends SimpleAI
                 float directionLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x + gameWorld.getBallDirection(gameWorld.getBallSim()).y;
                 if (Math.abs(directionLength - lastVectorLength) < 0.01)
                 {
+                    //System.out.println("Direction length: " + directionLength + ". Last direction length: " + lastVectorLength);
                     //counter++;
-                    if(counter < 50)
+                    if(counter < 5)
                     {
                         lastVectorLength = directionLength;
                         counter++;
+                        //System.out.println("Increasing counter by 1. now is: " + counter);
                     }
                     else
                     {
+                        //System.out.println("count reset to 0");
                         counter = 0;
                         lastVectorLength = directionLength;
                         break;
@@ -94,12 +94,13 @@ public class RandomAI extends SimpleAI
                 }
                 try
                 {
+                    System.out.println("sleeping for 100ms");
                     Thread.sleep(100);
                 }
                 catch (Exception e) {e.printStackTrace();}
             }
 
-            simData.add(new BallSimData(shotdir, heightmult, forcemult, gameWorld.getBallSimPosition(), holePosition));
+            //simData.add(new SimulationData(shotdir, heightmult, forcemult, gameWorld.getBallSimPosition(), holePosition));
             gameWorld.resetBall(gameWorld.getBallSim(), new Vector3(0,0,0));
             if (flag)
             {
@@ -109,7 +110,7 @@ public class RandomAI extends SimpleAI
         if(flag)
         {
             Log.log(simData.toString());
-            BallSimData bestShot = simData.get(simData.size()-1);
+            SimulationData bestShot = simData.get(simData.size()-1);
             gameController.setForceMultiplier(bestShot.getForceModifier());
             gameController.setHeightMultiplier(bestShot.getHeightModifier());
             super.distance = bestShot.getDirection();
@@ -120,7 +121,7 @@ public class RandomAI extends SimpleAI
         else
         {
             Log.log(simData.toString());
-            BallSimData bestShot = extractBestShot(simData);
+            SimulationData bestShot = extractBestShot(simData);
             gameController.setForceMultiplier(bestShot.getForceModifier());
             gameController.setHeightMultiplier(bestShot.getHeightModifier());
             super.distance = bestShot.getDirection();
@@ -130,9 +131,9 @@ public class RandomAI extends SimpleAI
         }
     }
 
-    private BallSimData extractBestShot(ArrayList<BallSimData> simData)
+    private SimulationData extractBestShot(ArrayList<SimulationData> simData)
     {
-        BallSimData bestShot = simData.get(0);
+        SimulationData bestShot = simData.get(0);
         for(int i = 1; i<simData.size(); i++)
         {
             if(bestShot.absDistFromHole() > simData.get(i).absDistFromHole())
