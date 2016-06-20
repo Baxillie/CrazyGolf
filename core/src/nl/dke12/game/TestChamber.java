@@ -32,18 +32,35 @@ public class TestChamber
      * @param shotVectors the shots which need to be taken
      * @return a list of the positions of the ball after the shots have been taken
      */
-    public ArrayList<SimulationData> simulateShot(Vector3 ballPosition, ArrayList<SimulationData> shotVectors)
+    public void simulateShot(ArrayList<SimulationData> dataList)
     {
-        Runnable runnable = new Runnable()
-        {
-            @Override
-            public void run()
-            {
+        //create list of all threads
+        ArrayList<Thread> threads = new ArrayList<>();
 
+        //create new thread based on data and start it immediately
+        for(SimulationData data: dataList)
+        {
+            Thread t = new Thread(new Simulator(data));
+            threads.add(t);
+            t.start();
+        }
+
+        //block until all threads are done
+        while(true)
+        {
+            boolean someoneIsNotDone = false;
+            for(Thread t: threads)
+            {
+                if(!this.isSimulatorDone(t))
+                {
+                    someoneIsNotDone = true;
+                }
             }
-        };
-        Thread t = new Thread();
-        return null;
+            if(!someoneIsNotDone)
+            {
+                break;
+            }
+        }
     }
 
     /**
@@ -169,7 +186,7 @@ public class TestChamber
                 catch (Exception e) {e.printStackTrace();}
             }
 
-            //add the end location to the SimulationData and set
+            //add the end location to the SimulationData and set if ball got in hole
             data.setEndPosition(gameWorld.getBallSimPosition());
             if(gotBallInHole)
             {

@@ -5,6 +5,7 @@ import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.SimulationData;
 import nl.dke12.game.GameWorld;
+import nl.dke12.game.TestChamber;
 import nl.dke12.util.Log;
 
 import java.util.ArrayList;
@@ -17,24 +18,24 @@ public class RandomAI extends SimpleAI
 {
     private GameController gameController;
     private Random rng;
+    private TestChamber simulator;
 
     public RandomAI(GameWorld gameWorld, InputProcessor processor)
     {
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
+        this.simulator = new TestChamber();
     }
 
     @Override
     public void calculateBestMove()
     {
-        ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
         ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
 
         super.calculateBestMove();
         Vector3 baseVector = super.distance;
 
-        boolean flag = false;
         //create 10 random vectors between the possible
         for (int i = 0; i < 10; i++)
         {
@@ -46,67 +47,23 @@ public class RandomAI extends SimpleAI
 
             //float heightmult = Math.round(rng.nextFloat() * 10) / 10;
             float heightmult = rng.nextFloat();
-            gameController.setHeightMultiplier(heightmult);
             //float forcemult = Math.round(rng.nextFloat() * 10) / 10;
             float forcemult = rng.nextFloat();
-            gameController.setForceMultiplier(forcemult);
 
-            gameController.pushBallSim(shotdir);
-            //gameWorld.getPhysics().push(shotdir);
-
-            float lastVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x +
-                    gameWorld.getBallDirection(gameWorld.getBallSim()).y;
-
-            //System.out.println(gameWorld.isMoving + " is game world moving ? ");
-            int counter = 0;
-            flag = false;
-            System.out.println("Waiting for ball to stop moving...");
-            while(true)
-            {
-              //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
-                if(gameWorld.ballIsInHole(gameWorld.getBallSim()))
-                {
-                    flag = true;
-                    break;
-                }
-                float directionLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x + gameWorld.getBallDirection(gameWorld.getBallSim()).y;
-                if (Math.abs(directionLength - lastVectorLength) < 0.01)
-                {
-                    //System.out.println("Direction length: " + directionLength + ". Last direction length: " + lastVectorLength);
-                    //counter++;
-                    if(counter < 5)
-                    {
-                        lastVectorLength = directionLength;
-                        counter++;
-                        //System.out.println("Increasing counter by 1. now is: " + counter);
-                    }
-                    else
-                    {
-                        //System.out.println("count reset to 0");
-                        counter = 0;
-                        lastVectorLength = directionLength;
-                        break;
-                    }
-                }
-                else
-                {
-                    lastVectorLength = directionLength;
-                }
-                try
-                {
-                    System.out.println("sleeping for 100ms");
-                    Thread.sleep(100);
-                }
-                catch (Exception e) {e.printStackTrace();}
-            }
-
-            //simData.add(new SimulationData(shotdir, heightmult, forcemult, gameWorld.getBallSimPosition(), holePosition));
-            gameWorld.resetBall(gameWorld.getBallSim(), new Vector3(0,0,0));
-            if (flag)
-            {
-                break;
-            }
+            simData.add(new SimulationData(
+                    super.gameWorld.getBallPosition(),
+                    shotdir,
+                    heightmult, forcemult,
+                    super.holePosition
+            ));
         }
+
+        //simulate the 10 shots
+
+        simulator.simulateShot(simData);
+
+        //choose the best one
+
         if(flag)
         {
             Log.log(simData.toString());
