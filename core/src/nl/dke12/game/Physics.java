@@ -593,11 +593,11 @@ public class Physics
         {
             direction.y = 0;
         }
-        if (wind != null)
-        {
-            ball.direction.add(wind);
-            System.out.println("Wind"+ wind);
-        }
+//        if (wind != null)
+//        {
+//            ball.direction.add(wind);
+//            System.out.println("Wind"+ wind);
+//        }
     }
         //else
        // {
