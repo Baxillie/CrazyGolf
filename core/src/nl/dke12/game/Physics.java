@@ -324,15 +324,15 @@ public class Physics
 
                 if (lastPos != null)
                 {
-                    if(ball.position.dst(lastPos) == 0)
+                    if(ball.position.dst(lastPos) < 0.1)
                     {
                         //ball has stopped
-                        gameWorld.isMoving = false;
+                        //gameWorld.isMoving = false;
                         System.out.println("Ball has stopped");
                     }
                     else
                     {
-                        gameWorld.isMoving = true;
+                        //gameWorld.isMoving = true;
                     }
                     lastPos = new Vector3(ball.position);
                 }

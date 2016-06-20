@@ -2,6 +2,7 @@ package nl.dke12.bot.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 //import java.util.Objects;
 
 /**
@@ -95,9 +96,8 @@ public abstract class MapNode
         }
         else
         {
-            MapNode mapNode = (MapNode) o;
-            //return Objects.equals(identifier, mapNode.identifier);
-            return false;
+            return ((MapNode) o).getIdentifier().equals(this.identifier);
+            //return false;
         }
     }
 

@@ -180,7 +180,7 @@ public class GameController
             {
                 Vector3 aiShotVector = new Vector3(inputProcessor.getDirectionVector());
                 Logger.getInstance().log("AI has been allowed to shoot the ball with vector: " + aiShotVector.toString() +
-                " and force multiplier: " + forceMultiplier + " and height multiplier:  " + heightMultiplier);
+                        " and force multiplier: " + forceMultiplier + " and height multiplier:  " + heightMultiplier);
                 pushBall(aiShotVector);
             }
         }

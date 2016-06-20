@@ -52,13 +52,14 @@ public class SimpleAI implements Runnable {
             e.printStackTrace();
         }
         loop = true;
-        testPathFinding();
+        //testPathFinding();
         loop();
     }
 
     private void testPathFinding()
     {
-        FloodFill astar = new FloodFill();
+        //FloodFill astar = new FloodFill();
+        AStar astar = new AStar();
 
         MapGraph mapGraph = gameWorld.getGameMap().getGridBasedMapGraph();
         try
@@ -147,6 +148,7 @@ public class SimpleAI implements Runnable {
         loadGameWorld();
         if(ballIsInHole()) // done
         {
+            System.out.println("stopping because in hole ");
             return;
         }
         calculateBestMove();

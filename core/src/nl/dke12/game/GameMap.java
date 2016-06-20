@@ -87,7 +87,7 @@ public class GameMap
         stringIntegerHashMap.put(SolidObject.windmill, mill);
         stringIntegerHashMap.put(SolidObject.hole, hole);
         stringIntegerHashMap.put("empty", empty);
-        stringIntegerHashMap.put("misc", misc);
+        //stringIntegerHashMap.put("misc", misc);
     }
 
     /**
@@ -145,18 +145,23 @@ public class GameMap
             float width = object.getWidth();
             float depth = object.getDepth();
 
+            width = 4;
+            depth = 4;
+
             int x =  (int)(pos.x - minX) / cellLengthX;
             int y =  (int)(pos.y - minY) / cellLengthY;
 
             int widthCells = (int) width / cellLengthX;
             int depthCells = (int) depth / cellLengthY;
 
+
             String s = gameObjects.get(i).getType();
             int toPutInArray = stringIntegerHashMap.containsKey(s) ? stringIntegerHashMap.get(s) : misc;
-
+            //Log.log("s is " + s + " the thing we put in array is " + toPutInArray);
 
             if(s.equals(SolidObject.hole))
             {
+                //Log.log("s = hole");
                 for(int yDepth = y - depthCells; yDepth < (y + depthCells); yDepth++)
                 {
                     for(int xWidth = x - widthCells; xWidth < (x + widthCells); xWidth++)
@@ -176,17 +181,25 @@ public class GameMap
             }
             else
             {
+//                Log.log("in else but not in for loop");
+//                Log.log("x = " + x + " y = " + y);
+//                Log.log("depthCell = " + depthCells + " widthCells = " + widthCells);
+
                 for (int yDepth = y - depthCells; yDepth < (y + depthCells); yDepth++)
                 {
+                    //Log.log(" ydepth = " + yDepth);
                     for (int xWidth = x - widthCells; xWidth < (x + widthCells); xWidth++)
                     {
+
+                        //Log.log(" ydepth = " + yDepth + " xWidth = " + xWidth);
                         numgrid[yDepth][xWidth] = toPutInArray;
+                        //Log.log("The thing we put in array at : " + xWidth + "; " + yDepth + " with val " + toPutInArray + " and actual : " + numgrid[yDepth][xWidth]);
                     }
                 }
             }
         }
 
-        Log.log(" ball position: " + (int)(startPosition.y-minY) + " " + (int)(startPosition.x - minX));
+        //Log.log(" ball position: " + (int)(startPosition.y-minY) + " " + (int)(startPosition.x - minX));
         startNode = new MazeMapNode((int)(startPosition.y-minY),(int)(startPosition.x - minX));
 
         Log.log(ArrayUtil.arrayToString(numgrid));
@@ -206,15 +219,15 @@ public class GameMap
         graph[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()] = startNode;
         graph[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()] = goalNode;
 
-        Log.log("startNode: " + startNode.getIdentifier() + " numValue= " + numgrid[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()]);
-        Log.log("endNode:   " + goalNode.getIdentifier()  + " numValue= " + numgrid[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()]);
+        //Log.log("startNode: " + startNode.getIdentifier() + " numValue= " + numgrid[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()]);
+        //Log.log("endNode:   " + goalNode.getIdentifier()  + " numValue= " + numgrid[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()]);
 
         for(int i = 0; i < numgrid.length; i++)
         {
             for (int j = 0; j < numgrid[0].length; j++)
             {
                 //Log.log("Creating mapNode for grid at pos : " + j + " " + i );
-                if(numgrid[i][j] == 1 || numgrid[i][j] == 4)
+                if(numgrid[i][j] == 1 || numgrid[i][j] == 4 || numgrid[i][j] == 5 )
                 {
                     getMapNode(j, i, graph);
                     giveNeighbours(j, i, graph, numgrid);
@@ -225,7 +238,7 @@ public class GameMap
                 }
             }
         }
-        Log.log(gridMapGraph.getStartNode().fullInformation() + "\n " + gridMapGraph.getGoalNode().fullInformation());
+        //Log.log(gridMapGraph.getStartNode().fullInformation() + "\n " + gridMapGraph.getGoalNode().fullInformation());
     }
 
     private MapNode getMapNode(int x, int y, MapNode[][] grid) throws ArrayIndexOutOfBoundsException
@@ -256,7 +269,7 @@ public class GameMap
                     try {
                         //Log.log("Trying neighbour at pos    " + (j+x) + " " + (i+y));
 
-                        if (numgrid[i + y][j + x] == floor || numgrid[i + y][j + x] == hole)
+                        if (numgrid[i + y][j + x] == floor || numgrid[i + y][j + x] == hole || numgrid[i + y][j + x] == misc)
                         {
                             MapNode neighbouringNode = getMapNode(x + j, y + i, grid);
                             if(x == x+j || y == y+i) //not diagonal
@@ -311,11 +324,11 @@ public class GameMap
         float minY = pos.y - o.getDepth();
 
         //debug
-        Log.log(String.format("Initial variables: \n" +
-                "max X: %f\tmin X: %f\n" +
-                "max Y: %f\tmin Y: %f\n",
-                maxX, minX, maxY, minY));
-        Log.log("Total amount of objects: " + gameObjects.size());
+//        Log.log(String.format("Initial variables: \n" +
+//                "max X: %f\tmin X: %f\n" +
+//                "max Y: %f\tmin Y: %f\n",
+//                maxX, minX, maxY, minY));
+//        Log.log("Total amount of objects: " + gameObjects.size());
 
         //loop
         float width, depth;         //used in loop to store dimensions of every object
@@ -327,33 +340,33 @@ public class GameMap
             width = object.getWidth();       //x
             depth = object.getDepth();       //y
             position = object.getPosition();
-            Log.log(String.format("current object %s:\nwidth: %f\tdepth: %f\n", object.getType(), width, depth));
+            //Log.log(String.format("current object %s:\nwidth: %f\tdepth: %f\n", object.getType(), width, depth));
             //determine if this object exceeds the current dimensions
             if((temp = position.x + width) > maxX)
             {
-                Log.log("new maxX: " + temp);
+                //Log.log("new maxX: " + temp);
                 maxX = temp;
             }
             if((temp = position.x - width) < minX)
             {
-                Log.log("new minX: " + temp);
+                //Log.log("new minX: " + temp);
                 minX = temp;
             }
             if((temp = position.y + depth) > maxY)
             {
-                Log.log("new maxY: " + temp);
+               // Log.log("new maxY: " + temp);
                 maxY = temp;
             }
             if((temp = position.y - depth) < minY)
             {
-                Log.log("new minY: " + temp);
+               // Log.log("new minY: " + temp);
                 minY = temp;
             }
         }
-        Log.log(String.format("final variables: \n" +
-                        "max X: %f\tmin X: %f\n" +
-                        "max Y: %f\tmin Y: %f\n",
-                maxX, minX, maxY, minY));
+//        Log.log(String.format("final variables: \n" +
+//                        "max X: %f\tmin X: %f\n" +
+//                        "max Y: %f\tmin Y: %f\n",
+//                maxX, minX, maxY, minY));
         //calculate actual grid size and return it
         return new float[] {minX, maxX, minY, maxY};
     }

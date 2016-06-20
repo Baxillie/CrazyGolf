@@ -20,7 +20,7 @@ public class GameWorld
     private boolean multiplayer;
     private boolean isHumanPlayer;
     private boolean first = true;
-    public boolean isMoving = true;
+   // public boolean isMoving = true;
     private Ball ballSim;
     private Ball ball;
     private Ball ball2;
@@ -161,7 +161,7 @@ public class GameWorld
         }
     }
 
-    public void resetBall(Ball ball)
+    public void resetBall(Ball ball, Vector3 resetVector)
     {
         Vector3 ballpos = new Vector3(ball.position);
 
@@ -170,7 +170,7 @@ public class GameWorld
         {
             if(ball == this.ball)
             {
-                ball = new Ball (0, 0, 0, ball.type);
+                ball = new Ball (resetVector.x, resetVector.y, resetVector.z, ball.type);
                 this.ball = ball;
                 physics.setBall(ball);
                 gameDisplay.updateBall(ballpos.scl(-1));
@@ -178,7 +178,7 @@ public class GameWorld
             }
             else if (ball == ball2)
             {
-                ball = new Ball (0, 0, 0, ball.type);
+                ball = new Ball (resetVector.x, resetVector.y, resetVector.z, ball.type);
                 this.ball2 = ball;
                 physics2.setBall(ball);
                 gameDisplay.updateBall2(ballpos.scl(-1));
@@ -187,7 +187,7 @@ public class GameWorld
         }
         else
         {
-            ball = new Ball (0, 0, 0, ball.type);
+            ball = new Ball (resetVector.x, resetVector.y, resetVector.z, ball.type);
             this.ballSim = ball;
             gameDisplay.updateBall(ballpos.scl(-1));
             physics.setBall(ball);
@@ -221,12 +221,12 @@ public class GameWorld
         return windVec;
     }
 
-    public boolean ballIsInHole()
+    public boolean ballIsInHole(Ball ball)
     {
         // TODO: 19/06/2016 fix ball in hole :3 to work for ball2 and ai
         Vector3 ballPosition = ball.position;
         Vector3 holePosition = getHolePosition();
-        if(ballPosition.z < -10)
+        if(Math.abs(ballPosition.x - holePosition.x) < 1 && Math.abs(ballPosition.y - holePosition.y) < 1)
         {
             return true;
         }
@@ -238,15 +238,15 @@ public class GameWorld
         // TODO: 19/06/2016  fix this
         if(Gdx.input.isKeyJustPressed(Input.Keys.R))
         {
-            resetBall(ball);
+            resetBall(ball, new Vector3(0,0,0));
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.T))
         {
-            resetBall(ball2);
+            resetBall(ball2, new Vector3(0,0,0));
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Y))
         {
-            resetBall(ballSim);
+            resetBall(ballSim, new Vector3(0,0,0));
         }
 
         gameController.moveCamera(gameDisplay.getCamera());
