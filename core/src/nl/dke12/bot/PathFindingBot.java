@@ -35,28 +35,7 @@ public class PathFindingBot extends SimpleAI
         this.path = new ArrayList<>();
         this.gameMap = gameWorld.getGameMap();
 
-        try
-        {
-            ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
-            Log.log("Path of AI: ");
-            for(MapNode n : path)
-            {
-                Log.log(n.getIdentifier());
-                this.path.add((MazeMapNode) n);
-            }
-            Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
-            Log.log("size of path:" + path.size());
-
-            nodeInPath = 0;
-            if(path.size() <= 0)
-            {
-                throw new Exception("path length was 0");
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        generateNewPath();
     }
 
     @Override
@@ -65,17 +44,18 @@ public class PathFindingBot extends SimpleAI
         int count = 1;
         if(nodeInPath + 1 >= path.size())
         {
-            super.calculateBestMove();
-            System.out.println("Calculating with simple ai");
+            //super.calculateBestMove();
+            //System.out.println("Calculating with simple ai");
+            nodeInPath = 0;
+            generateNewPath();
             return;
         }
+
         MazeMapNode startNode = path.get(nodeInPath);   nodeInPath++;
         MazeMapNode nextNode = path.get(nodeInPath);    nodeInPath++;
 
-        float startX = startNode.getX();
-        float startY = startNode.getY();
-        float nextX  = nextNode.getX();
-        float nextY  = nextNode.getY();
+        float startX = startNode.getX(), startY = startNode.getY();
+        float nextX  = nextNode.getX() , nextY  = nextNode.getY();
 
         float absX = Math.abs(startX - nextX);
         float absY = Math.abs(startY - nextY);
@@ -83,14 +63,13 @@ public class PathFindingBot extends SimpleAI
         Vector3 shotVector = null;
         if(absX == 0 || absY == 0) //dealing with straight line
         {
-            boolean x = absX == 0;
-            boolean y = absY == 0;
+            boolean x = absX == 0; boolean y = absY == 0;
             //finding collinear points in path
-            for (int i = nodeInPath; i < path.size(); i++, nodeInPath++)
+            for (; nodeInPath < path.size(); nodeInPath++)
             {
                 count++;
+                nextNode = path.get(nodeInPath);
 
-                nextNode = path.get(i);
                 nextX  = nextNode.getX();
                 nextY  = nextNode.getY();
 
@@ -99,45 +78,39 @@ public class PathFindingBot extends SimpleAI
 
                 if (x && Math.abs(absX - 0) > 0.01)
                 {
-                    MazeMapNode prevNode = path.get(i - 1);
-                    //no abs value because we want vector with direction towards prev node
+                    MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(0, prevNode.getY() - startNode.getY(), 0.8f);
-                    System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
                 }
                 else if(y && Math.abs(absY - 0) > 0.01)
                 {
-                    MazeMapNode prevNode = path.get(i - 1);
-                    //no abs value because we want vector with direction towards prev node
+                    MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(prevNode.getX() - startNode.getX(), 0, 0.8f);
-                    System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
                 }
             }
         }
+
         else //dealing with diagonal line
         {
-
             float m = (nextNode.getY() - startNode.getY()) / (nextNode.getX() - startNode.getX());
-            float c = nextNode.getY() - m * nextNode.getX();
+            float c = nextNode.getY() - (m * nextNode.getX());
 
             //finding collinear points in path
-            for (int i = nodeInPath; i < path.size(); i++, nodeInPath++)
+            for (; nodeInPath < path.size(); nodeInPath++)
             {
                 count++;
-
-                nextNode = path.get(i);
+                nextNode = path.get(nodeInPath);
                 float actualNextX = nextNode.getX();
                 float actualNextY = nextNode.getY();
-                float possibleNextY = m * actualNextX + c;
+                float possibleNextY = (m * actualNextX) + c;
 
-                if (Math.abs(actualNextY - possibleNextY) > 0.01)
+                if (Math.abs(actualNextY - possibleNextY) > 0.01 || nextNode.equals(path.get(path.size() - 1))) // if next node == goal node
                 {
-                    MazeMapNode prevNode = path.get(i - 1);
+                    MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(prevNode.getX() - startNode.getX(), prevNode.getY() - startNode.getY(), 0.8f);
-                    System.out.println("shotVector length " + shotVector.len());
                     shotVector.scl(2.1540658f / shotVector.len());
                     break;
                 }
@@ -153,42 +126,88 @@ public class PathFindingBot extends SimpleAI
 
         if(shotVector != null)
         {
-            gameController.setForceMultiplier(count * 0.015f);
-            gameController.setHeightMultiplier(count * 0.01f);
+            gameController.setForceMultiplier(count * 0.05f);
+            gameController.setHeightMultiplier(count * 0.05f);
 
             System.out.println("Pathfinding AI is shooting with vector: " + shotVector.toString() + " currently located at location " + nodeInPath + " in the path.");
             this.distance = shotVector;
         }
         else
         {
-            try
-            {
-                //trying to determine new path everytime no other shots are possible
+            generateNewPath();
 
-//                Vector3 ballPos = gameWorld.getBallSimPosition();
-//                gameMap.setStartNode(ballPos.x, ballPos.y);
-                ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
-//                for(MapNode n : path)
-//                {
-//                    Log.log(n.getIdentifier());
-//                    this.path.add((MazeMapNode) n);
-//                }
-//
-//                nodeInPath = 0;
-//
-//                System.out.println("New Path");
-//                Log.log("New Path ");
-//                Log.log(path.toString());
-//                Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
-            }
-            catch (PathNotFoundException e)
-            {
-                System.out.println("second path calculation not possible");
-                Log.log("second path calculation not possible");
-            }
-            System.out.println("not able to calculate a shotvector in the PathFindingBot");
-            Log.log("not able to calculate a shotvector in the PathFindingBot");
+            System.out.println("not able to calculate a shotvector in the PathFindingBot, so creating a new path");
+            Log.log("not able to calculate a shotvector in the PathFindingBot, so creating a new path");
         }
 
+    }
+
+    private void generateNewPath()
+    {
+        path.clear();
+        try
+        {
+            //ballStoppedMoving();
+
+            Vector3 ballPos = gameWorld.getBallSimPosition();
+            gameMap.setStartNode(ballPos);
+            ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
+            for(MapNode n : path)
+            {
+                Log.log(n.getIdentifier());
+                this.path.add((MazeMapNode) n);
+            }
+
+            nodeInPath = 0;
+
+            System.out.println("New Path");
+            System.out.println("ballpos = " + ballPos);
+            System.out.println("startpos= " + gameMap.startPosition);
+            System.out.println("startnod= " + gameMap.startNode);
+            Log.log("New Path ");
+            Log.log(path.toString());
+            Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
+        }
+        catch (PathNotFoundException e)
+        {
+            super.calculateBestMove();
+            System.out.println("Calculating with simpleAI since path calculation not possible");
+            Log.log("Calculating with simpleAI since path calculation not possible");
+        }
+    }
+
+    private void ballStoppedMoving()
+    {
+        while(true)
+        {
+            if(gameWorld.ballIsInHole(gameWorld.getBallSim()))
+            {
+                return;
+            }
+            float directionLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x + gameWorld.getBallDirection(gameWorld.getBallSim()).y;
+            if (Math.abs(directionLength - lastVectorLength) < 0.01)
+            {
+                if(counter < 50)
+                {
+                    lastVectorLength = directionLength;
+                    counter++;
+                }
+                else
+                {
+                    counter = 0;
+                    lastVectorLength = directionLength;
+                    return;
+                }
+            }
+            else
+            {
+                lastVectorLength = directionLength;
+            }
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        }
     }
 }

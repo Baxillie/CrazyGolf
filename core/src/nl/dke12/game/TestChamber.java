@@ -26,9 +26,9 @@ public class TestChamber
      * @param shotVectors the shots which need to be taken
      * @return a list of the positions of the ball after the shots have been taken
      */
-    public ArrayList<BallSimData> simulateShot(Vector3 ballPosition, ArrayList<Vector3> shotVectors)
-    {
-
-    }
+//    public ArrayList<BallSimData> simulateShot(Vector3 ballPosition, ArrayList<Vector3> shotVectors)
+//    {
+//
+//    }
 
 }

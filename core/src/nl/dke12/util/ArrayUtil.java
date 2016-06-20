@@ -27,9 +27,10 @@ public class ArrayUtil<E>
         return toReturn;
     }
 
-    public static String arrayToStringWithPath(int[][] array, ArrayList<MazeMapNode> path)
+    public static String arrayToStringWithPath(int[][] array1, ArrayList<MazeMapNode> path)
     {
         String toReturn = new String();
+        int[][] array = array1.clone();
         for(MazeMapNode node: path)
         {
             array[node.getY()][node.getX()] = 9;

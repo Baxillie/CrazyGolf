@@ -34,12 +34,12 @@ public class GameMap
     /**
      * stores the spawning location of the golf ball
      */
-    private Vector3 startPosition;
+    public Vector3 startPosition; // TODO: 21/06/2016 change to private
 
     /**
      * stores the start node
      */
-    private MapNode startNode;
+    public MapNode startNode; // TODO: 21/06/2016 change to private
 
     /**
      * stores the end node
@@ -252,7 +252,7 @@ public class GameMap
         if(grid[y][x] == null)
         {
             grid[y][x] = new MazeMapNode(x,y);
-            System.out.println("creating new node");
+            //System.out.println("creating new node");
             //Log.log("Creating mapNode for grid at pos : " + x + " " + y );
         }
         return grid[y][x];
@@ -402,16 +402,15 @@ public class GameMap
      */
     public MapGraph getGraphBasedMapGraph()
     {
-        preMakeGrid();
+        preMakeGraph();
         Log.log("asking for graph based mapgraph which is null");
         return null;
     }
 
-    public void setStartNode(float x, float y)
+    public void setStartNode(Vector3 ballPos)
     {
         System.out.println("setting start node");
-        startPosition.x = x;
-        startPosition.y = y;
+        this.startPosition = new Vector3(ballPos);
         preMakeGrid();
         gridMapGraph.setStartNode(startNode);
     }
