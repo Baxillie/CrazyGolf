@@ -106,10 +106,10 @@ public class GameMap
         fillHashMap();
 
         //calculate grid-based view of the golf course
-        preMakeGrid();
+        //preMakeGrid();
 
         //calculate graph-based view of the golf course with the help of physics simulations
-        preMakeGraph();
+        //preMakeGraph();
     }
 
     /**
@@ -392,6 +392,7 @@ public class GameMap
      */
     public synchronized MapGraph getGridBasedMapGraph()
     {
+        preMakeGrid();
         return gridMapGraph;
     }
 
@@ -401,6 +402,7 @@ public class GameMap
      */
     public MapGraph getGraphBasedMapGraph()
     {
+        preMakeGrid();
         Log.log("asking for graph based mapgraph which is null");
         return null;
     }
