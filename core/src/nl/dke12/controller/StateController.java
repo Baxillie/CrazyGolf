@@ -1,6 +1,7 @@
 package nl.dke12.controller;
 
 import com.badlogic.gdx.Game;
+import nl.dke12.bot.PathFindingBot;
 import nl.dke12.bot.RandomAI;
 import nl.dke12.bot.SimpleAI;
 import nl.dke12.game.GameWorld;
@@ -61,7 +62,8 @@ public class StateController extends Game
         gameWorld.setDisplay(gameDisplay);
 
         //SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
-        RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor());
+        //RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor());
+        PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor());
 
         new Thread(ai).start();
 

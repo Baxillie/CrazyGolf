@@ -65,7 +65,7 @@ public class GameController
     {
         if(multiplier < 0.1f)
         {
-            forceMultiplier = 0;
+            forceMultiplier = 0.1f;
         }
         else if(multiplier > 1)
         {

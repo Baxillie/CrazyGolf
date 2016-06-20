@@ -146,7 +146,7 @@ public class SimpleAI implements Runnable {
     protected void makeDecision()
     {
         loadGameWorld();
-        if(ballIsInHole()) // done
+        if(gameWorld.ballIsInHole(gameWorld.getBallSim())) // done
         {
             System.out.println("stopping because in hole ");
             return;
@@ -172,24 +172,31 @@ public class SimpleAI implements Runnable {
         logger.log("The calculated AI vector:" + distance);
     }
 
-    protected boolean ballIsInHole()
-    {
-        distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
-        logger.log("calculating if ball is in hole with distance to hole: " + distance.len());
-        System.out.println("Distance to hole: " + distance);
-        float distanceWithoutZ = Math.abs(distance.x + distance.y);
-        if(distanceWithoutZ < 0.5)
-        {
-            return true;
-        }
-        return false;
-    }
+//    protected boolean ballIsInHole()
+//    {
+//        distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
+//        logger.log("calculating if ball is in hole with distance to hole: " + distance.len());
+//        System.out.println("Distance to hole: " + distance);
+//        float distanceWithoutZ = Math.abs(distance.x + distance.y);
+//        if(distanceWithoutZ < 0.5)
+//        {
+//            return true;
+//        }
+//        return false;
+//    }
 
     //gives the move the ai wants to make to the inputprocessor
     protected void makeMove()
     {
-        processor.setDirectionVector(distance);
-        processor.setMove(true);
+        if (distance != null)
+        {
+            processor.setDirectionVector(distance);
+            processor.setMove(true);
+        }
+        else
+        {
+            Log.log("failed to make a move");
+        }
     }
 
 }
