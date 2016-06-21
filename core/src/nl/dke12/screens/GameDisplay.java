@@ -84,7 +84,7 @@ public class GameDisplay implements Screen
         if(Gdx.input.isKeyPressed(Input.Keys.H))
         {
         /*Plz Ignore this, just me(Tom) trying stuff out*/
-        HeightmapConverter heightmap = new HeightmapConverter(30,30,500,"Heightmap.png");
+        // HeightmapConverter heightmap = new HeightmapConverter(30,30,500,"Heightmap.png");
 
 
         Material material = new Material(new IntAttribute(IntAttribute.CullFace), ColorAttribute.createDiffuse(Color.GRAY));
