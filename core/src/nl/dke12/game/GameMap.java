@@ -34,12 +34,12 @@ public class GameMap
     /**
      * stores the spawning location of the golf ball
      */
-    public Vector3 startPosition; // TODO: 21/06/2016 change to private
+    private Vector3 startPosition; // TODO: 21/06/2016 change to private
 
     /**
      * stores the start node
      */
-    public MapNode startNode; // TODO: 21/06/2016 change to private
+    private MapNode startNode; // TODO: 21/06/2016 change to private
 
     /**
      * stores the end node

@@ -44,8 +44,6 @@ public class PathFindingBot extends SimpleAI
         int count = 1;
         if(nodeInPath + 1 >= path.size())
         {
-            //super.calculateBestMove();
-            //System.out.println("Calculating with simple ai");
             nodeInPath = 0;
             generateNewPath();
             return;
