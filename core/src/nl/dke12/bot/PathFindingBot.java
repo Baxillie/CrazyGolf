@@ -161,8 +161,8 @@ public class PathFindingBot extends SimpleAI
             System.out.println("New Path");
             System.out.println("pathsize= " + path.size());
             System.out.println("ballpos = " + ballPos);
-            System.out.println("startpos= " + gameMap.startPosition);
-            System.out.println("startnod= " + gameMap.startNode);
+            System.out.println("startpos= " + gameMap.getStartPosition());
+            System.out.println("startnod= " + gameMap.getStartNode());
             Log.log("New Path ");
             Log.log(path.toString());
             Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));
