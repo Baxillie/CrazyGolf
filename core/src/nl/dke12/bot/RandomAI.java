@@ -39,7 +39,7 @@ public class RandomAI extends SimpleAI
     {
         if(super.isCloseToHole())
         {
-
+            super.calculateBestMove();
         }
         else if(SEMI_RANDOM)
         {

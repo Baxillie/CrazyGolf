@@ -189,7 +189,13 @@ public class SimpleAI implements Runnable {
         Vector3 ballPosition = gameWorld.getBallSimPosition();
         Vector3 holePosition = this.holePosition;
 
-        int distance = 0;
+        double distance =  Math.sqrt((ballPosition.x - holePosition.x)*(ballPosition.x - holePosition.x) +
+                (ballPosition.y + holePosition.y) * (ballPosition.y + holePosition.y));
+
+        if(Math.abs(distance - 4) < 0.001)
+        {
+            return true;
+        }
         return false;
     }
 }
