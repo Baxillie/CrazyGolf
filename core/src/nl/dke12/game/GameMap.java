@@ -1,6 +1,7 @@
 package nl.dke12.game;
 
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.bot.maze.MazeHeuristicDistance;
 import nl.dke12.bot.maze.MazeMapNode;
@@ -34,12 +35,12 @@ public class GameMap
     /**
      * stores the spawning location of the golf ball
      */
-    private Vector3 startPosition;
+    private Vector3 startPosition; // TODO: 21/06/2016 change to private
 
     /**
      * stores the start node
      */
-    private MapNode startNode;
+    private MapNode startNode; // TODO: 21/06/2016 change to private
 
     /**
      * stores the end node
@@ -130,8 +131,7 @@ public class GameMap
         Log.log(String.format("absoluteX: %f\tabsoluteY: %f\n", absoluteX, absoluteY));
         int gridLength = Math.round(absoluteY);
         int gridWidth  = Math.round(absoluteX);
-        Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n",gridLength, gridWidth,
-                UNIT_TO_CELL_RATIO));
+        Log.log(String.format("dimension of the grid: [%d,%d] multiplied by %d\n", gridLength, gridWidth, UNIT_TO_CELL_RATIO));
         int[][] numgrid =  new int[gridLength][gridWidth];
 
         int cellLengthX = numgrid[0].length / (int) absoluteX;
@@ -200,11 +200,16 @@ public class GameMap
         }
 
         //Log.log(" ball position: " + (int)(startPosition.y-minY) + " " + (int)(startPosition.x - minX));
-        startNode = new MazeMapNode((int)(startPosition.y-minY),(int)(startPosition.x - minX));
-
+        startNode = new MazeMapNode((int)(startPosition.y - minY),(int)(startPosition.x - minX));
+        System.out.println("setting start node in premakegrid");
         Log.log(ArrayUtil.arrayToString(numgrid));
         generateGridMapGraph(numgrid);
+
+        this.numgrid = numgrid; //// TODO: 20/06/2016 delete later because only to display path
+
     }
+        public int[][] numgrid;
+
 
     /**
      * Generates the grid-based MapGraph
@@ -214,7 +219,7 @@ public class GameMap
         gridMapGraph = new MapGraph(startNode, goalNode, new MazeHeuristicDistance());
         //Log.log(ArrayUtil.arrayToString(numgrid));
         Log.log("created girdMapGraph");
-        MapNode[][] graph = new MazeMapNode[numgrid.length][numgrid[0].length];
+        graph = new MazeMapNode[numgrid.length][numgrid[0].length];
 
         graph[((MazeMapNode) startNode).getY()][((MazeMapNode) startNode).getX()] = startNode;
         graph[((MazeMapNode) goalNode ).getY()][((MazeMapNode) goalNode ).getX()] = goalNode;
@@ -241,11 +246,14 @@ public class GameMap
         //Log.log(gridMapGraph.getStartNode().fullInformation() + "\n " + gridMapGraph.getGoalNode().fullInformation());
     }
 
+    MapNode[][] graph; // TODO: 20/06/2016 not instance variable
+
     private MapNode getMapNode(int x, int y, MapNode[][] grid) throws ArrayIndexOutOfBoundsException
     {
         if(grid[y][x] == null)
         {
             grid[y][x] = new MazeMapNode(x,y);
+            //System.out.println("creating new node");
             //Log.log("Creating mapNode for grid at pos : " + x + " " + y );
         }
         return grid[y][x];
@@ -395,9 +403,25 @@ public class GameMap
      */
     public MapGraph getGraphBasedMapGraph()
     {
-        preMakeGrid();
+        preMakeGraph();
         Log.log("asking for graph based mapgraph which is null");
         return null;
     }
 
+    public void setStartNode(Vector3 ballPos)
+    {
+        System.out.println("setting start node");
+        this.startPosition = new Vector3(ballPos);
+        this.gridMapGraph = getGridBasedMapGraph();
+    }
+
+    public MapNode getStartNode()
+    {
+        return startNode;
+    }
+
+    public Vector3 getStartPosition()
+    {
+        return startPosition;
+    }
 }

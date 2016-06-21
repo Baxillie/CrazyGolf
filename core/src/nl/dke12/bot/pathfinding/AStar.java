@@ -7,6 +7,11 @@ import java.util.*;
  */
 public class AStar
 {
+    public AStar()
+    {
+
+    }
+
     public int getScore (HashMap<MapNode, Integer> scores, MapNode node)
     {
         if (!scores.containsKey(node))
