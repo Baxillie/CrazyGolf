@@ -19,7 +19,6 @@ public class SimulationData
     private boolean gotBallInHole;
 
 
-
     public SimulationData(Vector3 initialPostion, Vector3 direction,
                           float heightModifier, float forceModifier, Vector3 holePosition)
     {
@@ -100,9 +99,9 @@ public class SimulationData
         this.holePosition = holePosition;
     }
 
-    public float absDistFromHole()
+    public double absDistFromHole()
     {
-        return Math.abs(endPosition.x - holePosition.x) + Math.abs(endPosition.y + holePosition.y);
+        return Math.sqrt((endPosition.x - holePosition.x)*(endPosition.x - holePosition.x) + (endPosition.y + holePosition.y) * (endPosition.y + holePosition.y));
     }
 
     @Override

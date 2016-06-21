@@ -328,7 +328,7 @@ public class Physics
                     {
                         //ball has stopped
                         //gameWorld.isMoving = false;
-                        System.out.println("Ball has stopped");
+                        //System.out.println("Ball has stopped");
                     }
                     else
                     {

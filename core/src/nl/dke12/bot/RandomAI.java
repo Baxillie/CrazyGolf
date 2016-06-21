@@ -33,42 +33,25 @@ public class RandomAI extends SimpleAI
     {
         ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
 
-        super.calculateBestMove();
-        Vector3 baseVector = super.distance;
+//        super.calculateBestMove();
+//        Vector3 baseVector = super.distance;
 
         //create 10 random vectors between the possible
-        for (int i = 0; i < 1; i++)
-        {
 
-            float x = 1 - rng.nextFloat() * 2;
-            float y = 1 - rng.nextFloat() * 2;
-            Vector3 shotdir = new Vector3(x, y, 0.8f );
-            shotdir.scl(2.1540658f/shotdir.len());
+        float x = 1 - rng.nextFloat() * 2;
+        float y = 1 - rng.nextFloat() * 2;
+        Vector3 shotdir = new Vector3(x, y, 0.8f);
+        //shotdir.rotate((float) i, 0,0, 1);
+        shotdir.scl(2.1540658f / shotdir.len());
 
-            //float heightmult = Math.round(rng.nextFloat() * 10) / 10;
-            float heightmult = rng.nextFloat();
-            //float forcemult = Math.round(rng.nextFloat() * 10) / 10;
-            float forcemult = rng.nextFloat();
+        float force = rng.nextFloat();
+        float height = rng.nextFloat();
 
-            simData.add(new SimulationData(
-                    super.ballPosition,
-                    shotdir,
-                    heightmult, forcemult,
-                    super.holePosition
-            ));
-        }
+        System.out.println(String.format("added: vector:%s height: %f force: %f", shotdir, 0.5, 0.3));
 
-        //simulate the 10 shots
-
-        simulator.simulateShot(simData);
-
-        //choose the best one
-
-        SimulationData bestSimulation = extractBestShot(simData);
-
-        this.distance = bestSimulation.getDirection();
-        gameController.setForceMultiplier(bestSimulation.getForceModifier());
-        gameController.setHeightMultiplier(bestSimulation.getHeightModifier());
+        this.distance = shotdir;
+        gameController.setForceMultiplier(force);
+        gameController.setHeightMultiplier(height);
     }
 
     private SimulationData extractBestShot(ArrayList<SimulationData> simData)
@@ -77,6 +60,7 @@ public class RandomAI extends SimpleAI
         for(int i = 1; i<simData.size(); i++)
         {
             SimulationData data = simData.get(i);
+            Log.log(data.toString());
             if(data.isGotBallInHole())
             {
                 return data;

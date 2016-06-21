@@ -77,19 +77,22 @@ public class TestChamber
         }
 
         //block until all threads are done
-        while(true)
+        while(threads.size() > 0)
         {
-            boolean someoneIsNotDone = false;
-            for(Thread t: threads)
+            for(int i = 0; i < threads.size(); i++)
             {
-                if(!this.isSimulatorDone(t))
+                if(this.isSimulatorDone(threads.get(i)))
                 {
-                    someoneIsNotDone = true;
+                    threads.remove(i);
+                    System.out.println("Closed thread " + i);
                 }
             }
-            if(!someoneIsNotDone)
+            try
             {
-                break;
+                Thread.sleep(1000);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
             }
         }
         Log.log("all threads are done");
@@ -184,34 +187,36 @@ public class TestChamber
             int counter = 0;
 
             float lastVectorLength = ball.direction.x + ball.direction.y;
+            //lastVectorLength += ball.direction.z;
             Log.log("Waiting until ball is done moving");
             while(true)
             {
                 updatePhysics(physics, ball);
                 //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
-                Log.log("Ball position: " + ball.getPosition());
+                //Log.log("Ball position: " + ball.getPosition());
                 if(gameWorld.ballIsInHole(ball))
                 {
                     Log.log("ball is in hole. stopping the waiting");
                     gotBallInHole = true;
                     break;
                 }
-                float directionLength = ball.direction.x + ball.direction.y;
-                Log.log(String.format("current length: %f\t previous length: %f", directionLength, lastVectorLength));
+                float directionLength = ball.direction.x + ball.direction.y;// + ball.direction.z;
+                //directionLength =+ ball.direction.z
+                //Log.log(String.format("current length: %f\t previous length: %f", directionLength, lastVectorLength));
                 if (Math.abs(directionLength - lastVectorLength) < 0.01)
                 {
                     //System.out.println("Direction length: " + directionLength + ". Last direction length: " + lastVectorLength);
                     //counter++;
-                    if(counter < 5)
+                    if(counter < 50)
                     {
                         lastVectorLength = directionLength;
                         counter++;
-                        Log.log("Increased count by 1 to " + counter);
+                        //Log.log("Increased count by 1 to " + counter);
                         //System.out.println("Increasing counter by 1. now is: " + counter);
                     }
                     else
                     {
-                        Log.log("ball is done moving, count reset to 0");
+                        //Log.log("ball is done moving, count reset to 0");
                         counter = 0;
                         lastVectorLength = directionLength;
                         break;
