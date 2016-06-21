@@ -3,7 +3,9 @@ package nl.dke12.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import nl.dke12.util.Log;
 import nl.dke12.util.Logger;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.util.ArrayList;
 
@@ -51,6 +53,22 @@ public class TestChamber
             Thread t = new Thread(new Simulator(data));
             threads.add(t);
             t.start();
+            while(true)
+            {
+                if(isSimulatorDone(t))
+                {
+                    break;
+                }
+                else
+                {
+                    try{
+                        Thread.sleep(100);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
             count++;
         }
 
@@ -112,8 +130,6 @@ public class TestChamber
          */
         private boolean gotBallInHole = false;
 
-        private SpriteBatch batch;
-
         /**
          * Constructor for a simulation
          * @param data the simulation data holding the shotVector, multipliers and initial position
@@ -149,7 +165,7 @@ public class TestChamber
             finalDirectionVector.y *= (forceMultiplier * SCALING_SPEED_CONSTANT);
             finalDirectionVector.z *= (heightMultiplier * SCALING_SPEED_CONSTANT);
 
-            Logger.getInstance().log("Going to push the ball with vector: " + finalDirectionVector.toString());
+            Log.log("Going to push the ball with vector: " + finalDirectionVector.toString());
             physics.push(new Vector3(
                     finalDirectionVector.x,
                     finalDirectionVector.y,
@@ -161,16 +177,20 @@ public class TestChamber
             int counter = 0;
 
             float lastVectorLength = ball.direction.x + ball.direction.y;
-
+            Log.log("Waiting until ball is done moving");
             while(true)
             {
+                updatePhysics(physics, ball);
                 //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
+                Log.log("Ball position: " + ball.getPosition());
                 if(gameWorld.ballIsInHole(ball))
                 {
+                    Log.log("ball is in hole. stopping the waiting");
                     gotBallInHole = true;
                     break;
                 }
                 float directionLength = ball.direction.x + ball.direction.y;
+                Log.log(String.format("current length: %f\t previous length: %f", directionLength, lastVectorLength));
                 if (Math.abs(directionLength - lastVectorLength) < 0.01)
                 {
                     //System.out.println("Direction length: " + directionLength + ". Last direction length: " + lastVectorLength);
@@ -179,11 +199,12 @@ public class TestChamber
                     {
                         lastVectorLength = directionLength;
                         counter++;
+                        Log.log("Increased count by 1 to " + counter);
                         //System.out.println("Increasing counter by 1. now is: " + counter);
                     }
                     else
                     {
-                        //System.out.println("count reset to 0");
+                        Log.log("ball is done moving, count reset to 0");
                         counter = 0;
                         lastVectorLength = directionLength;
                         break;
@@ -195,8 +216,8 @@ public class TestChamber
                 }
                 try
                 {
-                    System.out.println("sleeping for 100ms");
-                    Thread.sleep(100);
+                    //System.out.println("sleeping for 100ms");
+                    //Thread.sleep(100);
                 }
                 catch (Exception e) {e.printStackTrace();}
             }
@@ -207,8 +228,20 @@ public class TestChamber
             {
                 data.setGotBallInHole(true);
             }
+            Log.log(String.format("thread ended with: %s", data));
         }
 
+        private void updatePhysics(Physics physics, Ball ball) {
+            if (physics.collides()) {
+                if (physics.bounceVector != null) {
+                    ball.direction.set(physics.bounceVector);
+                }
+            } else {
+                ball.position.add(ball.direction);
+                physics.updateVelocity(ball.direction);
+            }
+
+        }
     }
 
     /**
@@ -221,4 +254,5 @@ public class TestChamber
     {
         return t.getState().equals(Thread.State.TERMINATED);
     }
+
 }

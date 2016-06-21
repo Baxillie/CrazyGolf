@@ -37,7 +37,7 @@ public class RandomAI extends SimpleAI
         Vector3 baseVector = super.distance;
 
         //create 10 random vectors between the possible
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
         {
 
             float x = 1 - rng.nextFloat() * 2;

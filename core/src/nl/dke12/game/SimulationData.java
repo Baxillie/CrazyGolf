@@ -102,14 +102,15 @@ public class SimulationData
 
     public float absDistFromHole()
     {
-        Vector2 absDist = new Vector2(endPosition.x, endPosition.y).add(new Vector2(holePosition.x, holePosition.y));
-        return Math.abs(absDist.len());
+        return Math.abs(endPosition.x - holePosition.x) + Math.abs(endPosition.y + holePosition.y);
     }
 
     @Override
     public String toString()
     {
-        return "dir: " + direction.toString() + "       height:" + heightModifier + "       force:" + forceModifier + "     endPos: " + endPosition.toString() + "\n" ;
+        return String.format("push: %s\theight: %s\tforce: %s\tendPos: %s\tin hole: %b\tabs distance: %f",
+                direction, heightModifier, forceModifier, endPosition, gotBallInHole, absDistFromHole());
+
     }
 
 }
