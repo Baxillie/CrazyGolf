@@ -28,7 +28,7 @@ public class RandomAI extends SimpleAI
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
-        this.simulator = new TestChamber(gameWorld);
+        //this.simulator = new TestChamber(gameWorld);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class RandomAI extends SimpleAI
 
         //simulate the 15 shots
 
-        simulator.simulateShot(simData);
+        //simulator.simulateShot(simData);
 
         //choose the best one
 
