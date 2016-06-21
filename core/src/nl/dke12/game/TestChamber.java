@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.util.Log;
 import nl.dke12.util.Logger;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.util.ArrayList;
 
@@ -129,6 +128,8 @@ public class TestChamber
          * whether the ball got in the hole with this shotVector
          */
         private boolean gotBallInHole = false;
+
+        private SpriteBatch batch;
 
         /**
          * Constructor for a simulation
@@ -254,5 +255,4 @@ public class TestChamber
     {
         return t.getState().equals(Thread.State.TERMINATED);
     }
-
 }
