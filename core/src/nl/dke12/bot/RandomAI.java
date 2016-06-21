@@ -25,7 +25,7 @@ public class RandomAI extends SimpleAI
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
-        this.simulator = new TestChamber();
+        this.simulator = new TestChamber(gameWorld);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class RandomAI extends SimpleAI
         Vector3 baseVector = super.distance;
 
         //create 10 random vectors between the possible
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 10; i++)
         {
 
-            float x = rng.nextFloat() * 2 - 1;
-            float y = rng.nextFloat() * 2 - 1;
-            Vector3 shotdir = new Vector3(baseVector.x + x, baseVector.y + y, 0.8f );
+            float x = 1 - rng.nextFloat() * 2;
+            float y = 1 - rng.nextFloat() * 2;
+            Vector3 shotdir = new Vector3(x, y, 0.8f );
             shotdir.scl(2.1540658f/shotdir.len());
 
             //float heightmult = Math.round(rng.nextFloat() * 10) / 10;

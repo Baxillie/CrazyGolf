@@ -26,9 +26,9 @@ public class TestChamber
     /**
      * Constructor for the TestChamber
      */
-    public TestChamber()
+    public TestChamber(GameWorld gw)
     {
-
+        this.gameworld = gw;
     }
 
 
@@ -44,11 +44,14 @@ public class TestChamber
         ArrayList<Thread> threads = new ArrayList<>();
 
         //create new thread based on data and start it immediately
+        int count = 1;
         for(SimulationData data: dataList)
         {
+            System.out.println("Started thread " + count);
             Thread t = new Thread(new Simulator(data));
             threads.add(t);
             t.start();
+            count++;
         }
 
         //block until all threads are done
