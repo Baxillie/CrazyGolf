@@ -440,7 +440,7 @@ public class Physics
                     {
                         if (perpLine.len()>0.05)
                         {
-                            perpLine.scl(0.5f);
+                            perpLine.scl(0.4f);
                         }
                         else
                         {
@@ -591,7 +591,7 @@ public class Physics
                         //todo: possibly put an else here if it's broken
                     }
                 }*/
-                ball.direction.add(new Vector3(0,0,-0.035f));
+                ball.direction.add(new Vector3(0,0,-0.04f));
             }
             else
             {
