@@ -25,6 +25,11 @@ public class TestChamber
     private GameWorld gameworld;
 
     /**
+     * true will do the simulations sequentially, false parrallel(which will ruin the log)
+     */
+    private static boolean sequential = true;
+
+    /**
      * Constructor for the TestChamber
      */
     public TestChamber(GameWorld gw)
@@ -52,7 +57,7 @@ public class TestChamber
             Thread t = new Thread(new Simulator(data));
             threads.add(t);
             t.start();
-            while(true)
+            while(sequential)
             {
                 if(isSimulatorDone(t))
                 {
@@ -87,6 +92,7 @@ public class TestChamber
                 break;
             }
         }
+        Log.log("all threads are done");
     }
 
     /**
