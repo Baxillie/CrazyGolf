@@ -81,6 +81,7 @@ public class StateController extends Game
             PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor(), false);
             new Thread(ai).start();
         }
+
         else if(aistring.equals("pathfindingfloodfill"))
         {
             PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor(), true);
