@@ -200,7 +200,7 @@ public class GameMap
 
         //Log.log(" ball position: " + (int)(startPosition.y-minY) + " " + (int)(startPosition.x - minX));
         startNode = new MazeMapNode((int)(startPosition.y - minY),(int)(startPosition.x - minX));
-
+        System.out.println("setting start node in premakegrid");
         Log.log(ArrayUtil.arrayToString(numgrid));
         generateGridMapGraph(numgrid);
 
