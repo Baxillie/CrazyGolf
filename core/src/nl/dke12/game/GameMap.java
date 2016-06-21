@@ -411,7 +411,6 @@ public class GameMap
     {
         System.out.println("setting start node");
         this.startPosition = new Vector3(ballPos);
-        preMakeGrid();
-        gridMapGraph.setStartNode(startNode);
+        this.gridMapGraph = getGridBasedMapGraph();
     }
 }
