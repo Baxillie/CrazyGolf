@@ -32,16 +32,12 @@ public class RandomAI extends SimpleAI
     public void calculateBestMove()
     {
         ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
+        super.calculateBestMove();
+        Vector3 baseVector = super.distance;
 
-//        super.calculateBestMove();
-//        Vector3 baseVector = super.distance;
-
-        //create 10 random vectors between the possible
-
-        float x = 1 - rng.nextFloat() * 2;
-        float y = 1 - rng.nextFloat() * 2;
-        Vector3 shotdir = new Vector3(x, y, 0.8f);
-        //shotdir.rotate((float) i, 0,0, 1);
+        int degree = -90 + rng.nextInt(180);
+        Vector3 shotdir = new Vector3(super.distance);
+        shotdir.rotate((float) degree, 0,0, 1);
         shotdir.scl(2.1540658f / shotdir.len());
 
         float force = rng.nextFloat();
