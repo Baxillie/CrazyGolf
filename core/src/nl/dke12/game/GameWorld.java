@@ -43,7 +43,7 @@ public class GameWorld
         this.isHumanPlayer = isHumanPlayer;
         player1Turn = true;
 
-        this.worldLoader = new GameWorldLoader("core/assets/levels/Simple2.txt");
+        this.worldLoader = new GameWorldLoader("core/assets/levels/Simple1.txt");
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
@@ -63,6 +63,11 @@ public class GameWorld
     public GameController getGameController()
     {
         return gameController;
+    }
+
+    public ArrayList<SolidObject> getSolidObjects()
+    {
+        return solidObjects;
     }
 
     public void setDisplay(GameDisplay display)

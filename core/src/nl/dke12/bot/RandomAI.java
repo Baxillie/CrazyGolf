@@ -1,6 +1,10 @@
 package nl.dke12.bot;
 
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import nl.dke12.controller.GameController;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.SimulationData;
@@ -17,18 +21,18 @@ import java.util.Random;
 public class RandomAI extends SimpleAI
 {
 
-    private boolean SEMI_RANDOM = false;
-
+    private boolean SEMI_RANDOM;
     private GameController gameController;
     private Random rng;
     private TestChamber simulator;
 
-    public RandomAI(GameWorld gameWorld, InputProcessor processor)
+    public RandomAI(GameWorld gameWorld, InputProcessor processor, boolean semi_random)
     {
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
         //this.simulator = new TestChamber(gameWorld);
+        this.SEMI_RANDOM = semi_random;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class RandomAI extends SimpleAI
     {
         if(super.isCloseToHole())
         {
-
+            super.calculateBestMove();
         }
         else if(SEMI_RANDOM)
         {
@@ -125,4 +129,44 @@ public class RandomAI extends SimpleAI
         return bestShot;
     }
 
+
+    protected void calc()
+    {
+        Vector3 hole = this.holePosition;
+        Vector3 ball = new Vector3(this.ballPosition);
+
+        ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
+
+        //create 10 random vectors between the possible
+        for (int i = 0; i < 10; i++)
+        {
+            float x = rng.nextFloat() * 2 - 1;
+            float y = rng.nextFloat() * 2 - 1;
+            float z = 0.1f; //dont push it up or down
+            Vector3 randomVector = new Vector3(x, y, z);
+            Log.log(String.format("Random vector %d: %s", i, randomVector.toString()));
+            randomVectors.add(randomVector);
+        }
+
+        //determine which random vector is the closest to the hole.
+        Vector3 bestVector = randomVectors.get(0);
+        Vector3 distance = new Vector3(new Vector3(holePosition).sub(bestVector));
+        float bestDist = distance.len();
+        float distanceFromHole;
+
+        for (int i = 1; i < randomVectors.size(); i++)
+        {
+            distance = new Vector3(new Vector3(holePosition).sub(randomVectors.get(i)));
+            distanceFromHole = distance.len();
+            if(distanceFromHole < bestDist)
+            {
+                bestVector = randomVectors.get(i);
+                bestDist = distanceFromHole;
+            }
+        }
+
+        //set the vector which is going to be given to the physics
+        this.distance = new Vector3(bestVector); //// TODO: 23/05/2016
+        Log.log("decided on vector: " + distance.toString());
+    }
 }
