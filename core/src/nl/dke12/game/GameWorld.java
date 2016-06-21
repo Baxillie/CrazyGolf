@@ -373,6 +373,10 @@ public class GameWorld
         return ballSim.position;
     }
 
+    public ArrayList<SolidObject> getSolidObjects() {
+        return solidObjects;
+    }
+
     public Vector3 getBallDirection(Ball ball)
     {
         return ball.direction;

@@ -19,6 +19,11 @@ public class TestChamber
 {
 
     /**
+     * the gameworld needed to do simulations due to opengl contect
+     */
+    private GameWorld gameworld;
+
+    /**
      * Constructor for the TestChamber
      */
     public TestChamber()
@@ -30,8 +35,7 @@ public class TestChamber
     /**
      * Simulate the given amount of shotvectors in the game world.
      *
-     * @param ballPosition the initial position of the ball
-     * @param shotVectors the shots which need to be taken
+     * @param dataList the list of SimulationData needed to be simulated
      * @return a list of the positions of the ball after the shots have been taken
      */
     public void simulateShot(ArrayList<SimulationData> dataList)
@@ -118,8 +122,6 @@ public class TestChamber
             this.pushVector = data.getDirection();
             this.forceMultiplier = data.getForceModifier();
             this.heightMultiplier = data.getHeightModifier();
-
-
         }
 
         /**
@@ -130,9 +132,12 @@ public class TestChamber
         public void run()
         {
             //create the GameWorld and place the ball at the correct location
-            GameWorld gameWorld = new GameWorld(false, false);
-            Ball simulationBall = gameWorld.getBallSim(); //get the ball which is going to be placed
-            gameWorld.resetBall(simulationBall, initialPosition); //"reset it" to be correct position
+            GameWorld gameWorld = gameworld;
+
+            Ball ball = new Ball(initialPosition.x, initialPosition.y, initialPosition.z, "ball1");
+            Physics physics = new Physics(gameWorld.getSolidObjects(), ball, gameWorld);
+            //gameWorld.resetBall(simulationBall, initialPosition); //"reset it" to be correct position
+
 
             //shoot the ball with correct the correct force
             Vector3 finalDirectionVector = new Vector3(pushVector);
@@ -142,7 +147,7 @@ public class TestChamber
             finalDirectionVector.z *= (heightMultiplier * SCALING_SPEED_CONSTANT);
 
             Logger.getInstance().log("Going to push the ball with vector: " + finalDirectionVector.toString());
-            gameWorld.pushBall("ball1", new Vector3(
+            physics.push(new Vector3(
                     finalDirectionVector.x,
                     finalDirectionVector.y,
                     finalDirectionVector.z)
@@ -151,17 +156,18 @@ public class TestChamber
             //wait until ball has stopped moving
             boolean gotBallInHole = false;
             int counter = 0;
-            float lastVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x +
-                    gameWorld.getBallDirection(gameWorld.getBallSim()).y;
+
+            float lastVectorLength = ball.direction.x + ball.direction.y;
+
             while(true)
             {
                 //  System.out.println("in loooooooooooooooooooooooooooooooooooooooooop");
-                if(gameWorld.ballIsInHole(gameWorld.getBallSim()))
+                if(gameWorld.ballIsInHole(ball))
                 {
                     gotBallInHole = true;
                     break;
                 }
-                float directionLength = gameWorld.getBallDirection(gameWorld.getBallSim()).x + gameWorld.getBallDirection(gameWorld.getBallSim()).y;
+                float directionLength = ball.direction.x + ball.direction.y;
                 if (Math.abs(directionLength - lastVectorLength) < 0.01)
                 {
                     //System.out.println("Direction length: " + directionLength + ". Last direction length: " + lastVectorLength);
@@ -193,7 +199,7 @@ public class TestChamber
             }
 
             //add the end location to the SimulationData and set if ball got in hole
-            data.setEndPosition(gameWorld.getBallSimPosition());
+            data.setEndPosition(new Vector3(ball.position));
             if(gotBallInHole)
             {
                 data.setGotBallInHole(true);
