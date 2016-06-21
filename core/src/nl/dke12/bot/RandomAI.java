@@ -51,7 +51,7 @@ public class RandomAI extends SimpleAI
             float forcemult = rng.nextFloat();
 
             simData.add(new SimulationData(
-                    super.gameWorld.getBallPosition(),
+                    super.ballPosition,
                     shotdir,
                     heightmult, forcemult,
                     super.holePosition
@@ -64,28 +64,11 @@ public class RandomAI extends SimpleAI
 
         //choose the best one
 
-        if(flag)
-        {
-            Log.log(simData.toString());
-            SimulationData bestShot = simData.get(simData.size()-1);
-            gameController.setForceMultiplier(bestShot.getForceModifier());
-            gameController.setHeightMultiplier(bestShot.getHeightModifier());
-            super.distance = bestShot.getDirection();
-            System.out.println("THIS IS THE BEST SHOT because ball is in hole ");
-            Log.log("it's taking entry " + bestShot);
-            Log.log("hole position is  " + holePosition);
-        }
-        else
-        {
-            Log.log(simData.toString());
-            SimulationData bestShot = extractBestShot(simData);
-            gameController.setForceMultiplier(bestShot.getForceModifier());
-            gameController.setHeightMultiplier(bestShot.getHeightModifier());
-            super.distance = bestShot.getDirection();
-            System.out.println("THIS IS THE BEST SHOT ");
-            Log.log("it's taking entry " + bestShot);
-            Log.log("hole position is  " + holePosition);
-        }
+        SimulationData bestSimulation = extractBestShot(simData);
+
+        this.distance = bestSimulation.getDirection();
+        gameController.setForceMultiplier(bestSimulation.getForceModifier());
+        gameController.setHeightMultiplier(bestSimulation.getHeightModifier());
     }
 
     private SimulationData extractBestShot(ArrayList<SimulationData> simData)
@@ -93,7 +76,12 @@ public class RandomAI extends SimpleAI
         SimulationData bestShot = simData.get(0);
         for(int i = 1; i<simData.size(); i++)
         {
-            if(bestShot.absDistFromHole() > simData.get(i).absDistFromHole())
+            SimulationData data = simData.get(i);
+            if(data.isGotBallInHole())
+            {
+                return data;
+            }
+            if(bestShot.absDistFromHole() > data.absDistFromHole())
             {
                 bestShot = simData.get(i);
             }
@@ -101,44 +89,4 @@ public class RandomAI extends SimpleAI
         return bestShot;
     }
 
-
-    protected void calc()
-    {
-        Vector3 hole = this.holePosition;
-        Vector3 ball = new Vector3(this.ballPosition);
-
-        ArrayList<Vector3> randomVectors = new ArrayList<Vector3>(10);
-
-        //create 10 random vectors between the possible
-        for (int i = 0; i < 10; i++)
-        {
-            float x = rng.nextFloat() * 2 - 1;
-            float y = rng.nextFloat() * 2 - 1;
-            float z = 0.1f; //dont push it up or down
-            Vector3 randomVector = new Vector3(x, y, z);
-            Log.log(String.format("Random vector %d: %s", i, randomVector.toString()));
-            randomVectors.add(randomVector);
-        }
-
-        //determine which random vector is the closest to the hole.
-        Vector3 bestVector = randomVectors.get(0);
-        Vector3 distance = new Vector3(new Vector3(holePosition).sub(bestVector));
-        float bestDist = distance.len();
-        float distanceFromHole;
-
-        for (int i = 1; i < randomVectors.size(); i++)
-        {
-            distance = new Vector3(new Vector3(holePosition).sub(randomVectors.get(i)));
-            distanceFromHole = distance.len();
-            if(distanceFromHole < bestDist)
-            {
-                bestVector = randomVectors.get(i);
-                bestDist = distanceFromHole;
-            }
-        }
-
-        //set the vector which is going to be given to the physics
-        this.distance = new Vector3(bestVector); //// TODO: 23/05/2016
-        Log.log("decided on vector: " + distance.toString());
-    }
 }

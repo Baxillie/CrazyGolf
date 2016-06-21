@@ -1,5 +1,7 @@
 package nl.dke12.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.util.Logger;
 
@@ -103,6 +105,8 @@ public class TestChamber
          */
         private boolean gotBallInHole = false;
 
+        private SpriteBatch batch;
+
         /**
          * Constructor for a simulation
          * @param data the simulation data holding the shotVector, multipliers and initial position
@@ -114,6 +118,8 @@ public class TestChamber
             this.pushVector = data.getDirection();
             this.forceMultiplier = data.getForceModifier();
             this.heightMultiplier = data.getHeightModifier();
+
+
         }
 
         /**
