@@ -61,9 +61,9 @@ public class StateController extends Game
         GameDisplay gameDisplay = new GameDisplay(false, gameWorld,this);
         gameWorld.setDisplay(gameDisplay);
 
-        SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
+        //SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
         //RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor());
-        //PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor());
+        PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor());
 
         new Thread(ai).start();
 

@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class GameWorld
 {
+    private static boolean NOISE = false;
+
     private ArrayList<SolidObject> solidObjects;
     private ArrayList<InstanceModel> instances;
     private ArrayList<InstanceModel> mapOfWorld;
@@ -42,8 +44,8 @@ public class GameWorld
         this.multiplayer = multiplayer;
         this.isHumanPlayer = isHumanPlayer;
         player1Turn = true;
-
-        this.worldLoader = new GameWorldLoader("core/assets/SimpleSlope5.txt");
+        this.NOISE = true;
+        this.worldLoader = new GameWorldLoader("core/assets/data/levels/Simple1.txt");
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();
@@ -119,7 +121,7 @@ public class GameWorld
         {
             this.physics = new Physics(solidObjects, ballSim, this);
             physics.wind = this.wind;
-            physics.noise = false;
+            physics.noise = NOISE;
         }
         else if(multiplayer)
         {
@@ -143,7 +145,7 @@ public class GameWorld
             this.physics = new Physics(solidObjects, ball, this);
             physics.addSolidObject(solidBall2);
             physics.wind = this.wind;
-            physics.noise = false;
+            physics.noise = NOISE;
             //gameDisplay.updateBall(ball.position);
 
             this.physics2 = new Physics(solidObjects, ball2, this);
@@ -157,7 +159,7 @@ public class GameWorld
         {
             this.physics = new Physics(solidObjects, ball, this);
             physics.wind = this.wind;
-            physics.noise = true;
+            physics.noise = NOISE;
         }
     }
 
@@ -371,6 +373,10 @@ public class GameWorld
     {
         //System.out.println("BALL SIM POS IS " + ballSim.position);
         return ballSim.position;
+    }
+
+    public ArrayList<SolidObject> getSolidObjects() {
+        return solidObjects;
     }
 
     public Vector3 getBallDirection(Ball ball)

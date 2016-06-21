@@ -114,7 +114,10 @@ public class SimpleAI implements Runnable {
                 {
                     e.printStackTrace();
                 }
+                long start = System.currentTimeMillis();
                 makeDecision();
+                long end = System.currentTimeMillis();
+                System.out.println("Run time for decision: " + (end - start) + " ms");
             }
             else
             {
@@ -181,4 +184,18 @@ public class SimpleAI implements Runnable {
         }
     }
 
+    protected boolean isCloseToHole()
+    {
+        Vector3 ballPosition = gameWorld.getBallSimPosition();
+        Vector3 holePosition = this.holePosition;
+
+        double distance =  Math.sqrt((ballPosition.x - holePosition.x)*(ballPosition.x - holePosition.x) +
+                (ballPosition.y + holePosition.y) * (ballPosition.y + holePosition.y));
+
+        if(Math.abs(distance - 4) < 0.001)
+        {
+            return true;
+        }
+        return false;
+    }
 }

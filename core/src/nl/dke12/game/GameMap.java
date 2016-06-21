@@ -1,6 +1,7 @@
 package nl.dke12.game;
 
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.bot.maze.MazeHeuristicDistance;
 import nl.dke12.bot.maze.MazeMapNode;
@@ -414,21 +415,12 @@ public class GameMap
         this.gridMapGraph = getGridBasedMapGraph();
     }
 
-    public void setTheStartNode(MapNode startNode)
-    {
-        this.startNode = startNode;
-    }
-    public void setStartPosition(Vector3 position)
-    {
-        this.startPosition = position;
-    }
-
     public MapNode getStartNode()
     {
         return startNode;
     }
 
-    public Vector3  getStartPosition()
+    public Vector3 getStartPosition()
     {
         return startPosition;
     }

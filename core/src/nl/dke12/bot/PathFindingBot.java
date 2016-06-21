@@ -79,6 +79,7 @@ public class PathFindingBot extends SimpleAI
                     MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(0, prevNode.getY() - startNode.getY(), 0.8f);
                     shotVector.scl(2.1540658f / shotVector.len());
+                    //generateNewPath();
                     break;
                 }
                 else if(y && Math.abs(absY - 0) > 0.01)
@@ -86,6 +87,7 @@ public class PathFindingBot extends SimpleAI
                     MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(prevNode.getX() - startNode.getX(), 0, 0.8f);
                     shotVector.scl(2.1540658f / shotVector.len());
+                    //generateNewPath();
                     break;
                 }
             }
@@ -110,6 +112,7 @@ public class PathFindingBot extends SimpleAI
                     MazeMapNode prevNode = path.get(nodeInPath - 1);
                     shotVector = new Vector3(prevNode.getX() - startNode.getX(), prevNode.getY() - startNode.getY(), 0.8f);
                     shotVector.scl(2.1540658f / shotVector.len());
+                    //generateNewPath();
                     break;
                 }
             }
@@ -124,7 +127,7 @@ public class PathFindingBot extends SimpleAI
 
         if(shotVector != null)
         {
-            gameController.setForceMultiplier(count * 0.05f);
+            gameController.setForceMultiplier(count * 0.025f);
             gameController.setHeightMultiplier(count * 0.05f);
 
             System.out.println("Pathfinding AI is shooting with vector: " + shotVector.toString() + " currently located at location " + nodeInPath + " in the path.");

@@ -14,7 +14,7 @@ import nl.dke12.util.Logger;
  */
 public class GameController
 {
-    private static final float SCALING_SPEED_CONSTANT = 2f;
+    public static final float SCALING_SPEED_CONSTANT = 2f;
 
     private Physics physics;
     private Physics physics2;
