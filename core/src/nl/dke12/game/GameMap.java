@@ -413,4 +413,23 @@ public class GameMap
         this.startPosition = new Vector3(ballPos);
         this.gridMapGraph = getGridBasedMapGraph();
     }
+
+    public void setTheStartNode(MapNode startNode)
+    {
+        this.startNode = startNode;
+    }
+    public void setStartPosition(Vector3 position)
+    {
+        this.startPosition = position;
+    }
+
+    public MapNode getStartNode()
+    {
+        return startNode;
+    }
+
+    public Vector3  getStartPosition()
+    {
+        return startPosition;
+    }
 }
