@@ -103,7 +103,7 @@ public class Physics
 
         if(this.noise)
         {
-            //dir.add(misclick);
+            dir.add(misclick);
         }
         gravit = true;
 
