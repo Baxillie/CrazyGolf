@@ -1,6 +1,7 @@
 package nl.dke12.bot;
 
 import com.badlogic.gdx.math.Vector3;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import nl.dke12.bot.maze.MazeMapNode;
 import nl.dke12.bot.pathfinding.AStar;
 import nl.dke12.bot.pathfinding.FloodFill;
@@ -155,14 +156,17 @@ public class PathFindingBot extends SimpleAI
 
             Vector3 ballPos = gameWorld.getBallSimPosition();
             gameMap.setStartNode(ballPos);
+
             if(floodfill)
             {
                 ArrayList<MapNode> path = new FloodFill().calculatePath(gameMap.getGridBasedMapGraph());
             }
             else
             {
+                System.out.println("GENERATING PATH FROM a*");
                 ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
             }
+
             for(MapNode n : path)
             {
                 Log.log(n.getIdentifier());
@@ -176,6 +180,7 @@ public class PathFindingBot extends SimpleAI
             System.out.println("ballpos = " + ballPos);
             System.out.println("startpos= " + gameMap.getStartPosition());
             System.out.println("startnod= " + gameMap.getStartNode());
+            System.out.println("holeposi= " + gameMap.getGoalNode());
             Log.log("New Path ");
             Log.log(path.toString());
             Log.log(ArrayUtil.arrayToStringWithPath(gameMap.numgrid, this.path));

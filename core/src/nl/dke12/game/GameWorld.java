@@ -45,7 +45,7 @@ public class GameWorld
         this.isHumanPlayer = isHumanPlayer;
         player1Turn = true;
         this.NOISE = true;
-        this.worldLoader = new GameWorldLoader("core/assets/data/levels/Simple1.txt");
+        this.worldLoader = new GameWorldLoader("core/assets/levels/Level2.txt");
         this.instances = worldLoader.getModelInstances();
         this.mapOfWorld = worldLoader.getMapOfWorld();
         this.solidObjects = worldLoader.getSolidObjects();

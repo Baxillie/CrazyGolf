@@ -424,4 +424,9 @@ public class GameMap
     {
         return startPosition;
     }
+
+    public MapNode getGoalNode()
+    {
+        return goalNode;
+    }
 }
