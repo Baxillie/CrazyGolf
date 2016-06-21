@@ -181,4 +181,12 @@ public class SimpleAI implements Runnable {
         }
     }
 
+    protected boolean isCloseToHole()
+    {
+        Vector3 ballPosition = gameWorld.getBallSimPosition();
+        Vector3 holePosition = this.holePosition;
+
+        int distance = 0;
+        return false;
+    }
 }
