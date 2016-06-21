@@ -34,7 +34,7 @@ public class Physics
     protected boolean noise;
     protected boolean gravit;
 
-    public Physics(ArrayList<SolidObject> obstacles, Ball ball,GameWorld gameWorld)
+    public Physics(ArrayList<SolidObject> obstacles, Ball ball, GameWorld gameWorld)
     {
         this.ball = ball;
         this.obstacles = obstacles;
