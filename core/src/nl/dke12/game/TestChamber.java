@@ -70,6 +70,7 @@ public class TestChamber
                 break;
             }
         }
+        System.out.println("all are done");
     }
 
     /**
@@ -195,7 +196,7 @@ public class TestChamber
                 }
                 try
                 {
-                    System.out.println("sleeping for 100ms");
+                    //System.out.println("sleeping for 100ms");
                     Thread.sleep(100);
                 }
                 catch (Exception e) {e.printStackTrace();}
