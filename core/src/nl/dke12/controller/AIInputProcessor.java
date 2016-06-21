@@ -2,6 +2,10 @@ package nl.dke12.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import nl.dke12.bot.pathfinding.BotShotInterpolation;
+import nl.dke12.bot.pathfinding.MapNode;
+
+import java.util.ArrayList;
 
 /**
  * layer between AI and GameController
@@ -17,6 +21,7 @@ public class AIInputProcessor implements InputProcessor
     {
         direction = new Vector3(0,0,0);
     }
+
     public boolean moveCamLeft()
     {
         return Gdx.input.isKeyPressed(Actions.MOVE_CAMERA_LEFT);
@@ -71,6 +76,7 @@ public class AIInputProcessor implements InputProcessor
     {
         this.move = move;
     }
+
     @Override
     public boolean moveBall()
     {
@@ -86,7 +92,6 @@ public class AIInputProcessor implements InputProcessor
     {
         return move;
     }
-
 
     @Override
     public boolean moveBall2() {
@@ -104,6 +109,13 @@ public class AIInputProcessor implements InputProcessor
         }
         return direction;
     }
+
+    public Vector3 getDirectionVectorFromInterpolation(ArrayList<MapNode> path)
+    {
+        BotShotInterpolation interpolation = new BotShotInterpolation(path);
+        return interpolation.getDirectionVector();
+    }
+
 
     public void setDirectionVector(Vector3 direction)
     {

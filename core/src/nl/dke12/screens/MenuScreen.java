@@ -105,6 +105,7 @@ public class MenuScreen implements Screen {
 		aiButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("AI button was clicked");
 				stateController.displayAI();
 			}
 		});

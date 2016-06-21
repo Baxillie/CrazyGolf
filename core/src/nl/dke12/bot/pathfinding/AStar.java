@@ -7,6 +7,11 @@ import java.util.*;
  */
 public class AStar
 {
+    public AStar()
+    {
+
+    }
+
     public int getScore (HashMap<MapNode, Integer> scores, MapNode node)
     {
         if (!scores.containsKey(node))
@@ -19,9 +24,9 @@ public class AStar
     {
         MapNode beginNode = mapgraph.getStartNode();
         MapNode endNode = mapgraph.getGoalNode();
-        HashMap<MapNode, Integer> fScores = new HashMap<MapNode, Integer>();
-        HashMap<MapNode, MapNode> path = new HashMap<MapNode, MapNode>();
-        HashMap<MapNode, Integer> gScores = new HashMap<MapNode, Integer>();
+        HashMap<MapNode, Integer> fScores = new HashMap<>();
+        HashMap<MapNode, MapNode> path = new HashMap<>();
+        HashMap<MapNode, Integer> gScores = new HashMap<>();
 
 
         final Comparator<MapNode> comparator = new Comparator<MapNode>()
@@ -29,8 +34,8 @@ public class AStar
             @Override
             public int compare(MapNode o1, MapNode o2)
             {
-                int a = 1;//getScore(fScores, o1);
-                int b = 1;//getScore(fScores, o2);
+                int a = getScore(fScores, o1);
+                int b = getScore(fScores, o2);
 
                 if(a < b)
                     return -1;
@@ -41,12 +46,12 @@ public class AStar
             }
         };
 
-        PriorityQueue<MapNode> opened = new PriorityQueue<MapNode>();
+        PriorityQueue<MapNode> opened = new PriorityQueue<>(comparator);
         opened.add(beginNode);
         gScores.put(beginNode, 0);
         fScores.put(beginNode, mapgraph.heuristicDistance(beginNode, endNode));
 
-        PriorityQueue<MapNode> closed = new PriorityQueue<MapNode>();
+        PriorityQueue<MapNode> closed = new PriorityQueue<>(comparator);
 
         while(!opened.isEmpty())
         {
@@ -55,6 +60,11 @@ public class AStar
             {
                 return constructPath(path, endNode);
             }
+            if(!currentNode.isWalkable())
+            {
+                continue;
+            }
+
 
             closed.add(currentNode);
 
@@ -98,12 +108,12 @@ public class AStar
 
     private ArrayList<MapNode> constructPath(HashMap<MapNode, MapNode> path, MapNode endNode)
     {
-        ArrayList<MapNode> thePath = new ArrayList<MapNode>();
+        ArrayList<MapNode> thePath = new ArrayList<>();
         MapNode node = endNode;
 
         while(node != null)
         {
-            thePath.add(node);
+            thePath.add(0, node);
             node = path.get(node);
         }
 

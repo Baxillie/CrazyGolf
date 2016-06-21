@@ -1,15 +1,14 @@
 package nl.dke12.bot;
 
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.sun.org.apache.xerces.internal.parsers.CachingParserPool;
-import com.sun.org.apache.xml.internal.serializer.utils.SystemIDResolver;
-import com.sun.org.omg.CORBA.ExcDescriptionSeqHelper;
+import nl.dke12.bot.pathfinding.*;
 import nl.dke12.controller.AIInputProcessor;
 import nl.dke12.controller.InputProcessor;
 import nl.dke12.game.GameWorld;
+import nl.dke12.util.Log;
 import nl.dke12.util.Logger;
+
+import java.util.ArrayList;
 
 /**
  * Created by nik on 5/20/16.
@@ -17,12 +16,9 @@ import nl.dke12.util.Logger;
 public class SimpleAI implements Runnable {
 
     public static final int WAIT_TIME = 100; //ms
-
     private static Logger logger = Logger.getInstance();
-
     protected boolean loop;
     protected boolean makingDecision;
-
     protected AIInputProcessor processor;
     protected Vector3 ballPosition;
     protected Vector3 holePosition;
@@ -43,19 +39,41 @@ public class SimpleAI implements Runnable {
 
     @Override
     public void run() {
-        try {
+        try
+        {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
         loop = true;
+        //testPathFinding();
         loop();
     }
 
-    private boolean ballStoppedMoving(float directionLength) {
-        logger.log(String.format("deciding if ball stopped moving with current vector length: %f and" +
-                " previous vector length: %f and counter: %d", directionLength, lastVectorLength, counter));
-        if (Math.abs(directionLength - lastVectorLength) < 0.1)
+    private void testPathFinding()
+    {
+        //FloodFill astar = new FloodFill();
+        AStar astar = new AStar();
+
+        MapGraph mapGraph = gameWorld.getGameMap().getGridBasedMapGraph();
+        try
+        {
+            ArrayList<MapNode> list = astar.calculatePath(mapGraph);
+            logger.log("size of path:" + list.size());
+            logger.log(list.toString());
+        }
+        catch(PathNotFoundException e)
+        {
+            System.out.println("Path not found in simple ai testPathFinding()");
+        }
+    }
+
+    private boolean ballStoppedMoving(float directionLength)
+    {
+        logger.log(String.format("deciding if ball stopped moving with current vector length: %f and previous vector length: %f and counter: %d",
+                                                                        directionLength, lastVectorLength, counter));
+        if (Math.abs(directionLength - lastVectorLength) < 0.01)
         {
             counter++;
             if(counter < 20)
@@ -81,35 +99,28 @@ public class SimpleAI implements Runnable {
     {
         while(loop)
         {
-            logger.createBreak("----AI loop begins----");
+            logger.createBreak("-AI loop-");
             //check if ball is moving
-            float directionVectorLength = gameWorld.getBallDirection().len();
-            //if(directionVectorLength < 0.46 /*&& !makingDecision*/) // ball doesnt move, make a decision
-            //long currentTime = System.currentTimeMillis();
-            //if((currentTime - 5000) > lastTimeMoved)
+            float directionVectorLength = gameWorld.getBallDirection(gameWorld.getBallSim()).len();
+
             if(ballStoppedMoving(directionVectorLength))
             {
-                //makingDecision = true;
                 logger.log("Ball isn't moving.");
-                //sleep to make it seem it the ai thinks
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
+                //sleep to make it seem like the ai thinks
+                try
+                {
+                    Thread.sleep(100);
+                } catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
                 makeDecision();
             }
-            //if getMove is true, the decision is made but not yet retrieved by the gameController.
-//            if(makingDecision && processor.getMove())
-//            {
-//
-//            }
             else
             {
                 try
                 {
-                    logger.log("Ball is still moving because vector length is:" + directionVectorLength +
-                            ". Sleeping for " + WAIT_TIME +" ms");
+                    logger.log("Ball is still moving because vector length is:" + directionVectorLength + ". Sleeping for " + WAIT_TIME + " ms");
                     Thread.sleep(WAIT_TIME);
                 }
                 catch (Exception e)
@@ -128,16 +139,11 @@ public class SimpleAI implements Runnable {
     //gets called by gamecontroller when AI needs to make a move
     protected void makeDecision()
     {
-
-//        try {
-//            Thread.sleep(1000);
-//            System.out.println("Waiting in make decision");
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        loadGameWorld();
-        if(ballIsInHole()) // done
+        loadHoleAndBalPosition();
+        if(gameWorld.ballIsInHole(gameWorld.getBallSim())) // done
         {
+            System.out.println("stopping because in hole ");
+            logger.log("ball is in hole");
             return;
         }
         calculateBestMove();
@@ -145,9 +151,9 @@ public class SimpleAI implements Runnable {
     }
 
     //loads the current game wold into a format which is readable by the AI
-    protected void loadGameWorld()
+    protected void loadHoleAndBalPosition()
     {
-        this.ballPosition = new Vector3(gameWorld.getBallPosition());
+        this.ballPosition = new Vector3(gameWorld.getBallSimPosition());
         logger.log("ball position: " + ballPosition.toString());
         this.holePosition = new Vector3(gameWorld.getHolePosition());
         logger.log("hole position: " + holePosition.toString());
@@ -158,34 +164,21 @@ public class SimpleAI implements Runnable {
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
         distance.z += 0.1;
-
-        //if(len)
-
         logger.log("The calculated AI vector:" + distance);
-    }
-
-    protected boolean ballIsInHole()
-    {
-        distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
-        logger.log("calculating if ball is in hole with distance to hole: " + distance.len());
-        System.out.println("Distance to hole: " + distance);
-        float distanceWithoutZ = Math.abs(distance.x + distance.y);
-        if(distanceWithoutZ < 0.5)
-        {
-            return true;
-        }
-        return false;
     }
 
     //gives the move the ai wants to make to the inputprocessor
     protected void makeMove()
     {
-        //set direction vector
-        //distance = distance.nor();
-        processor.setDirectionVector(distance);
-        processor.setMove(true);
-        //set move in ai intput processor to true
-
+        if (distance != null)
+        {
+            processor.setDirectionVector(distance);
+            processor.setMove(true);
+        }
+        else
+        {
+            Log.log("failed to make a move");
+        }
     }
 
 }

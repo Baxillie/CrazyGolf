@@ -2,6 +2,7 @@ package nl.dke12.bot.pathfinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 //import java.util.Objects;
 
 /**
@@ -14,11 +15,13 @@ public abstract class MapNode
     private ArrayList<MapNode> neighbours;
     protected int cost;
     private HashMap<MapNode, Integer> costs;
+    private boolean walkable;
 
     public MapNode()
     {
         this(Integer.toString(nodeCounter));
         nodeCounter++;
+        this.walkable = true;
     }
 
     public MapNode(String identifier)
@@ -26,11 +29,22 @@ public abstract class MapNode
         this.identifier = identifier;
         this.neighbours = new ArrayList<MapNode>();
         this.costs = new HashMap<MapNode, Integer>();
+        this.walkable = true;
     }
 
     public String getIdentifier()
     {
         return identifier;
+    }
+
+    public void setWalkable(boolean walkable)
+    {
+        this.walkable = walkable;
+    }
+
+    public boolean isWalkable()
+    {
+        return walkable;
     }
 
     public ArrayList<MapNode> getNeighbours()
@@ -82,16 +96,9 @@ public abstract class MapNode
         }
         else
         {
-            MapNode mapNode = (MapNode) o;
-            //return Objects.equals(identifier, mapNode.identifier);
-            return false;
+            return ((MapNode) o).getIdentifier().equals(this.identifier);
+            //return false;
         }
-    }
-
-    //@Override
-    //public int hashCode()
-    {
-        //return Objects.hash(identifier);
     }
 
     @Override
