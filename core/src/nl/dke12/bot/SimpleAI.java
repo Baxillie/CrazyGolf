@@ -120,7 +120,10 @@ public class SimpleAI implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                long start = System.currentTimeMillis();
                 makeDecision();
+                long end = System.currentTimeMillis();
+                System.out.println("Run time for decision: " + (end - start) + " ms");
             }
             else
             {

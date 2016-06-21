@@ -16,6 +16,9 @@ import java.util.Random;
  */
 public class RandomAI extends SimpleAI
 {
+
+    private boolean SEMI_RANDOM = false;
+
     private GameController gameController;
     private Random rng;
     private TestChamber simulator;
@@ -31,13 +34,18 @@ public class RandomAI extends SimpleAI
     @Override
     public void calculateBestMove()
     {
-        ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
+        if(SEMI_RANDOM)
+        {
+            semiRandomDecision();
+        }
+        else
+        {
+            fullyRandomsimulatedDecision();
+        }
+    }
 
-//        super.calculateBestMove();
-//        Vector3 baseVector = super.distance;
-
-        //create 10 random vectors between the possible
-
+    private void semiRandomDecision()
+    {
         float x = 1 - rng.nextFloat() * 2;
         float y = 1 - rng.nextFloat() * 2;
         Vector3 shotdir = new Vector3(x, y, 0.8f);
@@ -47,11 +55,51 @@ public class RandomAI extends SimpleAI
         float force = rng.nextFloat();
         float height = rng.nextFloat();
 
-        System.out.println(String.format("added: vector:%s height: %f force: %f", shotdir, 0.5, 0.3));
+        //System.out.println(String.format("added: vector:%s height: %f force: %f", shotdir, 0.5, 0.3));
 
         this.distance = shotdir;
         gameController.setForceMultiplier(force);
         gameController.setHeightMultiplier(height);
+    }
+
+    private void fullyRandomsimulatedDecision()
+    {
+        ArrayList<SimulationData> simData = new ArrayList<SimulationData>();
+
+        //create 10 random vectors between the possible
+        for (int i = 0; i < 15; i++)
+        {
+
+            float x = 1 - rng.nextFloat() * 2;
+            float y = 1 - rng.nextFloat() * 2;
+            Vector3 shotdir = new Vector3(x, y, 0.8f );
+            shotdir.scl(2.1540658f/shotdir.len());
+
+            //float heightmult = Math.round(rng.nextFloat() * 10) / 10;
+            float heightmult = 0.6f - (rng.nextFloat() - 0.5f);
+            //float forcemult = Math.round(rng.nextFloat() * 10) / 10;
+            float forcemult =  1.0f - (rng.nextFloat()- 0.5f);
+
+            simData.add(new SimulationData(
+                    super.ballPosition,
+                    shotdir,
+                    heightmult, forcemult,
+                    super.holePosition
+            ));
+        }
+
+        //simulate the 15 shots
+
+        simulator.simulateShot(simData);
+
+        //choose the best one
+
+        SimulationData bestSimulation = extractBestShot(simData);
+        //Log.log("best sim:" +  bestSimulation);
+        System.out.println("Shooting the ball with " + bestSimulation);
+        this.distance = bestSimulation.getDirection();
+        gameController.setForceMultiplier(bestSimulation.getForceModifier());
+        gameController.setHeightMultiplier(bestSimulation.getHeightModifier());
     }
 
     private SimulationData extractBestShot(ArrayList<SimulationData> simData)
