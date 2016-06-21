@@ -21,17 +21,18 @@ import java.util.Random;
 public class RandomAI extends SimpleAI
 {
 
-    private boolean SEMI_RANDOM = false;
+    private boolean SEMI_RANDOM;
     private GameController gameController;
     private Random rng;
     private TestChamber simulator;
 
-    public RandomAI(GameWorld gameWorld, InputProcessor processor)
+    public RandomAI(GameWorld gameWorld, InputProcessor processor, boolean semi_random)
     {
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
         this.simulator = new TestChamber(gameWorld);
+        this.SEMI_RANDOM = semi_random;
     }
 
     @Override

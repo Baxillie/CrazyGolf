@@ -3,6 +3,7 @@ package nl.dke12.bot;
 import com.badlogic.gdx.math.Vector3;
 import nl.dke12.bot.maze.MazeMapNode;
 import nl.dke12.bot.pathfinding.AStar;
+import nl.dke12.bot.pathfinding.FloodFill;
 import nl.dke12.bot.pathfinding.MapNode;
 import nl.dke12.bot.pathfinding.PathNotFoundException;
 import nl.dke12.controller.GameController;
@@ -26,14 +27,16 @@ public class PathFindingBot extends SimpleAI
     private ArrayList<MazeMapNode> path;
     private int nodeInPath;
     private GameMap gameMap;
+    private boolean floodfill;
 
-    public PathFindingBot(GameWorld gameWorld, InputProcessor processor)
+    public PathFindingBot(GameWorld gameWorld, InputProcessor processor, boolean floodfill)
     {
         super(gameWorld, processor);
         rng = new Random(System.currentTimeMillis());
         this.gameController = gameWorld.getGameController();
         this.path = new ArrayList<>();
         this.gameMap = gameWorld.getGameMap();
+        this.floodfill = floodfill;
 
         generateNewPath();
     }
@@ -152,7 +155,14 @@ public class PathFindingBot extends SimpleAI
 
             Vector3 ballPos = gameWorld.getBallSimPosition();
             gameMap.setStartNode(ballPos);
-            ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
+            if(floodfill)
+            {
+                ArrayList<MapNode> path = new FloodFill().calculatePath(gameMap.getGridBasedMapGraph());
+            }
+            else
+            {
+                ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
+            }
             for(MapNode n : path)
             {
                 Log.log(n.getIdentifier());

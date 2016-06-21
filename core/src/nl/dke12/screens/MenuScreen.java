@@ -61,8 +61,8 @@ public class MenuScreen implements Screen {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
-		int buttonX = 150;
-		int buttonY = 350;
+		int buttonX = 100;
+		int buttonY = 425;
 		int increment = -50;
 
 		final TextButton playgGameButton=new TextButton("SINGLE PLAYER",textButtonStyle);
@@ -98,15 +98,71 @@ public class MenuScreen implements Screen {
 
 		buttonY += increment;
 
-		final TextButton aiButton = new TextButton("AI GAME", textButtonStyle);
+		final TextButton aiButton = new TextButton("SIMPLE AI", textButtonStyle);
 		aiButton.setPosition(buttonX, buttonY);
 		stage.addActor(aiButton);
 
 		aiButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("AI button was clicked");
-				stateController.displayAI();
+				System.out.println("simple ai button was clicked");
+				stateController.displayAI("simpleAI");
+			}
+		});
+
+		buttonY += increment;
+
+		final TextButton aiButton1 = new TextButton("SIMULATION", textButtonStyle);
+		aiButton1.setPosition(buttonX, buttonY);
+		stage.addActor(aiButton1);
+
+		aiButton1.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("simulation was clicked");
+				stateController.displayAI("simulation");
+			}
+		});
+
+		buttonY += increment;
+
+		final TextButton aiButton2 = new TextButton("SEMI-RANDOM", textButtonStyle);
+		aiButton2.setPosition(buttonX, buttonY);
+		stage.addActor(aiButton2);
+
+		aiButton2.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("semi random button was clicked");
+				stateController.displayAI("semiRandom");
+			}
+		});
+
+		buttonY += increment;
+
+		final TextButton aiButton3 = new TextButton("A*", textButtonStyle);
+		aiButton3.setPosition(buttonX, buttonY);
+		stage.addActor(aiButton3);
+
+		aiButton3.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("A* button was clicked");
+				stateController.displayAI("pathfindingastar");
+			}
+		});
+
+		buttonY += increment;
+
+		final TextButton aiButton4 = new TextButton("FLOODFILL", textButtonStyle);
+		aiButton4.setPosition(buttonX, buttonY);
+		stage.addActor(aiButton4);
+
+		aiButton4.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("floodfill button was clicked");
+				stateController.displayAI("pathfindingfloodfill");
 			}
 		});
 

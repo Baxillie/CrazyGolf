@@ -55,17 +55,37 @@ public class StateController extends Game
         setScreen(gameDisplay);
     }
 
-    public void displayAI()
+    public void displayAI(String aistring)
     {
         GameWorld gameWorld = new GameWorld(false, false);
         GameDisplay gameDisplay = new GameDisplay(false, gameWorld,this);
         gameWorld.setDisplay(gameDisplay);
 
-        //SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
-        //RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor());
-        PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor());
-
-        new Thread(ai).start();
+        if(aistring.equals("simpleAI"))
+        {
+            SimpleAI ai = new SimpleAI(gameWorld, gameWorld.getGameController().getInputProcessor());
+            new Thread(ai).start();
+        }
+        else if(aistring.equals("semiRandom"))
+        {
+            RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor(), true);
+            new Thread(ai).start();
+        }
+        else if(aistring.equals("simulation"))
+        {
+            RandomAI ai = new RandomAI(gameWorld, gameWorld.getGameController().getInputProcessor(), false);
+            new Thread(ai).start();
+        }
+        else if(aistring.equals("pathfindingastar"))
+        {
+            PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor(), false);
+            new Thread(ai).start();
+        }
+        else if(aistring.equals("pathfindingfloodfill"))
+        {
+            PathFindingBot ai = new PathFindingBot(gameWorld, gameWorld.getGameController().getInputProcessor(), true);
+            new Thread(ai).start();
+        }
 
         setScreen(gameDisplay);
     }
