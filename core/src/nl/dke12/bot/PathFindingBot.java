@@ -160,18 +160,23 @@ public class PathFindingBot extends SimpleAI
             if(floodfill)
             {
                 ArrayList<MapNode> path = new FloodFill().calculatePath(gameMap.getGridBasedMapGraph());
+                for(MapNode n : path)
+                {
+                    Log.log(n.getIdentifier());
+                    this.path.add((MazeMapNode) n);
+                }
             }
             else
             {
-                System.out.println("GENERATING PATH FROM a*");
                 ArrayList<MapNode> path = new AStar().calculatePath(gameMap.getGridBasedMapGraph());
+                for(MapNode n : path)
+                {
+                    Log.log(n.getIdentifier());
+                    this.path.add((MazeMapNode) n);
+                }
             }
 
-            for(MapNode n : path)
-            {
-                Log.log(n.getIdentifier());
-                this.path.add((MazeMapNode) n);
-            }
+
 
             nodeInPath = 0;
 
