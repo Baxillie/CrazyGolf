@@ -129,7 +129,7 @@ public class PathFindingBot extends SimpleAI
 
         if(shotVector != null)
         {
-            gameController.sForceMultiplier(count * 0.045f);
+            gameController.sForceMultiplier(count * 0.05f);
             gameController.setHeightMultiplier(count * 0.05f);
 
             System.out.println("Pathfinding AI is shooting with vector: " + shotVector.toString() + " currently located at location " + nodeInPath + " in the path.");
