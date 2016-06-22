@@ -114,21 +114,26 @@ public class GameController
         Vector3 sideVector = new Vector3(directVector);
         sideVector.rotate(90,0,0,90);
 
+        //// TODO: 22/06/2016 fix camera
         if (inputProcessor.moveCamBack())
         {
             camera.translate(-directVector.x/2,-directVector.y/2,0);
+            camera.translate(-directVector.x*2,-directVector.y*2,0);
         }
         if (inputProcessor.moveCamForward())
         {
             camera.translate(directVector.x/2,directVector.y/2,0);
+            camera.translate(directVector.x*2,directVector.y*2,0);
         }
         if (inputProcessor.moveCamLeft())
         {
             camera.translate(sideVector.x/2,sideVector.y/2,0);
+            camera.translate(sideVector.x*2,sideVector.y*2,0);
         }
         if (inputProcessor.moveCamRight())
         {
             camera.translate(-sideVector.x/2,-sideVector.y/2,0);
+            camera.translate(-sideVector.x*2,-sideVector.y*2,0);
         }
         if (inputProcessor.rotateCamAntiClock())
         {
@@ -165,6 +170,11 @@ public class GameController
     public InputProcessor getInputProcessor()
     {
         return inputProcessor;
+    }
+
+    public void sForceMultiplier(float force)
+    {
+        this.forceMultiplier = force;
     }
 
     public void move()

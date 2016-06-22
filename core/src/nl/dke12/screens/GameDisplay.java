@@ -75,7 +75,7 @@ public class GameDisplay implements Screen
     public void create()
     {
         camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(0f, -13f, 11f);
+        camera.position.set(0f, -13f, 30f);
         camera.lookAt(0f, 0f, 0f);
         camera.near = 0.1f;
         camera.far = 300.0f;

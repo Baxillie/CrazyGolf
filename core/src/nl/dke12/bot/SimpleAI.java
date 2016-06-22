@@ -114,7 +114,10 @@ public class SimpleAI implements Runnable {
                 {
                     e.printStackTrace();
                 }
+                long start = System.currentTimeMillis();
                 makeDecision();
+                long end = System.currentTimeMillis();
+                System.out.println("Run time for decision: " + (end - start) + " ms");
             }
             else
             {
@@ -150,6 +153,8 @@ public class SimpleAI implements Runnable {
         makeMove();
     }
 
+
+
     //loads the current game wold into a format which is readable by the AI
     protected void loadHoleAndBalPosition()
     {
@@ -164,6 +169,7 @@ public class SimpleAI implements Runnable {
     {
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
         distance.z += 0.1;
+        gameWorld.getGameController().setForceMultiplier((float) Math.random());
         logger.log("The calculated AI vector:" + distance);
     }
 
