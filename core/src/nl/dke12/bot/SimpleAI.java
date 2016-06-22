@@ -165,6 +165,14 @@ public class SimpleAI implements Runnable {
     //decides which move the bot should make based on the current world situation
     protected void calculateBestMove()
     {
+        if(isCloseToHole())
+        {
+            gameWorld.getGameController().setForceMultiplier(0.4f);
+        }
+        else
+        {
+            gameWorld.getGameController().setForceMultiplier(1f);
+        }
         distance = new Vector3(new Vector3(holePosition).sub(ballPosition));
         distance.z += 0.1;
         logger.log("The calculated AI vector:" + distance);
